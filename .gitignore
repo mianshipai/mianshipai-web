@@ -1,0 +1,31 @@
+/coverage
+/src/client/shared.ts
+/src/node/shared.ts
+*.log
+*.tgz
+.DS_Store
+.idea
+.temp
+.vite_opt_cache
+dist
+cache
+temp
+examples-temp
+node_modules
+pnpm-global
+TODOs.md
+*.timestamp-*.mjs
+
+# debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# local env files
+.env*.local
+.env
+.env.test
+
+ISSUE.md
+
+.npmrc
