@@ -5,7 +5,7 @@ layout: home
 hero:
   name: '前端面试派'
   text: '模拟大厂真实面试流程'
-  tagline: 双越老师 500+ 面试真题，大厂面试规范，开源免费
+  tagline: 双越老师 收集 500+ 真题，大厂面试规范，开源免费
   actions:
     - theme: brand
       text: 开始面试
@@ -44,3 +44,26 @@ features:
 - 想入门前端 —— 虽然很难，但其他方向也许更难...
 
 以上这些问题都可以在 **面试派** 找到答案，欢迎 [加群](./docs/services/group.md) 免费畅聊，一起分享前端面试经验和技巧。
+
+<div style="display: flex; margin-top: 48px;">
+  <div style="flex: 1; text-align: center;">
+    <a href="https://www.didiglobal.com/" target="_blank">
+      <img src="./docs/imgs/logos/didi.png"  style="width: 80%"/>
+    </a>
+  </div>
+  <div style="flex: 1;">
+    <a href="https://www.bytedance.com/zh/" target="_blank">
+      <img src="./docs/imgs/logos/bd.png"  style="width: 80%"/>
+    </a>
+  </div>
+  <div style="flex: 1; text-align: center;">
+    <a href="https://www.baidu.com/" target="_blank">
+      <img src="./docs/imgs/logos/baidu.png" style="width: 80%"/>
+    </a>
+  </div>
+  <div style="flex: 1;">
+    <a href="https://www.meituan.com/" target="_blank">
+      <img src="./docs/imgs/logos/meituan.png"  style="width: 80%"/>
+    </a>
+  </div>
+</div>

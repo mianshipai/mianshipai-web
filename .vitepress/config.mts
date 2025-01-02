@@ -31,10 +31,14 @@ export default defineConfig({
         text: '面试准备',
         items: [
           {
+            text: '了解面试流程',
+            link: '/docs/before-interview/process.md',
+          },
+          { text: '分析 JD 招聘要求', link: '/docs/before-interview/jd.md' },
+          {
             text: '正确写简历',
             link: '/docs/before-interview/write-resume.md',
           },
-          { text: '分析 JD 招聘要求', link: '/docs/before-interview/jd.md' },
           {
             text: '如何投递简历',
             link: '/docs/before-interview/post-resume.md',
@@ -44,7 +48,7 @@ export default defineConfig({
       {
         text: '笔试',
         items: [
-          { text: '算法', link: '/docs/written-exam/algorithm' },
+          { text: '数据结构和算法', link: '/docs/written-exam/algorithm' },
           { text: 'JS 手写代码', link: '/docs/written-exam/JS-writing' },
           { text: 'JS 读代码', link: '/docs/written-exam/JS-reading' },
         ],
