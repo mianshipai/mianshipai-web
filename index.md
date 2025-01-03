@@ -47,22 +47,22 @@ features:
 
 <div style="display: flex; margin-top: 48px;">
   <div style="flex: 1; text-align: center;">
-    <a href="https://www.didiglobal.com/" target="_blank">
+    <a href="https://talent.didiglobal.com/" target="_blank">
       <img src="./docs/imgs/logos/didi.png"  style="width: 80%"/>
     </a>
   </div>
   <div style="flex: 1;">
-    <a href="https://www.bytedance.com/zh/" target="_blank">
+    <a href="https://jobs.bytedance.com/" target="_blank">
       <img src="./docs/imgs/logos/bd.png"  style="width: 80%"/>
     </a>
   </div>
   <div style="flex: 1; text-align: center;">
-    <a href="https://www.baidu.com/" target="_blank">
+    <a href="https://talent.baidu.com/" target="_blank">
       <img src="./docs/imgs/logos/baidu.png" style="width: 80%"/>
     </a>
   </div>
   <div style="flex: 1;">
-    <a href="https://www.meituan.com/" target="_blank">
+    <a href="https://hr.meituan.com/web/home" target="_blank">
       <img src="./docs/imgs/logos/meituan.png"  style="width: 80%"/>
     </a>
   </div>
