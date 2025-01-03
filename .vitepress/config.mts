@@ -23,7 +23,7 @@ export default defineConfig({
       { text: '首页', link: '/' },
       { text: '加群沟通', link: '/docs/services/group.md' },
       { text: '提交面试真题', link: '/docs/services/submit-question.md' },
-      { text: '1v1 面试咨询服务 🔥', link: '/docs/services/1v1.md' },
+      // { text: '1v1 面试咨询服务 🔥', link: '/docs/services/1v1.md' },
     ],
 
     outline: {
@@ -73,15 +73,15 @@ export default defineConfig({
           { text: 'Vue 原理', link: '/docs/second-exam/vue-inner.md' },
           { text: 'React 使用', link: '/docs/second-exam/react-usage.md' },
           { text: 'React 原理', link: '/docs/second-exam/react-inner.md' },
-          { text: '打包构建', link: '/docs/second-exam/bundler.md' },
           { text: '项目难点/成绩', link: '/docs/second-exam/project.md' },
         ],
       },
       {
         text: '三面',
         items: [
-          { text: '前端 Leader 面试', link: '/docs/third-exam/leader-test.md' },
           { text: '交叉面试', link: '/docs/third-exam/cross-test.md' },
+          { text: '前端 Leader 面试', link: '/docs/third-exam/leader-test.md' },
+          { text: '反问面试官', link: '/docs/third-exam/ask-in-reply.md' },
         ],
       },
       {
@@ -96,7 +96,7 @@ export default defineConfig({
         items: [
           { text: '加群沟通', link: '/docs/services/group.md' },
           { text: '提交面试真题', link: '/docs/services/submit-question.md' },
-          { text: '1v1 咨询服务 🔥', link: '/docs/services/1v1.md' },
+          // { text: '1v1 咨询服务 🔥', link: '/docs/services/1v1.md' },
         ],
       },
       // {

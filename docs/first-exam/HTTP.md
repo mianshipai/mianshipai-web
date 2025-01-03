@@ -10,6 +10,8 @@ HTTP 和 Ajax 是前后端沟通的桥梁，面试重点考察，无论工作经
 
 ## HTTP 常见 Header
 
+## URL 包含哪些部分？
+
 ## Ajax Fetch Axios 三者有什么区别？
 
 ## Fetch 和 XMLHTTPRequest 有什么区别？
