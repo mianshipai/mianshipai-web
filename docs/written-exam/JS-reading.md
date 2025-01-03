@@ -42,7 +42,34 @@ obj1 { x: 1, y: 2 }
 [1, NaN, NaN]
 :::
 
-## JS this 的值
+## JS this 1
+
+以下代码，执行结果是什么？
+
+```js
+const User = {
+  count: 1,
+  getCount: function () {
+    return this.count
+  },
+}
+console.log('a ', User.getCount()) // what?
+const func = User.getCount
+console.log('b', func()) // what?
+```
+
+答案
+
+::: details
+
+```
+a 1
+b undefined
+```
+
+:::
+
+## JS this 2
 
 以下代码，执行结果是什么？
 
@@ -78,7 +105,30 @@ this2 window（严格模式下是 undefined） 和 this2 window
 
 :::
 
-## JS 自由变量
+## JS 自由变量 1
+
+以下代码，执行结果是什么？
+
+```js
+let i
+for (i = 1; i <= 3; i++) {
+  setTimeout(function () {
+    console.log(i)
+  }, 0)
+}
+```
+
+答案
+
+::: details
+
+```
+4 4 4
+```
+
+:::
+
+## JS 自由变量 2
 
 以下代码，执行结果是什么？
 

@@ -26,6 +26,10 @@ export default defineConfig({
       { text: '1v1 面试咨询服务 🔥', link: '/docs/services/1v1.md' },
     ],
 
+    outline: {
+      level: [2, 3],
+    },
+
     sidebar: [
       {
         text: '面试准备',
@@ -60,7 +64,6 @@ export default defineConfig({
           { text: 'JS 基础知识', link: '/docs/first-exam/JS' },
           { text: 'TS 类型', link: '/docs/first-exam/TS' },
           { text: 'HTTP 网络请求', link: '/docs/first-exam/HTTP.md' },
-          { text: '综合考察', link: '/docs/first-exam/other.md' },
         ],
       },
       {

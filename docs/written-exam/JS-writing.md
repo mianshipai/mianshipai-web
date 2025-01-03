@@ -16,8 +16,6 @@
 
 ## 手写 class 继承
 
-### 题目描述
-
 在某网页中，有三种菜单：button menu，select menu，modal menu。
 
 他们的共同特点：
@@ -34,9 +32,7 @@
 
 请用 ES6 语法写出这三种菜单的 class
 
-### 参考答案
-
-::: details 代码显示/隐藏
+::: details 参考答案
 
 ```js
 class BaseMenu {
