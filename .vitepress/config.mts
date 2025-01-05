@@ -22,7 +22,10 @@ export default defineConfig({
     nav: [
       { text: '首页', link: '/' },
       { text: '加群沟通', link: '/docs/services/group.md' },
-      { text: '提交面试真题', link: '/docs/services/submit-question.md' },
+      {
+        text: '提交面试真题',
+        link: 'https://github.com/mianshipai/mianshipai-web/issues/new/choose',
+      },
       // { text: '1v1 面试咨询服务 🔥', link: '/docs/services/1v1.md' },
     ],
 
@@ -96,7 +99,10 @@ export default defineConfig({
         text: '服务',
         items: [
           { text: '加群沟通', link: '/docs/services/group.md' },
-          { text: '提交面试真题', link: '/docs/services/submit-question.md' },
+          {
+            text: '提交面试真题',
+            link: 'https://github.com/mianshipai/mianshipai-web/issues/new/choose',
+          },
           // { text: '1v1 咨询服务 🔥', link: '/docs/services/1v1.md' },
         ],
       },

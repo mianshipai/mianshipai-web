@@ -34,6 +34,8 @@
 - 贝壳 https://campus.ke.com/
 - 联想 https://talent.lenovo.com.cn/
 
+如有其他公司招聘网址，欢迎给我们[提交](https://github.com/mianshipai/mianshipai-web/issues/new/choose)，我们会及时收录。
+
 ## 更多
 
 面试派 正在规划一个前端交流社群，会把猎头、内推等机会都汇总到这里，WIP...
