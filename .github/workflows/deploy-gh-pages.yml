@@ -17,7 +17,7 @@ jobs:
       - name: build
         run: |
           npm install
-          npm npm run docs:build
+          npm run docs:build
           echo "---------- vitepress build done ----------"
       - name: set ssh key # 临时设置 ssh key
         run: |
