@@ -5,7 +5,11 @@ on:
   # Runs on pushes targeting the default branch
   push:
     branches: ['prod-deploy']
-
+    paths:
+      - '.vitepress/**'
+      - 'docs/**'
+      - index.md
+      - package.json
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
