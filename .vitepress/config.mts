@@ -77,13 +77,16 @@ export default defineConfig({
           { text: 'Vue 原理', link: '/docs/second-exam/vue-inner.md' },
           { text: 'React 使用', link: '/docs/second-exam/react-usage.md' },
           { text: 'React 原理', link: '/docs/second-exam/react-inner.md' },
-          { text: '项目难点/成绩', link: '/docs/second-exam/project.md' },
+          { text: '小程序', link: '/docs/second-exam/mini-program.md' },
+          { text: '前端工程化', link: '/docs/second-exam/engineering.md' },
         ],
       },
       {
         text: '三面',
         items: [
           { text: '交叉面试', link: '/docs/third-exam/cross-test.md' },
+          { text: '项目难点/成绩', link: '/docs/third-exam/project.md' },
+          { text: '系统设计', link: '/docs/third-exam/system-design.md' },
           { text: '前端 Leader 面试', link: '/docs/third-exam/leader-test.md' },
           { text: '反问面试官', link: '/docs/third-exam/ask-in-reply.md' },
         ],
@@ -121,7 +124,7 @@ export default defineConfig({
 
     footer: {
       message:
-        '<a href="https://juejin.cn/user/1714893868765373" target="_blank">双越老师博客</a> | <a href="https://space.bilibili.com/697803545" target="_blank">双越老师 B站</a> | <a href="https://www.huashuiai.com/" target="_blank">划水AI</a>',
+        '<a href="https://juejin.cn/user/1714893868765373" target="_blank">双越老师博客</a> | <a href="https://space.bilibili.com/697803545" target="_blank">双越老师 B站</a> | <a href="https://www.huashuiai.com/" target="_blank">划水AI</a> | <a href="https://github.com/mianshipai/mianshipai-web/issues" target="_blank">提交问题和建议</a>',
       copyright: 'Copyright © 2025-present Mianshipai 面试派',
     },
   },
