@@ -1,6 +1,8 @@
 # 面试派
 
-[双越老师（王福朋）](https://juejin.cn/user/1714893868765373)整理的前端面试流程和刷题技巧，开源免费，持续维护。
+https://www.mianshipai.com/
+
+[双越老师](https://juejin.cn/user/1714893868765373)联合多位精英博主，整理的前端面试流程和刷题技巧，开源免费，持续维护。
 
 ## 本地运行
 
@@ -11,6 +13,6 @@ npm i
 npm run docs:dev
 ```
 
-## 发布线上
+## 发布上线
 
-把代码合并到 `prod-deploy` 分支，push 到 GitHub，即可自动上线 https://mianshipai.github.io/
+提交 PR 把代码合并到 `prod-deploy` 分支，即可自动上线 https://github.com/mianshipai/mianshipai-web/actions

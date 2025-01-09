@@ -16,6 +16,21 @@ export default defineConfig({
           '前端, 面试, 前端面试, 面试题, 刷题, 面试流程, 前端面试流程, 面试准备, 简历, 前端简历, Javascript, Typescript, React, Vue, webpack, vite, HTTP, 算法',
       },
     ],
+    // baidu 统计
+    [
+      'script',
+      {},
+      `
+      var _hmt = _hmt || [];
+      (function() {
+        if (location.hostname.indexOf('mianshipai.com')<0) return;
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?b53b3c926f6f6f5be6a9ac7e0911622b";
+        var s = document.getElementsByTagName("script")[0]; 
+        s.parentNode.insertBefore(hm, s);
+      })();
+      `,
+    ],
   ],
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
@@ -124,7 +139,7 @@ export default defineConfig({
 
     footer: {
       message:
-        '<a href="https://juejin.cn/user/1714893868765373" target="_blank">双越老师博客</a> | <a href="https://space.bilibili.com/697803545" target="_blank">双越老师 B站</a> | <a href="https://www.huashuiai.com/" target="_blank">划水AI</a> | <a href="https://github.com/mianshipai/mianshipai-web/issues" target="_blank">提交问题和建议</a>',
+        '<a href="https://www.wangeditor.com/" target="_blank">wangEditor</a> | <a href="https://www.huashuiai.com/" target="_blank">划水AI</a> | <a href="https://github.com/mianshipai/mianshipai-web/issues" target="_blank">提交问题和建议</a>',
       copyright: 'Copyright © 2025-present Mianshipai 面试派',
     },
   },
