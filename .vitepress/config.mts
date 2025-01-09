@@ -44,6 +44,10 @@ export default defineConfig({
       // { text: '1v1 面试咨询服务 🔥', link: '/docs/services/1v1.md' },
     ],
 
+    search: {
+      provider: 'local',
+    },
+
     outline: {
       level: [2, 3],
       label: '目录',
