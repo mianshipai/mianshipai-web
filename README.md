@@ -13,4 +13,4 @@ npm run docs:dev
 
 ## 发布线上
 
-提交 PR 把代码合并到 `prod-deploy` 分支，即可自动上线 https://mianshipai.github.io/
+把代码合并到 `prod-deploy` 分支，push 到 GitHub，即可自动上线 https://mianshipai.github.io/
