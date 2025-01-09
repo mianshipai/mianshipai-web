@@ -5,7 +5,7 @@ layout: home
 hero:
   name: '前端面试派'
   text: '模拟大厂真实面试流程'
-  tagline: 双越老师 收集 500+ 真题，大厂面试规范，开源免费
+  tagline: 双越老师 联合精英博主，收集 500+ 真题，开源免费
   actions:
     - theme: brand
       text: 开始面试
@@ -18,7 +18,7 @@ hero:
     #   link: /docs/services/1v1.html
 
 features:
-  - title: 双越老师
+  - title: 双越老师 带队
     details: 前百度、滴滴 资深工程师，wangEditor 作者，PMP，慕课网金牌讲师，国内最早讲解前端面试题的大厂讲师，学员累计 10w 人。
   - title: 大厂面试流程
     details: 依据大厂真实规范的面试流程，分为笔试、一面、二面、三面、HR 面试，全面覆盖每个面试环节，直接开始刷题，无需再自己查找。
@@ -30,22 +30,68 @@ features:
 
 ### 专业解决面试问题
 
-- 工作几年，项目没有亮点，都是重复性的
-- 太久没有出来面试，不知道面试考什么，不知道如何准备面试题
-- 工作 N 年只会 Vue
-- 业余不学习，基础知识很差，没信心
-- 工作快 10 年了，但还是一线开发人员
-- 35 岁左右...
-- 被裁员，空窗期太久，不好解释
-- 大专，被卡学历
-- 投简历，已读不回...
+- 初入职场不知道如何写简历，如何写出内容和亮点
+- 不知道如何准备面试题，搜出很多资料，但无从下手
+- 工作几年，项目都是重复性的，写不出亮点和成绩
+- 工作快 10 年了，但还是一线开发人员，如何体现个人经验？
+- 业余不学习，基础知识很差，面试没信心
+- 工作多年只会 Vue ，不懂算法，没有技术广度和深度
 - 刚毕业，没实际项目经验
-- 应届生，不知道怎么写简历
-- 想入门前端 —— 虽然很难，但其他方向也许更难...
 
 **面试派** 旨在帮助解决面试过程中的所有问题，不仅是刷题。欢迎 [加群](./docs/services/group.md) 沟通，免费咨询指导建议。
 
-### 但不限于面试
+### 我们的团队
+
+双越老师带队，联合多名精英博主，参考大厂面试规范，共建优质内容。
+
+<div style="display: grid; gap: 24px; grid-template-columns: repeat(auto-fit, minmax(224px, 1fr)); margin-top: 24px;">
+  <div style="flex: 1; text-align: center;">
+    <div style="background-color: var(--vp-c-bg-soft); padding: 16px 0 8px 0; border-radius: 6px;">
+      <figure style="width: 64px; height: 64px; border-radius: 50%; overflow: hidden; margin: 0 auto; box-shadow: var(--vp-shadow-3);">
+        <img src="https://github.com/wangfupeng1988.png" loading="lazy"/>
+      </figure>
+      <div style="text-align: center;">
+        <h4 style="font-size: 16px; line-height: 12px; font-weight: 600;">双越老师</h4>
+        <p style="color: var(--vp-c-text-2); font-size: 14px; line-height: 1;">一句话介绍</p>
+      </div>
+    </div>
+  </div>
+  <div style="flex: 1; text-align: center;">
+    <div style="background-color: var(--vp-c-bg-soft); padding: 16px 0 8px 0; border-radius: 6px;">
+      <figure style="width: 64px; height: 64px; border-radius: 50%; overflow: hidden; margin: 0 auto; box-shadow: var(--vp-shadow-3);">
+        <img src="https://github.com/wangeditor.png" loading="lazy"/>
+      </figure>
+      <div style="text-align: center;">
+        <h4 style="font-size: 16px; line-height: 12px; font-weight: 600;">xxx</h4>
+        <p style="color: var(--vp-c-text-2); font-size: 14px; line-height: 1;">xxxxxxx</p>
+      </div>
+    </div>
+  </div>
+  <div style="flex: 1; text-align: center;">
+    <div style="background-color: var(--vp-c-bg-soft); padding: 16px 0 8px 0; border-radius: 6px;">
+      <figure style="width: 64px; height: 64px; border-radius: 50%; overflow: hidden; margin: 0 auto; box-shadow: var(--vp-shadow-3);">
+        <img src="https://github.com/yyx990803.png" loading="lazy"/>
+      </figure>
+      <div style="text-align: center;">
+        <h4 style="font-size: 16px; line-height: 12px; font-weight: 600;">yyy</h4>
+        <p style="color: var(--vp-c-text-2); font-size: 14px; line-height: 1;">yyyyy</p>
+      </div>
+    </div>
+  </div>
+  <div style="flex: 1; text-align: center;">
+    <div style="background-color: var(--vp-c-bg-soft); padding: 16px 0 8px 0; border-radius: 6px;">
+      <figure style="width: 64px; height: 64px; border-radius: 50%; overflow: hidden; margin: 0 auto; box-shadow: var(--vp-shadow-3);">
+        <img src="https://github.com/kiaking.png" loading="lazy"/>
+      </figure>
+      <div style="text-align: center;">
+        <h4 style="font-size: 16px; line-height: 12px; font-weight: 600;">zzz</h4>
+        <p style="color: var(--vp-c-text-2); font-size: 14px; line-height: 1;">zzzzzz</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+### 不限于面试
 
 - 前端 0 基础入门
 - 职业规划，晋升指导
@@ -57,22 +103,45 @@ features:
 <div style="display: flex; margin-top: 48px;">
   <div style="flex: 1; text-align: center;">
     <a href="https://talent.didiglobal.com/" target="_blank">
-      <img src="./docs/imgs/logos/didi.png"  style="width: 80%"/>
+      <img loading="lazy" src="./docs/imgs/logos/didi.png"  style="width: 80%"/>
     </a>
   </div>
   <div style="flex: 1;">
     <a href="https://jobs.bytedance.com/" target="_blank">
-      <img src="./docs/imgs/logos/bd.png"  style="width: 80%"/>
+      <img loading="lazy" src="./docs/imgs/logos/bd.png"  style="width: 80%"/>
     </a>
   </div>
   <div style="flex: 1; text-align: center;">
     <a href="https://talent.baidu.com/" target="_blank">
-      <img src="./docs/imgs/logos/baidu.png" style="width: 80%"/>
+      <img loading="lazy" src="./docs/imgs/logos/baidu.png" style="width: 80%"/>
     </a>
   </div>
   <div style="flex: 1;">
     <a href="https://hr.meituan.com/web/home" target="_blank">
-      <img src="./docs/imgs/logos/meituan.png"  style="width: 80%"/>
+      <img loading="lazy" src="./docs/imgs/logos/meituan.png"  style="width: 80%"/>
+    </a>
+  </div>
+</div>
+
+<div style="display: flex; margin-top: 48px;">
+  <div style="flex: 1; text-align: center;">
+    <a href="https://careers.tencent.com/" target="_blank">
+      <img loading="lazy" src="./docs/imgs/logos/tencent.png"  style="width: 80%"/>
+    </a>
+  </div>
+  <div style="flex: 1; text-align: center;">
+    <a href="https://career.huawei.com/" target="_blank">
+      <img loading="lazy" src="./docs/imgs/logos/huawei.png"  style="width: 80%"/>
+    </a>
+  </div>
+  <div style="flex: 1; text-align: center;">
+    <a href="https://zhaopin.jd.com/" target="_blank">
+      <img loading="lazy" src="./docs/imgs/logos/jd.png"  style="width: 80%"/>
+    </a>
+  </div>
+  <div style="flex: 1; text-align: center;">
+    <a href="https://talent.alibaba.com/" target="_blank">
+      <img loading="lazy" src="./docs/imgs/logos/ali.png"  style="width: 80%"/>
     </a>
   </div>
 </div>
