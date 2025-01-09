@@ -1,0 +1,49 @@
+# Sample workflow for building and deploying a Jekyll site to GitHub Pages
+name: Deploy to GitHub Pages
+
+on:
+  # Runs on pushes targeting the default branch
+  push:
+    branches: ['prod-deploy']
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: build
+        run: |
+          npm install
+          npm npm run docs:build
+          echo "---------- vitepress build done ----------"
+      - name: set ssh key # 临时设置 ssh key
+        run: |
+          mkdir -p ~/.ssh/
+          echo "${{secrets.SSH_KEY_FOR_DEPLOY_GH_PAGES}}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan "github.com" >> ~/.ssh/known_hosts
+          echo "---------- set ssh-key ok ----------"
+      - name: download and replace # 下载现有文件，替换
+        run: |
+          git clone git@github.com:mianshipai/mianshipai.github.io.git
+          echo "---------- git clone ok ----------"
+          cp -r ./.vitepress/dist/* ./mianshipai.github.io ## 用最新构建出来的文件，替换现有的
+          echo "---------- replace ok ----------"
+      - name: upload latest files # 上传文件
+        run: |
+          cd ./mianshipai.github.io
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          echo "---------- begin git status ----------"
+          echo `git status`
+          echo "---------- end git status ----------"
+          git add .
+          git commit -m "update by github actions"
+          echo "---------- begin git push ----------"
+          git push origin main
+          echo "---------- end git push ----------"
+      - name: delete ssh key # 删除 ssh key
+        run: rm -rf ~/.ssh/id_rsa
