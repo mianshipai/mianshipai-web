@@ -2,9 +2,14 @@
   "scripts": {
     "docs:dev": "vitepress dev",
     "docs:build": "vitepress build",
-    "docs:preview": "vitepress preview"
+    "docs:preview": "vitepress preview",
+    "format": "prettier --check .",
+    "format:fix": "prettier --write --list-different .",
+    "prepare": "husky"
   },
   "devDependencies": {
+    "husky": "^9.1.7",
+    "prettier": "^3.4.2",
     "vitepress": "^1.5.0"
   }
 }

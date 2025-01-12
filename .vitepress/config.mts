@@ -26,7 +26,7 @@ export default defineConfig({
         if (location.hostname.indexOf('mianshipai.com')<0) return;
         var hm = document.createElement("script");
         hm.src = "https://hm.baidu.com/hm.js?b53b3c926f6f6f5be6a9ac7e0911622b";
-        var s = document.getElementsByTagName("script")[0]; 
+        var s = document.getElementsByTagName("script")[0];
         s.parentNode.insertBefore(hm, s);
       })();
       `,
@@ -137,9 +137,7 @@ export default defineConfig({
       // },
     ],
 
-    socialLinks: [
-      { icon: 'github', link: 'https://github.com/mianshipai/mianshipai-web' },
-    ],
+    socialLinks: [{ icon: 'github', link: 'https://github.com/mianshipai/mianshipai-web' }],
 
     footer: {
       message:
