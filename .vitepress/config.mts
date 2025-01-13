@@ -96,8 +96,8 @@ export default defineConfig({
           { text: 'Vue 原理', link: '/docs/second-exam/vue-inner.md' },
           { text: 'React 使用', link: '/docs/second-exam/react-usage.md' },
           { text: 'React 原理', link: '/docs/second-exam/react-inner.md' },
-          { text: '小程序', link: '/docs/second-exam/mini-program.md' },
-          { text: '前端工程化', link: '/docs/second-exam/engineering.md' },
+          // { text: '小程序', link: '/docs/second-exam/mini-program.md' },
+          // { text: '前端工程化', link: '/docs/second-exam/engineering.md' },
         ],
       },
       {
@@ -105,7 +105,7 @@ export default defineConfig({
         items: [
           { text: '交叉面试', link: '/docs/third-exam/cross-test.md' },
           { text: '项目难点/成绩', link: '/docs/third-exam/project.md' },
-          { text: '系统设计', link: '/docs/third-exam/system-design.md' },
+          // { text: '系统设计', link: '/docs/third-exam/system-design.md' },
           { text: '前端 Leader 面试', link: '/docs/third-exam/leader-test.md' },
           { text: '反问面试官', link: '/docs/third-exam/ask-in-reply.md' },
         ],
