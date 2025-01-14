@@ -108,7 +108,7 @@ console.log(strings.flatMap((str) => str.split('')))
 
 ::: details
 
-- https://juejin.cn/spost/7459351912133132351
+- https://juejin.cn/post/7459351912133132351
 
 :::
 
