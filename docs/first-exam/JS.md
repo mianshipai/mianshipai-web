@@ -4,6 +4,112 @@ JS 是前端开发的核心能力，面试重点考察，无论工作经验长�
 
 ## 了解哪些最新的 ES 新特性？
 
+参考答案
+
+::: details
+
+**特性 1: ES2024 的 JSON 模块**
+
+支持直接通过 `import` 语法加载 JSON 文件，避免额外的文件读取逻辑。
+
+```js
+import config from './config.json' assert { type: 'json' }
+
+console.log(config.setting) // 输出 JSON 文件中的指定属性
+```
+
+**特性 2: ES2023 的 Array.prototype.findLast & Array.prototype.findLastIndex**
+
+两个数组新方法，用于从最后一个元素搜索数组元素。它们的功能与 `find() 和 findIndex()` 类似，但搜索从数组末尾开始。
+
+这些方法可在 `Array 和 TypedArray` 原型上使用。此功能通过消除手动数组反转的过程，为逆序搜索提供了一种有效的方法。
+
+```js
+const isOdd = (number) => number % 2 === 1
+const numbers = [1, 2, 3, 4, 5]
+
+console.log(numbers.findLast(isOdd)) // 5
+console.log(numbers.findLastIndex(isOdd)) // 4
+```
+
+**特性 3: ES2022 的类字段与私有方法**
+
+支持类中的私有字段 `（#field）` 和私有方法，增强了封装性。
+
+```js
+class Counter {
+  #count = 0
+
+  increment() {
+    this.#count++
+  }
+
+  #logCount() {
+    console.log(this.#count)
+  }
+}
+
+const counter = new Counter()
+counter.increment()
+// counter.#logCount(); // 报错，私有方法不可访问
+```
+
+**特性 4: ES2021 的逻辑赋值运算符**
+
+新增 `&&=, ||=, ??=`，简化条件赋值逻辑。
+
+```js
+let user = { name: 'Alice', age: null }
+
+user.name ||= 'Default Name' // 如果 name 为 falsy，则赋值
+user.age ??= 18 // 如果 age 为 null 或 undefined，则赋值
+
+console.log(user) // { name: 'Alice', age: 18 }
+```
+
+**特性 5: ES2020 的可选链和空值合并操作符**
+
+简化深层嵌套对象属性的访问，并安全处理空值。
+
+```js
+const user = {
+  profile: {
+    details: { name: 'Alice' },
+  },
+}
+
+const name = user.profile?.details?.name ?? 'Anonymous'
+console.log(name) // 输出 'Alice'
+
+const age = user.profile?.age ?? 18
+console.log(age) // 输出 18
+```
+
+**特性 6: ES2019 的数组 flat 和 flatMap 方法**
+
+flat 展开多层嵌套数组，flatMap 结合映射与扁平化操作。
+
+```js
+const nestedArray = [1, [2, [3, 4]], 5]
+console.log(nestedArray.flat(2)) // [1, 2, 3, 4, 5]
+
+const strings = ['hello', 'world']
+console.log(strings.flatMap((str) => str.split('')))
+// ['h', 'e', 'l', 'l', 'o', 'w', 'o', 'r', 'l', 'd']
+```
+
+其它......
+
+:::
+
+参考文档
+
+::: details
+
+- https://juejin.cn/post/7459351912133132351
+
+:::
+
 ## `typeof` 能判断哪些类型
 
 symbol bigInt
