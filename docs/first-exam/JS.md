@@ -200,10 +200,12 @@ typeof Math.sin === 'function'
 
 ::: details
 
-- `===`——严格相等（三个等号）
-- `==`——宽松相等（两个等号）
-- 在比较两个操作数时，双等号（`==`）将执行类型转换，并且会按照 IEEE 754 标准对 NaN、-0 和 +0 进行特殊处理（故 NaN != NaN，且 -0 == +0）；
-- 三等号（`===`）做的比较与双等号相同（包括对 NaN、-0 和 +0 的特殊处理）但不进行类型转换；如果类型不同，则返回 false；
+- **`==`（宽松相等）**：会在比较两个操作数时执行 **类型转换**，尝试将两者转换为相同类型后再比较。
+- **`===`（严格相等）**：不会执行类型转换，仅在类型和值完全相同的情况下返回 `true`。
+- **推荐使用 `===`**：因为它更严格、更符合预期，能避免潜在的错误。尤其是在需要精确判断值和类型时。
+- **`==`**：适用于需要进行宽松比较的场景，但应谨慎使用，尤其是在隐式类型转换可能引发问题时。
+
+**常见比较结果**
 
 | **x**               | **y**               | **==** | **===** |
 | ------------------- | ------------------- | ------ | ------- |
@@ -238,38 +240,6 @@ typeof Math.sin === 'function'
 
 - ✅ 表示比较结果为 `true`
 - ❌ 表示比较结果为 `false`
-
-```js
-// 使用 === 进行严格相等比较
-const num = 0
-const obj = new String('0')
-const str = '0'
-
-console.log(num === num) // true
-console.log(obj === obj) // true
-console.log(str === str) // true
-
-console.log(num === obj) // false
-console.log(num === str) // false
-console.log(obj === str) // false
-console.log(null === undefined) // false
-console.log(obj === null) // false
-console.log(obj === undefined) // false
-
-// 使用 == 进行宽松相等比较
-const num = 0
-const big = 0n
-const str = '0'
-const obj = new String('0')
-
-console.log(num == str) // true
-console.log(big == num) // true
-console.log(str == big) // true
-
-console.log(num == obj) // true
-console.log(big == obj) // true
-console.log(str == obj) // true
-```
 
 :::
 
