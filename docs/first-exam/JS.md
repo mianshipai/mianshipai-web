@@ -98,8 +98,6 @@ console.log(strings.flatMap((str) => str.split('')))
 // ['h', 'e', 'l', 'l', 'o', 'w', 'o', 'r', 'l', 'd']
 ```
 
-其它......
-
 :::
 
 参考文档
@@ -112,7 +110,89 @@ console.log(strings.flatMap((str) => str.split('')))
 
 ## `typeof` 能判断哪些类型
 
-symbol bigInt
+参考答案
+
+::: details
+
+| **类型**                | **返回值**    | **备注**                                               |
+| ----------------------- | ------------- | ------------------------------------------------------ |
+| **Undefined**           | `"undefined"` | 当变量未被定义或未赋值时，返回此值。                   |
+| **Null**                | `"object"`    | 历史遗留问题，`null` 被错误地识别为对象。              |
+| **Boolean**             | `"boolean"`   | 适用于 `true` 或 `false` 值。                          |
+| **Number**              | `"number"`    | 适用于整数和浮点数（包括特殊值 `NaN` 和 `Infinity`）。 |
+| **String**              | `"string"`    | 适用于字符串（例如 `"hello"`）。                       |
+| **BigInt**              | `"bigint"`    | 适用于任意大的整数（例如 `10n`）。                     |
+| **Symbol**              | `"symbol"`    | 适用于 `Symbol` 类型。                                 |
+| **Function（classes）** | `"function"`  | 适用于可调用的对象（如函数和类定义）。                 |
+| **其他对象**            | `"object"`    | 包括数组、普通对象、日期对象、正则表达式等非函数对象。 |
+
+**注意：**
+
+1. **`typeof null === "object"`**  
+   在 JavaScript 最初的实现中，JavaScript 中的值是由一个表示类型的标签和实际数据值表示的。对象的类型标签是 0。由于 null 代表的是空指针（大多数平台下值为 0x00），因此，null 的类型标签是 0，typeof null 也因此返回 "object"
+
+2. **实际使用**  
+   对于更复杂的类型检测，可以使用工具函数，如 `Object.prototype.toString.call()` 或第三方库（如 `lodash`）。
+
+```js
+// 数值
+typeof 37 === 'number'
+typeof 3.14 === 'number'
+typeof 42 === 'number'
+typeof Math.LN2 === 'number'
+typeof Infinity === 'number'
+typeof NaN === 'number' // 尽管它是 "Not-A-Number" (非数值) 的缩写
+typeof Number(1) === 'number' // Number 会尝试把参数解析成数值
+typeof Number('shoe') === 'number' // 包括不能将类型强制转换为数字的值
+
+typeof 42n === 'bigint'
+
+// 字符串
+typeof '' === 'string'
+typeof 'bla' === 'string'
+typeof `template literal` === 'string'
+typeof '1' === 'string' // 注意内容为数字的字符串仍是字符串
+typeof typeof 1 === 'string' // typeof 总是返回一个字符串
+typeof String(1) === 'string' // String 将任意值转换为字符串，比 toString 更安全
+
+// 布尔值
+typeof true === 'boolean'
+typeof false === 'boolean'
+typeof Boolean(1) === 'boolean' // Boolean() 会基于参数是真值还是虚值进行转换
+typeof !!1 === 'boolean' // 两次调用 !（逻辑非）运算符相当于 Boolean()
+
+// Symbols
+typeof Symbol() === 'symbol'
+typeof Symbol('foo') === 'symbol'
+typeof Symbol.iterator === 'symbol'
+
+// Undefined
+typeof undefined === 'undefined'
+typeof declaredButUndefinedVariable === 'undefined'
+typeof undeclaredVariable === 'undefined'
+
+// 对象
+typeof { a: 1 } === 'object'
+
+// 使用 Array.isArray 或者 Object.prototype.toString.call
+// 区分数组和普通对象
+typeof [1, 2, 4] === 'object'
+
+typeof new Date() === 'object'
+typeof /regex/ === 'object'
+
+// 下面的例子令人迷惑，非常危险，没有用处。避免使用它们。
+typeof new Boolean(true) === 'object'
+typeof new Number(1) === 'object'
+typeof new String('abc') === 'object'
+
+// 函数
+typeof function () {} === 'function'
+typeof class C {} === 'function'
+typeof Math.sin === 'function'
+```
+
+:::
 
 ## `==` 和 `===` 有什么区别？
 
