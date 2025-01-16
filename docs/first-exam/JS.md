@@ -196,6 +196,83 @@ typeof Math.sin === 'function'
 
 ## `==` 和 `===` 有什么区别？
 
+参考答案
+
+::: details
+
+- `===`——严格相等（三个等号）
+- `==`——宽松相等（两个等号）
+- 在比较两个操作数时，双等号（`==`）将执行类型转换，并且会按照 IEEE 754 标准对 NaN、-0 和 +0 进行特殊处理（故 NaN != NaN，且 -0 == +0）；
+- 三等号（`===`）做的比较与双等号相同（包括对 NaN、-0 和 +0 的特殊处理）但不进行类型转换；如果类型不同，则返回 false；
+
+| **x**               | **y**               | **==** | **===** |
+| ------------------- | ------------------- | ------ | ------- |
+| `undefined`         | `undefined`         | ✅     | ✅      |
+| `null`              | `null`              | ✅     | ✅      |
+| `true`              | `true`              | ✅     | ✅      |
+| `false`             | `false`             | ✅     | ✅      |
+| `'foo'`             | `'foo'`             | ✅     | ✅      |
+| `0`                 | `0`                 | ✅     | ✅      |
+| `+0`                | `-0`                | ✅     | ✅      |
+| `+0`                | `0`                 | ✅     | ✅      |
+| `-0`                | `0`                 | ✅     | ✅      |
+| `0n`                | `-0n`               | ✅     | ✅      |
+| `0`                 | `false`             | ✅     | ❌      |
+| `""`                | `false`             | ✅     | ❌      |
+| `""`                | `0`                 | ✅     | ❌      |
+| `'0'`               | `0`                 | ✅     | ❌      |
+| `'17'`              | `17`                | ✅     | ❌      |
+| `[1, 2]`            | `'1,2'`             | ✅     | ❌      |
+| `new String('foo')` | `'foo'`             | ✅     | ❌      |
+| `null`              | `undefined`         | ✅     | ❌      |
+| `null`              | `false`             | ❌     | ❌      |
+| `undefined`         | `false`             | ❌     | ❌      |
+| `{ foo: 'bar' }`    | `{ foo: 'bar' }`    | ❌     | ❌      |
+| `new String('foo')` | `new String('foo')` | ❌     | ❌      |
+| `0`                 | `null`              | ❌     | ❌      |
+| `0`                 | `NaN`               | ❌     | ❌      |
+| `'foo'`             | `NaN`               | ❌     | ❌      |
+| `NaN`               | `NaN`               | ❌     | ❌      |
+
+说明：
+
+- ✅ 表示比较结果为 `true`
+- ❌ 表示比较结果为 `false`
+
+```js
+// 使用 === 进行严格相等比较
+const num = 0
+const obj = new String('0')
+const str = '0'
+
+console.log(num === num) // true
+console.log(obj === obj) // true
+console.log(str === str) // true
+
+console.log(num === obj) // false
+console.log(num === str) // false
+console.log(obj === str) // false
+console.log(null === undefined) // false
+console.log(obj === null) // false
+console.log(obj === undefined) // false
+
+// 使用 == 进行宽松相等比较
+const num = 0
+const big = 0n
+const str = '0'
+const obj = new String('0')
+
+console.log(num == str) // true
+console.log(big == num) // true
+console.log(str == big) // true
+
+console.log(num == obj) // true
+console.log(big == obj) // true
+console.log(str == obj) // true
+```
+
+:::
+
 ## 你熟悉哪些数组 API ？
 
 ## 值类型和引用类型的区别
