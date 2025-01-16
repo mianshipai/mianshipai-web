@@ -723,19 +723,209 @@ BFC 在网页布局中经常用来清除浮动（特别是在使用 `float` 布�
 
 :::
 
-## `overflow: hidden` `display：none` 和 `visibility: hidden` 有什么区别
+## CSS `overflow: hidden` `display：none` 和 `visibility: hidden` 有什么区别
 
-## `px` `%` `em` `rem` `vw/vh` 的区别
+参考答案
+
+::: details
+
+- `overflow: hidden` 溢出内容不可见，未溢出的部分正常可见
+- `display：none` 隐藏内容，不占用任何空间，内容变化不会重新渲染
+- `visibility: hidden` 隐藏元素，但保留其占据的空间，内容变化会重新渲染
+
+:::
+
+## CSS `px` `%` `em` `rem` `vw/vh` 的区别
+
+参考答案
+
+::: details
+
+| 单位    | 基准                     | 绝对/相对 | 优点                       | 缺点                 | 适用场景                 |
+| ------- | ------------------------ | --------- | -------------------------- | -------------------- | ------------------------ |
+| `px`    | 固定像素                 | 绝对      | 精确，简单易用             | 缺乏响应式能力       | 固定尺寸元素             |
+| `%`     | 父元素尺寸               | 相对      | 灵活，适合响应式设计       | 依赖父元素           | 响应式布局，流式设计     |
+| `em`    | 当前元素字体大小         | 相对      | 动态调整，适合局部相对设计 | 嵌套复杂，计算难预测 | 动态字体、内外边距等     |
+| `rem`   | 根元素字体大小（`html`） | 相对      | 全局一致，计算简单         | 需要设置根元素字体   | 全局比例调整，响应式设计 |
+| `vw/vh` | 视口宽度或高度           | 相对      | 基于视口，适合全屏设计     | 小屏显示可能不理想   | 全屏布局，视口动态调整   |
+
+使用建议:
+
+- 响应式设计：结合使用 rem 和 %。
+- 固定大小：使用 px 定义精确尺寸。
+- 全屏布局：使用 vw 和 vh。
+- 动态比例设计：em 和 rem 都是优秀的选择，但推荐 rem 更加简洁统一。
+
+:::
 
 ## 如何实现 Retina 屏 1px 像素边框
 
+参考答案
+
+::: details
+
+1. 使用 `transform: scale` 实现。
+
+```css
+.retina-border {
+  position: relative;
+}
+
+.retina-border::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 1px; /* 边框的物理宽度 */
+  background-color: black; /* 边框颜色 */
+  transform: scaleY(0.5); /* 缩放到 0.5 */
+  transform-origin: 0 0; /* 缩放起点 */
+}
+```
+
+2. 使用 `box-shadow` 模拟边框
+
+```css
+.retina-border {
+  position: relative;
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.5); /* 通过阴影模拟边框 */
+}
+```
+
+:::
+
 ## 使用 CSS 画一个三角形
+
+参考答案
+
+::: details
+
+使用 CSS “画”一个向上的三角形，重点在于使用透明边框。
+
+```html
+<style>
+  .triangle-up {
+    width: 0;
+    height: 0;
+    border-left: 50px solid transparent;
+    border-right: 50px solid transparent;
+    border-bottom: 50px solid #000; /* 底部颜色即为三角形颜色 */
+  }
+</style>
+<div class="triangle-up"></div>
+```
+
+:::
 
 ## 如何实现黑白主题变化？
 
+参考答案
+
+::: details
+
+可使用 CSS 变量
+
+```css
+/* 定义变量 */
+:root,
+:host {
+  --color: #333;
+  --bg-color: #fff;
+}
+
+/* 使用变量 */
+p {
+  color: var(--color);
+  background-color: var(--bg-color);
+}
+```
+
+:::
+
 ## 如何实现响应式布局？
 
+CSS 实现响应式布局可以使页面在不同的设备和屏幕尺寸上有良好的显示效果，以下是几种常见的实现方式：
+
+::: details
+
+1. 使用媒体查询（Media Queries）。媒体查询是响应式布局的核心技术，通过检测设备的宽度、高度、分辨率等条件应用不同的样式。可根据屏幕宽度调整字体大小、布局样式等。
+
+```css
+/* 默认样式 */
+body {
+  font-size: 16px;
+  padding: 20px;
+}
+
+/* 屏幕宽度小于等于768px时的样式 */
+@media (max-width: 768px) {
+  body {
+    font-size: 14px;
+    padding: 10px;
+  }
+}
+
+/* 屏幕宽度大于1200px时的样式 */
+@media (min-width: 1200px) {
+  body {
+    font-size: 18px;
+    padding: 30px;
+  }
+}
+```
+
+2. 使用弹性盒子（Flexbox）。创建水平或垂直方向上的自适应布局，比如导航栏、网格布局。
+
+```css
+.container {
+  display: flex;
+  flex-wrap: wrap; /* 允许换行 */
+}
+
+.item {
+  flex: 1 1 200px; /* 每个子项占据至少200px，随空间调整 */
+  margin: 10px;
+  background-color: #f0f0f0;
+}
+```
+
+3. 使用网格布局（CSS Grid Layout）。 创建复杂的自适应网格布局，比如图片库、商品列表。
+
+```css
+.container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+}
+
+.item {
+  background-color: #d4edda;
+  padding: 10px;
+}
+```
+
+4. 使用百分比和单位 vh/vw 实现宽度和高度的自适应。实现宽度和高度随窗口变化而调整。
+
+```css
+.container {
+  width: 80%; /* 占父容器的80% */
+  height: 50vh; /* 占视口高度的50% */
+  background-color: #e9ecef;
+}
+```
+
+:::
+
 ## 如何理解 `z-index` ？
+
+::: details
+
+- `z-index` 是一个 CSS 属性，用于控制元素的堆叠顺序（沿 Z 轴的显示顺序）。值越大，元素越靠前显示，反之值越小，元素越靠后。
+- `z-index` 只适用于**定位**的元素，需要设置 `position` 属性为 `relative`、`absolute`、`fixed` 或 `sticky`，否则 `z-index` 不生效。
+- `z-index` 只在**同级**比较，父子元素的 `z-index` 不会互相影响。
+
+:::
 
 ## 使用 flex 设计一个“四合院”布局
 
@@ -810,4 +1000,17 @@ BFC 在网页布局中经常用来清除浮动（特别是在使用 `float` 布�
 
 :::
 
-## 你用过哪些 CSS 相关的技术，如库、框架、预处理语言等
+## 你用过哪些 CSS 相关的技术，如库、框架、预处理语言、后处理语言等
+
+参考答案
+
+::: details
+
+- CSS 框架：TailwindCSS BootStrap
+- CSS 预处理语言：Less Sass Stylus
+- CSS 后处理语言：PostCSS Autoprefixer
+- CSS 组件库：ElementUI AntDesign
+- CSS-in-JS：Styled-Components Emotion
+- CSS 工具：Normalize.css Animate.css
+
+:::
