@@ -69,7 +69,7 @@ console.log('并集', getUnion(arr1, arr2))
 
 ## 数组转树
 
-题目背景： 通常我们有一个包含父子关系的数组，目标是将其转化为树形结构。
+通常我们有一个包含父子关系的数组，目标是将其转化为树形结构。
 
 示例数据：
 
@@ -105,7 +105,7 @@ const tree = [
 ]
 ```
 
-参考答案
+参考答案:
 
 ::: details
 
@@ -150,6 +150,79 @@ console.log(JSON.stringify(arrayToTree(arr), null, 2))
   :::
 
 ## 树转数组
+
+将树形结构扁平化为数组，保留原有的层级关系。
+
+示例数据：
+
+```javascript
+const tree = [
+  {
+    id: 1,
+    name: 'Root',
+    children: [
+      {
+        id: 2,
+        name: 'Child 1',
+        children: [{ id: 4, name: 'Grandchild 1', children: [] }],
+      },
+      {
+        id: 3,
+        name: 'Child 2',
+        children: [],
+      },
+    ],
+  },
+]
+```
+
+目标生成：
+
+```javascript
+const arr = [
+  { id: 1, name: 'Root', parentId: null },
+  { id: 2, name: 'Child 1', parentId: 1 },
+  { id: 3, name: 'Child 2', parentId: 1 },
+  { id: 4, name: 'Grandchild 1', parentId: 2 },
+]
+```
+
+参考答案:
+
+::: details
+
+实现思路：
+
+1. 使用递归遍历树。
+2. 在每次递归中记录当前节点的 `parentId`。
+3. 将节点及其子节点逐一添加到结果数组中。
+
+代码实现：
+
+```javascript
+function treeToArray(tree, parentId = null) {
+  const result = []
+
+  tree.forEach((node) => {
+    const { id, name, children } = node
+    result.push({ id, name, parentId })
+    if (children && children.length > 0) {
+      result.push(...treeToArray(children, id))
+    }
+  })
+
+  return result
+}
+
+console.log(JSON.stringify(treeToArray(tree), null, 2))
+```
+
+注意点：
+
+- 递归中需避免重复引用。
+- 树节点的 `children` 属性需要有效（可以为空数组但不能为 `undefined`）。
+
+:::
 
 ## cookie localStorage sessionStorage 三者有什么区别，有什么应用场景？
 
