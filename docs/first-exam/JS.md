@@ -417,9 +417,141 @@ b.age = 21
 console.log(a.age) // 21
 ```
 
+参考答案
+
+::: details
+
+| 特性               | 值类型                                                                | 引用类型                                     |
+| ------------------ | --------------------------------------------------------------------- | -------------------------------------------- |
+| **存储内容**       | 数据值本身                                                            | 数据的引用（地址）                           |
+| **存储位置**       | 栈内存                                                                | 栈存引用，堆存实际数据                       |
+| **赋值方式**       | 拷贝值                                                                | 拷贝引用（地址）                             |
+| **变量之间独立性** | 互相独立，互不影响                                                    | 指向同一数据，互相影响                       |
+| **常见数据类型**   | 基本数据类型（如 `number，string，boolean，undefined，null，symbol`） | 复杂数据类型（如 `Object，Array，Function`） |
+
+1. 为什么有值类型和引用类型？
+
+- **值类型**适合存储简单、占用内存较小的数据，操作快速。
+- **引用类型**适合存储复杂、占用内存较大的数据，支持动态扩展。
+
+2. 如何避免引用类型的共享问题？
+
+- 如果需要创建引用类型的副本，使用深拷贝，而非浅拷贝。
+
+深拷贝例子：
+
+```javascript
+const obj1 = { name: 'Alice' }
+const obj2 = JSON.parse(JSON.stringify(obj1)) // 创建深拷贝
+obj2.name = 'Bob'
+console.log(obj1.name) // "Alice"
+```
+
+浅拷贝例子：
+
+```javascript
+const obj1 = { name: 'Alice' }
+const obj2 = { ...obj1 } // 浅拷贝
+obj2.name = 'Bob'
+console.log(obj1.name) // "Alice"
+```
+
+:::
+
 ## 箭头函数和普通函数的区别
 
+参考答案
+
+::: details
+
+| 特性                       | 箭头函数                                       | 普通函数                              |
+| -------------------------- | ---------------------------------------------- | ------------------------------------- |
+| 语法                       | 简洁，使用 `=>` 定义                           | 使用 `function` 定义                  |
+| `this` 绑定                | 词法绑定，继承外层 `this`                      | 动态绑定，调用时决定                  |
+| `arguments` 对象           | 没有，需要使用 `...args`                       | 有自己的 `arguments` 对象             |
+| 是否能作为构造函数         | 不能                                           | 可以                                  |
+| 是否有 `prototype` 属性    | 没有                                           | 有                                    |
+| 是否支持 `bind/call/apply` | 不支持                                         | 支持                                  |
+| 适用场景                   | 用于回调函数、闭包、需要继承外层 `this` 的场景 | 需要动态绑定 `this`，或用作构造函数时 |
+
+```js
+// 箭头函数 this
+const obj = {
+  name: 'Alice',
+  say: () => {
+    console.log(this.name) // undefined (继承全局作用域的 this)
+  },
+}
+obj.say()
+
+// 普通函数 this
+const obj = {
+  name: 'Alice',
+  say: function () {
+    console.log(this.name) // "Alice" (this 指向 obj)
+  },
+}
+obj.say()
+
+// 箭头函数 不能作为构造函数
+const Person = (name) => {
+  this.name = name
+}
+const p = new Person('Alice') // TypeError: Person is not a constructor
+
+// 普通函数 构造函数
+function Person(name) {
+  this.name = name
+}
+const p = new Person('Alice')
+console.log(p.name) // "Alice"
+
+// 箭头函数 ...args
+const add = (...args) => {
+  console.log(args) // [1, 2, 3]
+}
+add(1, 2, 3)
+
+// 普通函数 arguments
+function add() {
+  console.log(arguments) // Arguments(3) [1, 2, 3]
+}
+add(1, 2, 3)
+
+// 箭头函数 不支持 `bind/call/apply`
+const obj = {
+  value: 42,
+}
+const arrowFn = () => {
+  console.log(this.value)
+}
+arrowFn.call(obj) // undefined
+
+// 普通函数 支持 `bind/call/apply`
+const obj = {
+  value: 42,
+}
+function normalFn() {
+  console.log(this.value)
+}
+normalFn.call(obj) // 42
+```
+
+:::
+
 ## 什么时候不能使用箭头函数
+
+参考答案
+
+::: details
+
+1. 需要动态绑定 `this` 的场景。
+2. 作为`构造函数`。
+3. 需要 `arguments` 对象的场景。
+4. 需要显式修改 `this` 的场景（使用 `bind/call/apply` 等）。
+5. 类的实例方法（特别是 `getter 和 setter`）。—— 无法动态绑定 `this`
+
+:::
 
 ## for...in 和 for...of 的区别
 
