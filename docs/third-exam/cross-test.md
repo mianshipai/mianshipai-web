@@ -67,7 +67,89 @@ console.log('并集', getUnion(arr1, arr2))
 
 :::
 
-## 数组转树，树转数组
+## 数组转树
+
+题目背景： 通常我们有一个包含父子关系的数组，目标是将其转化为树形结构。
+
+示例数据：
+
+```javascript
+const arr = [
+  { id: 1, parentId: null, name: 'Root' },
+  { id: 2, parentId: 1, name: 'Child 1' },
+  { id: 3, parentId: 1, name: 'Child 2' },
+  { id: 4, parentId: 2, name: 'Grandchild 1' },
+]
+```
+
+目标生成：
+
+```javascript
+const tree = [
+  {
+    id: 1,
+    name: 'Root',
+    children: [
+      {
+        id: 2,
+        name: 'Child 1',
+        children: [{ id: 4, name: 'Grandchild 1', children: [] }],
+      },
+      {
+        id: 3,
+        name: 'Child 2',
+        children: [],
+      },
+    ],
+  },
+]
+```
+
+参考答案
+
+::: details
+
+实现思路：
+
+1. 遍历数组，将每个元素存储到一个以 `id` 为键的 Map 中。
+2. 再次遍历数组，根据 `parentId` 将子节点挂载到父节点的 `children` 属性上。
+3. 提取 `parentId` 为 `null` 的顶层节点作为树的根。
+
+代码实现：
+
+```javascript
+function arrayToTree(arr) {
+  const idMap = new Map()
+  const result = []
+
+  // 初始化 Map
+  arr.forEach((item) => {
+    idMap.set(item.id, { ...item, children: [] })
+  })
+
+  // 构建树
+  arr.forEach((item) => {
+    const parent = idMap.get(item.parentId)
+    if (parent) {
+      parent.children.push(idMap.get(item.id))
+    } else {
+      result.push(idMap.get(item.id))
+    }
+  })
+
+  return result
+}
+
+console.log(JSON.stringify(arrayToTree(arr), null, 2))
+```
+
+注意点：
+
+- 确保 `parentId` 为 `null` 的节点是根节点。
+- 避免循环依赖：输入数据需要合法，否则会导致死循环。
+  :::
+
+## 树转数组
 
 ## cookie localStorage sessionStorage 三者有什么区别，有什么应用场景？
 
