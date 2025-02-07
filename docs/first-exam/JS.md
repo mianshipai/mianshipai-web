@@ -555,17 +555,286 @@ normalFn.call(obj) // 42
 
 ## for...in 和 for...of 的区别
 
+参考答案
+
+::: details
+
+| 特性               | `for...in`                   | `for...of`                              |
+| ------------------ | ---------------------------- | --------------------------------------- |
+| **用途**           | 遍历对象的 **可枚举属性**    | 遍历 **可迭代对象**（如数组、字符串等） |
+| **返回值**         | 返回 **键**（属性名）        | 返回 **值**（元素值）                   |
+| **适用范围**       | 对象、数组（不推荐用于数组） | 数组、字符串、Set、Map等可迭代对象      |
+| **是否遍历原型链** | 会遍历原型链上的可枚举属性   | 不会遍历原型链                          |
+
+```javascript
+// for...in 遍历对象
+const obj = { name: 'Alice', age: 25 }
+
+for (let key in obj) {
+  console.log(key) // 输出属性名：name, age
+  console.log(obj[key]) // 输出属性值：Alice, 25
+}
+
+// for...in 遍历数组，不推荐
+const arr = [10, 20, 30]
+
+for (let index in arr) {
+  console.log(index) // 输出索引：0, 1, 2
+  console.log(arr[index]) // 输出值：10, 20, 30
+}
+
+// for...of 遍历数组
+const arr = [10, 20, 30]
+
+for (let value of arr) {
+  console.log(value) // 输出值：10, 20, 30
+}
+```
+
+:::
+
 ## JS 原型和原型链
 
-## JS 继承有集中方式？
+参考答案
 
-老旧的题目了，了解即可，现在都用 class extends 实现继承
+::: details
+
+**1. 原型（Prototype）**
+
+- 每个 **函数**（构造函数）都有一个 `prototype` 属性，指向其 **原型对象**。
+- 每个 **对象** 都有一个 `__proto__` 指向其构造函数的 `prototype`，形成继承关系。
+
+**2. 原型链（Prototype Chain）**
+
+- 访问对象属性时，先查找自身属性，找不到则沿 `__proto__` 逐级向上查找，直到 `null` 终止。
+- `Object.prototype.__proto__ === null`，原型链的顶端是 `Object.prototype`。
+
+```js
+function Person(name) {
+  this.name = name
+}
+Person.prototype.sayHello = function () {
+  console.log('Hello!')
+}
+
+const p = new Person('Rain')
+console.log(p.__proto__ === Person.prototype) // true
+console.log(Person.prototype.__proto__ === Object.prototype) // true
+console.log(Object.prototype.__proto__ === null) // true
+```
+
+:::
+
+## JS 继承有几种方式？
+
+参考答案
+
+::: details
+
+**1. 原型链继承**
+
+**核心思路：** 让子类的 `prototype` 指向父类实例。
+
+```js
+function Parent() {
+  this.name = 'Parent'
+}
+Parent.prototype.sayHello = function () {
+  console.log('Hello from Parent')
+}
+
+function Child() {}
+Child.prototype = new Parent() // 继承 Parent
+Child.prototype.constructor = Child
+
+const child = new Child()
+console.log(child.name) // "Parent"
+child.sayHello() // "Hello from Parent"
+```
+
+✅ **优点：** 父类方法可复用  
+❌ **缺点：** 1. 共享引用类型属性（如 `arr = []` 会被多个实例共享），2. 无法向父类构造函数传参
+
+**2. 借用构造函数继承**
+
+**核心思路：** 在子类构造函数中使用 `call` 继承父类属性。
+
+```js
+function Parent(name) {
+  this.name = name
+}
+function Child(name, age) {
+  Parent.call(this, name) // 继承 Parent
+  this.age = age
+}
+const child = new Child('Rain', 18)
+console.log(child.name, child.age) // "Rain", 18
+```
+
+✅ **优点：** 1. 解决原型链继承共享问题，2. 可传参  
+❌ **缺点：** 无法继承父类原型上的方法
+
+**3. 组合继承（原型链 + 构造函数继承，最常用）**
+
+**核心思路：** 结合前两种方式，**继承属性用构造函数，继承方法用原型链**。
+
+```js
+function Parent(name) {
+  this.name = name
+}
+Parent.prototype.sayHello = function () {
+  console.log('Hello from Parent')
+}
+
+function Child(name, age) {
+  Parent.call(this, name) // 第 1 次调用 Parent
+  this.age = age
+}
+
+Child.prototype = new Parent() // 第 2 次调用 Parent
+Child.prototype.constructor = Child
+
+const child = new Child('Rain', 18)
+console.log(child.name, child.age) // "Rain", 18
+child.sayHello() // "Hello from Parent"
+```
+
+✅ **优点：** 解决了前两种方法的缺陷  
+❌ **缺点：** 调用两次 `Parent` 构造函数（一次 `call`，一次 `Object.create()`）
+
+**4. Object.create() 继承（原型式继承）**
+
+**核心思路：** 直接用 `Object.create()` 创建一个新对象，继承已有对象。
+
+```js
+const parent = {
+  name: 'Parent',
+  sayHello() {
+    console.log('Hello!')
+  },
+}
+const child = Object.create(parent)
+child.age = 18
+console.log(child.name, child.age) // "Parent", 18
+child.sayHello() // "Hello!"
+```
+
+✅ **优点：** 适合创建对象而非类的继承  
+❌ **缺点：** 不能传参，只适用于简单继承
+
+**5. 寄生组合继承（优化版，推荐）**
+
+**核心思路：** **组合继承的优化版本**，避免了 `Parent` 被调用两次的问题。
+
+```js
+function Parent(name) {
+  this.name = name
+}
+Parent.prototype.sayHello = function () {
+  console.log('Hello from Parent')
+}
+
+function Child(name, age) {
+  Parent.call(this, name)
+  this.age = age
+}
+Child.prototype = Object.create(Parent.prototype) // 关键优化
+Child.prototype.constructor = Child
+
+const child = new Child('Rain', 18)
+console.log(child.name, child.age) // "Rain", 18
+child.sayHello() // "Hello from Parent"
+```
+
+✅ **优点：** 1. 继承属性和方法，2. 只调用一次 `Parent`  
+❌ **缺点：** 代码略微复杂
+
+**6. ES6 class 继承（最现代化的方式）**
+
+**核心思路：** `class` 语法糖，实际仍然基于原型继承。
+
+```js
+class Parent {
+  constructor(name) {
+    this.name = name
+  }
+  sayHello() {
+    console.log('Hello from Parent')
+  }
+}
+
+class Child extends Parent {
+  constructor(name, age) {
+    super(name) // 继承属性
+    this.age = age
+  }
+}
+
+const child = new Child('Rain', 18)
+console.log(child.name, child.age) // "Rain", 18
+child.sayHello() // "Hello from Parent"
+```
+
+✅ **优点：** 语法更清晰，易读易用  
+❌ **缺点：** 本质仍是 `prototype` 继承
+
+:::
 
 ## JS 作用域和作用域链
 
-执行上下文
+参考答案
+
+::: details
+
+- **作用域**：变量的可访问范围，分为 **全局作用域、函数作用域、块级作用域**。
+- **作用域链**：变量查找机制，从当前作用域 **逐级向上查找**，直到全局作用域或 `ReferenceError`。
+- **ES6 关键点**：
+  - `let` / `const` **具有块级作用域**，避免 `var` 变量提升带来的问题。
+  - **闭包** 利用作用域链，保留外部作用域的变量。
+
+```js
+var a = 'global'
+
+function outer() {
+  var b = 'outer'
+
+  function inner() {
+    var c = 'inner'
+    console.log(a, b, c) // ✅ global outer inner
+  }
+
+  inner()
+}
+
+outer()
+console.log(b) // ❌ ReferenceError: b is not defined
+```
+
+:::
 
 ## JS 自由变量，如何理解
+
+参考答案
+
+::: details
+**自由变量** 指的是 **在当前作用域中未声明，但在上层作用域中找到的变量**。
+
+在 JavaScript 中，当代码执行时，如果遇到一个变量：
+
+- **当前作用域** 找不到该变量，就会沿着 **作用域链** 向上查找，直到找到该变量或报 `ReferenceError`。
+- **这个在外层作用域中找到的变量，就是自由变量。**
+
+```js
+var a = 10 // 全局变量（自由变量）
+
+function foo() {
+  console.log(a) // 访问自由变量 a
+}
+
+foo() // 10
+```
+
+:::
 
 ## JS 闭包，如何理解
 
