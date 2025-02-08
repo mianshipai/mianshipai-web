@@ -136,24 +136,66 @@ setup 作为 Vue3 的 Composition API 的一部分, 其内部函数的执行时�
 **created 钩子**
 
 - 优点：  
-  💡 **更快获取数据**：能尽早获取服务端数据，减少页面加载时间。  
-  💡 **SSR 支持**：支持服务器端渲染（SSR），在 SSR 环境中不会受到限制。
+  ✅ **更快获取数据**：能尽早获取服务端数据，减少页面加载时间。  
+  ✅ **SSR 支持**：支持服务器端渲染（SSR），在 SSR 环境中不会受到限制。
 
 - 缺点  
-  🙅 UI 未渲染时发起请求：如果需要操作 DOM 或渲染数据，可能导致闪屏问题
+  ❌ UI 未渲染时发起请求：如果需要操作 DOM 或渲染数据，可能导致闪屏问题
 
 **mounted 钩子**
 
 - 优点：  
-  💡 **DOM 可用**：适合需要操作 DOM 或渲染数据后再发起请求的情况，避免闪屏。
+  ✅ **DOM 可用**：适合需要操作 DOM 或渲染数据后再发起请求的情况，避免闪屏。
 
 - 缺点  
-  🙅 **请求延迟**：数据请求会稍微延迟，增加页面加载时间。  
-  🙅 **SSR 不支持**：`mounted` 只在客户端执行，不适用于 SSR 环境。
+  ❌ **请求延迟**：数据请求会稍微延迟，增加页面加载时间。  
+  ❌ **SSR 不支持**：`mounted` 只在客户端执行，不适用于 SSR 环境。
 
 :::
 
 ## Vue 父子组件生命周期调用顺序
+
+::: details 参考答案
+
+1️⃣ 创建阶段
+
+- 父组件：`beforeCreate` ➡️ `created`
+- 子组件：`beforeCreate` ➡️ `created`
+- 顺序：
+  父组件的 `beforeCreate` 和 `created` 先执行 ，子组件的 `beforeCreate` 和 `created` 后执行。
+  > 原因：父组件需要先完成自身的初始化（如 data、computed 等），才能解析模板中的子组件并触发子组件的初始化。
+
+2️⃣ 挂载阶段
+
+- 父组件：`beforeMount`
+- 子组件：`beforeMount` ➡️ `mounted`
+- 父组件：`mounted`
+- 顺序：
+  父 `beforeMount` → 子 `beforeCreate`→ 子 `created`→ 子 `beforeMount`→ 子 `mounted` → 父 `mounted`
+  > 原因：父组件在挂载前（beforeMount）需要先完成子组件的渲染和挂载，因为子组件是父组件模板的一部分。只有当所有子组件挂载完成后，父组件才会触发自身的 mounted。
+
+3️⃣ 更新阶段
+
+- 父组件：`beforeUpdate`
+- 子组件：`beforeUpdate` ➡️ `updated`
+- 父组件：`updated`
+- 顺序：
+  父 `beforeUpdate` → 子 `beforeUpdate` → 子 `updated` → 父 `updated`
+  > 原因：父组件的数据变化会触发自身更新流程，但子组件的更新必须在父组件更新前完成（因为子组件可能依赖父组件的数据），最终父组件的视图更新完成。
+
+4️⃣ 销毁阶段
+
+- 父组件：`beforeDestroy`
+- 子组件：`beforeDestroy` ➡️ `destroyed`
+- 父组件：`destroyed`
+- 顺序：
+  父 `beforeDestroy` → 子 `beforeDestroy` → 子 `destroyed` → 父 `destroyed`
+  > 原因：父组件销毁前需要先销毁所有子组件，确保子组件的资源释放和事件解绑，避免内存泄漏。
+
+::: tip
+注：vue3中，`setup()` 替代了 `beforeCreate` 和 `created`，但父子组件的生命周期顺序不变。
+
+:::
 
 ## 🔥v-show 和 v-if 的区别
 
@@ -634,6 +676,59 @@ watch([() => user.name, () => user.age], ([newName, newAge]) => {
 
 ## 什么是 nextTick 如何应用它
 
+::: details 参考答案
+
+在 Vue.js 中， `nextTick` 是一个核心工具方法，用于处理 DOM 更新时机问题。它的核心作用是：**在下次 DOM 更新循环结束后执行回调，确保我们能操作到最新的 DOM 状态。**
+它的使用场景如下：
+
+- 数据变化后操作 DOM
+
+```vue
+<script setup>
+async function increment() {
+  count.value++
+  // DOM 还未更新
+  console.log(document.getElementById('counter').textContent) // 0
+  await nextTick()
+  // DOM 此时已经更新
+  console.log(document.getElementById('counter').textContent) // 1
+}
+</script>
+
+<template>
+  <button id="counter" @click="increment">{{ count }}</button>
+</template>
+```
+
+- 在生命周期钩子中操作 DOM
+
+```vue
+<script setup>
+import { ref, onMounted, nextTick } from 'vue'
+// 创建 DOM 引用
+const element = ref(null)
+
+onMounted(() => {
+  // 直接访问可能未渲染完成
+  console.log(element.value.offsetHeight) // 0 或未定义
+  // 使用 nextTick 确保 DOM 已渲染
+  nextTick(() => {
+    console.log(element.value.offsetHeight) // 实际高度
+  })
+})
+</script>
+```
+
+注意，在vue2中和vue3的选项式 API中，我们使用this.$nextTick(callback)的方式调用。
+
+```js
+this.$nextTick(() => {
+  console.log(this.$refs.text.innerText) // "更新后的文本"
+})
+```
+
+:::
+
 ## 使用 Vue3 Composable 组合式函数，实现 useCount
 
 ::: tip
@@ -754,6 +849,101 @@ const { loading, data, error } = useRequest(url)
 
 ## 自定义组件如何实现 v-model
 
+`v-model` 可以在组件上使用以实现双向绑定。
+
+::: details vue2
+在vue2中，自定义组件使用 `v-model` ，需要在组件内部定义 `value` prop，然后通过 `this.$emit('input', newValue)` 触发更新即可。
+
+```vue
+<!-- CustomInput.vue -->
+<template>
+  <input :value="value" @input="$emit('input', $event.target.value)" />
+</template>
+
+<script>
+export default {
+  props: ['value'],
+}
+</script>
+```
+
+使用方式：
+
+```vue
+<CustomInput v-model="searchText" />
+```
+
+:::
+
+::: details vue3
+与vue2类似，vue3自定义组件使用 `v-model` ，需要在组件内部定义 `modelValue` prop，然后通过 `emit('update:modelValue', newValue)` 触发更新
+
+```vue
+<!-- CustomInput.vue -->
+<template>
+  <input :value="modelValue" @input="$emit('update:modelValue', $event.target.value)" />
+</template>
+
+<script setup>
+defineProps(['modelValue'])
+defineEmits(['update:modelValue'])
+</script>
+```
+
+使用方式：
+
+```vue
+<CustomInput v-model="searchText" />
+```
+
+---
+
+**👉注意，从 Vue 3.4 开始，官方推荐的实现方式是使用 defineModel() 宏：**
+
+```vue
+<!-- Child.vue -->
+<script setup>
+const model = defineModel()
+
+function update() {
+  model.value++
+}
+</script>
+
+<template>
+  <div>父组件的 v-model 值为: {{ model }}</div>
+  <button @click="update">Increment</button>
+</template>
+```
+
+父组件使用 v-model 绑定一个值：
+
+```vue
+<!-- Parent.vue -->
+<Child v-model="countModel" />
+```
+
+`defineModel` 是一个便利宏，其返回的值是一个 `ref` 。它可以像其他 `ref` 一样被访问以及修改，不过它能起到在父组件和当前变量之间的双向绑定的作用：
+
+- 它的 `.value` 和父组件的 `v-model` 的值同步；
+- 当它被子组件变更了，会触发父组件绑定的值一起更新。
+  根据 `defineModel` 的特性，我们可以用 `v-model` 把这个 `ref` 绑定到一个原生 `input` 元素上：
+
+```vue
+<script setup>
+const model = defineModel()
+</script>
+
+<template>
+  <input v-model="model" />
+</template>
+```
+
+> 此外，v-model 可以接受自定义参数、添加修饰符，组件也可以绑定多个 v-model ，具体用法请参考
+> 官网文档：[组件 v-model](https://cn.vuejs.org/guide/components/v-model)
+
+:::
+
 ## 如何统一监听 Vue 组件报错
 
 ::: details 参考答案
@@ -807,6 +997,280 @@ onErrorCaptured((err, instance, info) => {
 
 ## Vuex 中 mutation 和 action 有什么区别？
 
+在 Vuex 中， `mutation` 和 `action` 是用于管理状态的两种核心概念。
+
+::: details 参考答案
+`mutation` 可以直接修改 `store` 中的 **state**值，它只支持同步操作。 `Action` 不能直接修改 **state**，而是通过调用 `mutation` 来间接修改，它用于处理异步操作。
+
+```js
+const store = createStore({
+  state: {
+    count: 0, // 定义状态
+  },
+  mutations: {
+    // Mutation 示例（同步）
+    increment(state, payload) {
+      state.count += payload
+    },
+  },
+})
+
+// 组件中调用
+this.$store.commit('increment', 5)
+```
+
+```js
+const store = createStore({
+  state: {
+    count: 0, // 定义状态
+  },
+  mutations: {
+    // Mutation：同步修改状态
+    increment(state, payload) {
+      state.count += payload
+    },
+  },
+  actions: {
+    // Action：异步操作，延迟1秒后调用 mutation
+    asyncIncrement({ commit }, payload) {
+      setTimeout(() => {
+        commit('increment', payload) // 提交 mutation 修改状态
+      }, 1000)
+    },
+  },
+})
+
+// 组件中调用
+this.$store.dispatch('asyncIncrement', 5)
+```
+
+**总结：**
+| 特性 | Mutation | Action |
+| --- | --- | --- |
+| 是否同步 | ✅ 同步 | ⏳ 异步（也可以处理同步） |
+| 是否直接修改 state | ✅ 直接修改 | ❌ 通过调用 mutation 修改 |
+| 调用方式 | `commit('mutationName')` | `dispatch('actionName')` |
+| 适用场景 | 简单的状态修改 | 异步操作（如 API 调用） |
+| 调试支持 | 完全支持，易于追踪 | 依赖于 mutation 的日志 |
+
+::: tip ⚠️ 为什么要有这样的区分？
+
+- 数据可预测性：通过强制 `Mutation` 同步修改 **State**，使得状态变更可追踪
+- 调试友好性：DevTools 可以准确捕捉每次状态快照
+- 代码组织：将同步逻辑与异步逻辑分离，提高代码可维护性
+
+:::
+
+参考文章：[VueX用法快速回顾](https://juejin.cn/post/7249033891809329212)
+
 ## Vuex 和 Pinia 有什么区别？
 
+::: details 参考答案
+
+`Pinia` 和 `Vuex` 都是 Vue 的专属状态管理库，允许用户跨组件或页面共享状态。
+
+- **区别**
+
+| 特性                | **Vuex**                                | **Pinia**                                       |
+| ------------------- | --------------------------------------- | ----------------------------------------------- |
+| **版本支持**        | Vue 2 和 Vue 3                          | 仅支持 Vue 3（基于 `Composition API` ）         |
+| **API 风格**        | 基于传统的对象式 API                    | 基于 Composition API，类似于 `setup` <br/> 语法 |
+| **模块管理**        | 支持模块化（modules），但语法较复杂     | 模块化简单，**每个 store 就是一个独立模块**     |
+| **TypeScript 支持** | `TypeScript` 支持不完善，需手动定义类型 | 开箱即用的 `TypeScript` 支持，类型推导更强大    |
+| **性能**            | 更适合大型项目，但冗余代码较多          | 更加轻量，性能更好，支持按需加载                |
+| **状态持久化**      | 需要额外插件                            | 插件系统更加灵活，支持状态持久化插件            |
+
+- **代码对比**
+
+📝 **vuex**
+
+```javascript
+// store.js
+import { createStore } from 'vuex'
+
+const store = createStore({
+  state: {
+    count: 0,
+  },
+  mutations: {
+    increment(state) {
+      state.count++
+    },
+  },
+  actions: {
+    asyncIncrement({ commit }) {
+      setTimeout(() => {
+        commit('increment')
+      }, 1000)
+    },
+  },
+  getters: {
+    doubleCount: (state) => state.count * 2,
+  },
+})
+
+export default store
+```
+
+vue组件中使用
+
+```vue
+<script>
+export default {
+  // 计算属性
+  computed: {
+    count() {
+      return this.$store.state.count
+    },
+    doubleCount() {
+      return this.$store.getters.doubleCount
+    },
+  },
+  methods: {
+    // 同步增加
+    increment() {
+      this.$store.commit('increment')
+    },
+    // 异步增加
+    asyncIncrement() {
+      this.$store.dispatch('asyncIncrement')
+    },
+  },
+}
+</script>
+```
+
+📝**Pinia**
+
+```typescript
+// store.js
+import { defineStore } from 'pinia'
+
+export const useCounterStore = defineStore('counter', {
+  state: () => ({
+    count: 0,
+  }),
+  actions: {
+    increment() {
+      this.count++
+    },
+    async asyncIncrement() {
+      setTimeout(() => {
+        this.increment()
+      }, 1000)
+    },
+  },
+  getters: {
+    doubleCount: (state) => state.count * 2,
+  },
+})
+```
+
+组件中使用：
+
+```vue
+<script setup>
+import { useCounterStore } from './store'
+const counter = useCounterStore()
+</script>
+
+<template>
+  <h1>Count的计算值 {{ counter.count }}</h1>
+  <h2>Double的计算值 {{ counter.doubleCount }}</h2>
+  <button @click="counter.increment">同步增加</button>
+  <button @click="counter.asyncIncrement">异步增加</button>
+</template>
+```
+
+- **如何选择？**
+
+对于vue3项目，官方推荐使用pinia。因为它**更轻量、TypeScript 支持更好、模块化更简单且拥有更强的 DevTools 支持**。
+
+:::
+
 ## Vue-router 导航守卫能用来做什么？
+
+::: details 参考答案
+
+`vue Router` 的**导航守卫**用于在路由跳转过程中对导航行为进行**拦截**和**控制**。这些守卫在路由进入、离开或更新时执行，可以用于多种场景，确保应用的导航逻辑符合预期。以下是常见的用途：
+
+- 认证和授权
+
+用于检查用户的登录状态或权限，防止未授权用户访问受限页面。
+
+```javascript
+router.beforeEach((to, from, next) => {
+  const isAuthenticated = !!localStorage.getItem('token')
+  if (to.meta.requiresAuth && !isAuthenticated) {
+    next('/login') // 未登录，跳转到登录页
+  } else {
+    next() // 已登录，正常导航
+  }
+})
+```
+
+- 数据预加载
+
+在进入路由前预加载必要的数据，确保页面渲染时数据已准备好。
+
+```javascript
+router.beforeEach(async (to, from, next) => {
+  if (to.name === 'userInfo') {
+    await store.dispatch('fetchUserData') // 预加载用户数据
+  }
+  next()
+})
+```
+
+- 动态修改页面标题
+
+根据路由信息动态更改浏览器标签页的标题，提升用户体验。
+
+```javascript
+router.afterEach((to) => {
+  document.title = to.meta.title || '自定义标题'
+})
+```
+
+- 动画和加载效果
+
+在路由切换时展示加载动画或过渡效果，提升用户体验。
+
+```javascript
+router.beforeEach((to, from, next) => {
+  store.commit('setLoading', true) // 开始加载动画
+  next()
+})
+
+router.afterEach(() => {
+  store.commit('setLoading', false) // 结束加载动画
+})
+```
+
+- 日志记录和分析
+
+在路由切换时记录用户行为，用于分析或调试。
+
+```javascript
+router.afterEach((to, from) => {
+  console.log(`用户从 ${from.fullPath} 跳转到 ${to.fullPath}`)
+})
+```
+
+- 防止访问不存在的页面
+
+通过守卫检查路由是否存在，避免导航到无效页面。
+
+```javascript
+router.beforeEach((to, from, next) => {
+  const routeExists = router.getRoutes().some((route) => route.name === to.name)
+  if (!routeExists) {
+    next('/404') // 跳转到 404 页面
+  } else {
+    next()
+  }
+})
+```
+
+关联文章：[5min带你快速回顾、学习VueRouter的使用！](https://juejin.cn/post/7359084604663840820)
+:::
