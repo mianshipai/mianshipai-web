@@ -690,6 +690,83 @@ console.log(JSON.stringify(treeToArray(tree), null, 2))
 
 ## 网页多标签页之间如何通讯？和 iframe 如何通讯？
 
+::: details
+网页多标签页和 iframe 通讯的关键考点是跨窗口和跨域通信模型的选择，以及不同场景下的适用方法。可以从以下几个方面分析：
+
+### **1. 多标签页之间的通讯方法**
+
+- **BroadcastChannel API**  
+  同源的多个标签页可以使用 `BroadcastChannel` 进行消息广播，简单方便。  
+  **示例**：
+
+  ```javascript
+  const channel = new BroadcastChannel('my_channel')
+  channel.postMessage('Hello from another tab!')
+  channel.onmessage = (event) => {
+    console.log('Received message:', event.data)
+  }
+  ```
+
+- **LocalStorage + Storage 事件监听**  
+  不同标签页可以共享 `localStorage`，通过监听 `storage` 事件实现通讯。  
+  **示例**：
+
+  ```javascript
+  window.addEventListener('storage', (event) => {
+    if (event.key === 'my_key') {
+      console.log('Received message:', event.newValue)
+    }
+  })
+  localStorage.setItem('my_key', 'Hello from another tab!')
+  ```
+
+- **Service Worker**  
+  通过 `Service Worker` 作为中介，实现跨标签页通讯。适合 PWA 场景。
+
+- **WebSocket**  
+  通过服务器中转实现实时通讯，适合跨域或需要长连接的场景。
+
+---
+
+### **2. iframe 通讯方法**
+
+- **postMessage API**  
+  最常用的方式，可以跨域发送消息。父页面和 iframe 双向通信都支持。  
+  **示例（父页面向 iframe 发送消息）**：
+
+  ```javascript
+  const iframe = document.querySelector('iframe')
+  iframe.contentWindow.postMessage('Hello iframe!', '*')
+  window.addEventListener('message', (event) => {
+    console.log('Received from iframe:', event.data)
+  })
+  ```
+
+- **URL Hash 传参**  
+  通过修改 iframe 的 URL 哈希来传递参数。适用于简单场景。  
+  **示例**：
+
+  ```javascript
+  iframe.src = 'https://example.com#message=Hello'
+  ```
+
+- **共享 Cookie 或 LocalStorage**  
+  在同源环境下可以通过共享存储机制间接通讯。
+
+---
+
+### **3. 注意事项**
+
+- **安全性考虑**：
+  - 使用 `postMessage` 时要指定目标源，避免消息被恶意网站接收。
+  - 避免直接信任外部传入的数据，做好验证与校验。
+- **兼容性与性能**：
+  - 优先选择现代 API（如 `BroadcastChannel`）。
+  - 避免频繁存取 `localStorage` 导致性能问题。
+
+总结来说，选择通讯方法的关键在于是否同源、跨域需求、实时性要求等因素。
+:::
+
 ## 什么是 axios 拦截器，能用来做什么？
 
 ## 是否熟悉 Performance API ，是否了解常见的性能指标？
