@@ -599,6 +599,8 @@ for (let value of arr) {
 
 ::: details
 
+![proto](../imgs/proto.jpg)
+
 **1. 原型（Prototype）**
 
 - 每个 **函数**（构造函数）都有一个 `prototype` 属性，指向其 **原型对象**。
@@ -838,13 +840,269 @@ foo() // 10
 
 ## JS 闭包，如何理解
 
+参考答案
+
+::: details
+**闭包的核心特性：**
+
+1. 访问外部函数作用域的变量
+2. 即使外部函数执行结束，变量依然被保留
+3. 不会被垃圾回收，直到闭包不再被引用
+
+**闭包的应用场景：**
+
+1. 私有变量（模拟封装）
+
+```js
+function createCounter() {
+  let count = 0 // 私有变量，外部无法直接访问
+  return {
+    increment: () => ++count,
+    decrement: () => --count,
+    getCount: () => count,
+  }
+}
+
+const counter = createCounter()
+console.log(counter.increment()) // 1
+console.log(counter.increment()) // 2
+console.log(counter.getCount()) // 2
+console.log(counter.count) // undefined（外部无法直接访问）
+```
+
+2. 回调 & 事件监听
+
+```js
+function addEventLogger(eventName) {
+  return function () {
+    console.log(`Event ${eventName} triggered!`)
+  }
+}
+
+document.addEventListener('click', addEventLogger('click'))
+```
+
+3. 定时器 & 异步操作
+
+```js
+function delayedGreeting(name) {
+  setTimeout(() => {
+    console.log(`Hello, ${name}!`)
+  }, 2000)
+}
+
+delayedGreeting('Rain') // 2 秒后打印 "Hello, Rain!"
+```
+
+**闭包的缺点：**
+
+1. 可能导致内存泄漏
+
+- 闭包会持有外部变量的引用，导致变量无法被垃圾回收
+- 解决方案：手动将变量置为 null 或谨慎管理作用域
+
+2. 滥用闭包可能影响性能
+
+- 每次调用都会创建新的作用域，影响垃圾回收机制
+- 适度使用，避免不必要的闭包
+
+:::
+
 ## 同步和异步有什么区别？异步的意义是什么？
+
+参考答案
+
+::: details
+**同步**：任务按顺序执行，当前任务未完成时，后续代码必须等待，代码是**阻塞**的。  
+**异步**：任务可以**不按顺序执行**，不会阻塞代码，后续代码可以继续执行，代码是**非阻塞**的。
+
+| 特性         | **同步**                         | **异步**                     |
+| ------------ | -------------------------------- | ---------------------------- |
+| **执行方式** | 顺序执行，阻塞后续任务           | 非阻塞，任务可以并行执行     |
+| **代码特点** | **阻塞**，必须等待上一个任务完成 | **非阻塞**，任务可以同时进行 |
+| **适用场景** | 计算密集型、简单逻辑处理         | 网络请求、I/O 操作、高并发   |
+
+```js
+// 同步
+console.log('任务 1')
+alert('等待用户操作...')
+console.log('任务 2') // 只有用户关闭 alert，任务 2 才能执行
+```
+
+```js
+// 异步
+console.log('任务 1')
+
+setTimeout(() => {
+  console.log('任务 2（延迟 2 秒）')
+}, 2000)
+
+console.log('任务 3') // 任务 3 不会等待 任务 2
+// 任务 1
+// 任务 3
+// （2 秒后）
+// 任务 2（延迟 2 秒）
+```
+
+**为什么要用异步？（异步的意义）**
+
+1. 避免阻塞，提升用户体验
+
+- 异步任务（如网络请求、文件读写）可以在后台执行，避免阻塞 UI，保证页面流畅。
+
+2. 提升系统性能，支持高并发
+
+- 服务器可以同时处理多个请求，提高吞吐量（如 Node.js 处理高并发）。
+
+3. 更适合现代 Web 开发
+
+- `Promise` / `async-await` 让异步代码更可读，配合 `fetch` 进行网络请求，提升开发效率。
+
+:::
 
 ## JS Promise 有几种状态？如何变化
 
+参考答案
+
+::: details
+
+**1. Promise 有几种状态？**
+
+| 状态                    | 说明                          | 是否可变更  |
+| ----------------------- | ----------------------------- | ----------- |
+| **Pending（进行中）**   | 初始状态，异步操作未完成      | ✅ 可以变更 |
+| **Fulfilled（已完成）** | 操作成功，返回 `resolve` 结果 | ❌ 变更结束 |
+| **Rejected（已拒绝）**  | 操作失败，返回 `reject` 错误  | ❌ 变更结束 |
+
+**2. Promise 状态如何变化？**
+
+Promise 的状态**只会从 `Pending` → `Fulfilled` 或 `Pending` → `Rejected`**，且**一旦变化就不会再改变**（不可逆）。
+
+```js
+const promise = new Promise((resolve, reject) => {
+  setTimeout(() => {
+    resolve('成功')
+    // reject("失败"); // 只会触发一次，状态不可逆
+  }, 1000)
+})
+
+promise.then((result) => console.log('Fulfilled:', result)).catch((error) => console.log('Rejected:', error))
+```
+
+---
+
+**3. 面试回答技巧**
+
+> **Promise 有三种状态**：`Pending`（进行中）、`Fulfilled`（已完成）、`Rejected`（已拒绝）。  
+> 状态只能从 `Pending` 变为 `Fulfilled` 或 `Rejected`，一旦改变**不可逆**。  
+> `then()` 处理成功，`catch()` 处理失败，`finally()` 总会执行。  
+> :::
+
 ## JS Promise 使用
 
+参考答案
+
+::: details
+**1. 什么是 Promise？**
+
+> **Promise 是 JavaScript 处理异步操作的一种方式**，用于解决回调地狱（Callback Hell）问题。  
+> 它表示一个未来才会完成（或失败）的异步操作，并提供 `.then()`、`.catch()`、`.finally()` 方法进行处理。
+
+**2. Promise 的基本用法**
+
+**创建一个 Promise**
+
+```js
+const myPromise = new Promise((resolve, reject) => {
+  setTimeout(() => {
+    let success = true
+    success ? resolve('操作成功') : reject('操作失败')
+  }, 1000)
+})
+```
+
+**使用 `then`、`catch` 处理结果**
+
+```js
+myPromise
+  .then((result) => console.log('成功:', result)) // 处理成功
+  .catch((error) => console.log('失败:', error)) // 处理失败
+  .finally(() => console.log('操作结束')) // 无论成功或失败都会执行
+```
+
+**3. Promise 串行执行**
+
+**多个异步操作依次执行（避免回调地狱）**
+
+```js
+function step1() {
+  return new Promise((resolve) => setTimeout(() => resolve('Step 1 完成'), 1000))
+}
+function step2() {
+  return new Promise((resolve) => setTimeout(() => resolve('Step 2 完成'), 1000))
+}
+
+step1()
+  .then((result) => {
+    console.log(result)
+    return step2() // 返回 Promise
+  })
+  .then((result) => console.log(result))
+  .catch((error) => console.error('错误:', error))
+```
+
+**4. Promise 并行执行**
+
+**多个异步任务同时执行，全部完成后再处理**
+
+```js
+const p1 = new Promise((resolve) => setTimeout(() => resolve('任务 1'), 1000))
+const p2 = new Promise((resolve) => setTimeout(() => resolve('任务 2'), 1500))
+
+Promise.all([p1, p2])
+  .then((results) => console.log('所有任务完成:', results))
+  .catch((error) => console.error('任务失败:', error))
+```
+
+**如果只要最快完成的结果**
+
+```js
+Promise.race([p1, p2])
+  .then((result) => console.log('最先完成的:', result))
+  .catch((error) => console.error('失败:', error))
+```
+
+**5. 面试回答总结**
+
+> **Promise 解决异步回调问题，提供 `.then()`、`.catch()`、`.finally()` 处理状态变化。支持 `Promise.all()` 并行执行，`Promise.race()` 竞争执行。用 `async/await` 可以让异步代码更清晰。**
+
+:::
+
 ## async/await 使用
+
+参考答案
+
+::: details
+
+async/await 是 ES2017（ES8）引入的 基于 Promise 的语法糖，用于更清晰地编写异步代码，使其看起来像同步代码，提高可读性。
+
+- async 关键字：用于声明一个异步函数，返回值始终是 Promise。
+- await 关键字：只能在 async 函数中使用，等待 Promise 解析（resolve）并返回结果，而不会阻塞线程。
+
+```js
+async function fetchData() {
+  try {
+    let response = await fetch('https://api.example.com/data')
+    let data = await response.json()
+    console.log(data)
+  } catch (error) {
+    console.error('Error:', error)
+  }
+}
+fetchData()
+```
+
+:::
 
 ## JS 异步执行顺序
 
@@ -892,13 +1150,23 @@ setTimeOut
 
 ## 宏任务和微任务的区别
 
+@雨夜 将于 2025.02.15 之前提交答案。
+
 ## 描述 Event Loop 运行机制
+
+@雨夜 将于 2025.02.15 之前提交答案。
 
 ## Set 和 Array 有什么区别
 
+@雨夜 将于 2025.02.15 之前提交答案。
+
 ## Map 和 Object 有什么区别
 
+@雨夜 将于 2025.02.15 之前提交答案。
+
 ## setTimeout requestAnimationFrame 和 requestIdleCallback 有什么区别
+
+@雨夜 将于 2025.02.15 之前提交答案。
 
 ## 写一个验证 email 的正则表达式
 
