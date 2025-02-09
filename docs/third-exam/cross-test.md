@@ -1433,6 +1433,108 @@ Source Map 是一种将压缩、混淆后的代码映射回源代码的文件，
 
 ## 观察者模式和发布订阅模式的区别
 
+::: details
+
+### **核心区别**
+
+- **观察者模式：** 两个对象，通知者和观察者，直接关联。
+- **发布订阅模式：** 三个对象：事件中心、发布者、订阅者，彼此解耦。
+
+### **详细解释**
+
+#### **1. 定义与结构**
+
+- **观察者模式**：
+
+  - **简介：** 被观察者（Subject）维护一个观察者列表，状态变化时直接通知观察者（Observers）。
+  - **结构：** 被观察者与观察者直接关联。
+  - **简单类比：** 像微信群，群主发消息直接通知所有成员。
+
+- **发布订阅模式**：
+  - **简介：** 通过事件中心（Event Bus）解耦发布者和订阅者。发布者将消息交给事件中心，事件中心分发给订阅者。
+  - **结构：** 发布者、事件中心、订阅者三者解耦。
+  - **简单类比：** 像电台广播，听众订阅不同频道，电台播出节目后，只有订阅该频道的听众收到。
+
+#### **2. 示例代码**
+
+##### **观察者模式**
+
+```javascript
+class Subject {
+  constructor() {
+    this.observers = []
+  }
+
+  addObserver(observer) {
+    this.observers.push(observer)
+  }
+
+  notify(data) {
+    this.observers.forEach((observer) => observer.update(data))
+  }
+}
+
+class Observer {
+  update(data) {
+    console.log(`Received: ${data}`)
+  }
+}
+
+const subject = new Subject()
+subject.addObserver(new Observer())
+subject.notify('Hello')
+```
+
+##### **发布订阅模式**
+
+```javascript
+class EventBus {
+  constructor() {
+    this.events = {}
+  }
+
+  subscribe(event, callback) {
+    if (!this.events[event]) this.events[event] = []
+    this.events[event].push(callback)
+  }
+
+  publish(event, data) {
+    ;(this.events[event] || []).forEach((callback) => callback(data))
+  }
+}
+
+const eventBus = new EventBus()
+eventBus.subscribe('greet', (data) => console.log(`Received: ${data}`))
+eventBus.publish('greet', 'Hello Subscribers!')
+```
+
+### **区别总结**
+
+| 特性     | 观察者模式             | 发布订阅模式           |
+| -------- | ---------------------- | ---------------------- |
+| 依赖关系 | 被观察者直接通知观察者 | 发布者与订阅者解耦     |
+| 中介角色 | 无                     | 事件中心               |
+| 适用场景 | 状态变化通知           | 广播消息，模块解耦     |
+| 耦合度   | 高                     | 低                     |
+| 触发方式 | 被观察者主动触发       | 发布者通过事件中心触发 |
+
+### **选择建议**
+
+- **观察者模式：** 适合对象依赖明确的场景，如模型与视图同步。
+- **发布订阅模式：** 适合模块解耦的场景，如前端事件总线。
+
+### **实践应用**
+
+- **观察者模式：** Vue 2.x 的响应式系统。
+- **发布订阅模式：** Node.js 的 `EventEmitter`、Vue 3.x 的事件总线。
+
+### **总结类比帮助记忆**
+
+- **观察者模式：** 直接通知像微信群消息通知所有人。
+- **发布订阅模式：** 广播消息像电台分发到不同订阅频道。
+
+:::
+
 ## 后端返回 10w 条数据，前端该如何处理？
 
 ## 一个网页，一开始很流畅，越用越卡顿，你怎么办？
