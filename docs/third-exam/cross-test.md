@@ -769,6 +769,85 @@ console.log(JSON.stringify(treeToArray(tree), null, 2))
 
 ## 什么是 axios 拦截器，能用来做什么？
 
+Axios 拦截器的关键是提供了网络请求生命周期的可控节点，能够有效地简化和规范前端网络请求的管理。
+
+::: details
+
+**Axios 拦截器**的关键考点在于它是请求与响应流程中的中间层，用来在网络请求前后进行处理，满足业务需求和性能优化。可以从以下几个方面分析其用途和实践方法：
+
+---
+
+### **1. 什么是 Axios 拦截器？**
+
+Axios 拦截器是 Axios 库提供的功能，可以在请求发出之前和响应数据返回之后进行拦截和处理。  
+拦截器主要分为两类：
+
+- **请求拦截器（Request Interceptors）**
+- **响应拦截器（Response Interceptors）**
+
+---
+
+### **2. Axios 拦截器的应用场景**
+
+- **添加通用请求头**  
+  可以统一为所有请求添加认证 Token、语言信息等。
+
+  ```javascript
+  axios.interceptors.request.use((config) => {
+    config.headers['Authorization'] = 'Bearer my-token'
+    return config
+  })
+  ```
+
+- **全局错误处理**  
+  统一处理服务器返回的错误，如用户未登录、网络错误等。
+
+  ```javascript
+  axios.interceptors.response.use(
+    (response) => response,
+    (error) => {
+      if (error.response.status === 401) {
+        alert('Unauthorized, please login')
+      }
+      return Promise.reject(error)
+    }
+  )
+  ```
+
+- **数据格式预处理**  
+  对服务器返回的数据进行格式化，比如从 API 响应中提取有效数据部分。
+
+  ```javascript
+  axios.interceptors.response.use((response) => {
+    return response.data.result
+  })
+  ```
+
+- **请求节流与取消**  
+  防止短时间内重复请求。
+
+  ```javascript
+  const CancelToken = axios.CancelToken
+  const source = CancelToken.source()
+
+  axios.get('/some-url', {
+    cancelToken: source.token,
+  })
+
+  source.cancel('Request canceled')
+  ```
+
+---
+
+### **3. 注意事项**
+
+- **拦截器顺序**：  
+  请求拦截器会按添加顺序执行，而响应拦截器按相反顺序执行。
+- **错误处理机制**：  
+  错误处理函数需要显式调用 `Promise.reject(error)`，否则错误可能被吞掉。
+
+:::
+
 ## 是否熟悉 Performance API ，是否了解常见的性能指标？
 
 FP FCP LCP 等
