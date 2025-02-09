@@ -1079,6 +1079,358 @@ Source Map 是一种将压缩、混淆后的代码映射回源代码的文件，
 
 ## 前端常见的设计模式有哪些？以及应用场景
 
+::: details
+
+### 1. **单例模式（Singleton Pattern）**
+
+- **概念**：保证一个类只有一个实例，并提供全局访问点。
+- **应用场景**：
+  - 全局状态管理，例如 Vuex 或 Redux Store。
+  - 浏览器缓存管理或全局配置。
+- **示例**：
+  ```javascript
+  class Singleton {
+    constructor() {
+      if (!Singleton.instance) {
+        Singleton.instance = this
+      }
+      return Singleton.instance
+    }
+  }
+  const instance1 = new Singleton()
+  const instance2 = new Singleton()
+  console.log(instance1 === instance2) // true
+  ```
+
+---
+
+### 2. **工厂模式（Factory Pattern）**
+
+- **概念**：通过工厂方法创建对象，而不是直接实例化。
+- **应用场景**：
+  - 动态创建 UI 组件。
+  - 根据配置动态生成实例。
+- **示例**：
+
+  ```javascript
+  class Button {
+    render() {
+      console.log('Render Button')
+    }
+  }
+
+  class Input {
+    render() {
+      console.log('Render Input')
+    }
+  }
+
+  class Factory {
+    static createElement(type) {
+      switch (type) {
+        case 'button':
+          return new Button()
+        case 'input':
+          return new Input()
+        default:
+          throw new Error('Unknown type')
+      }
+    }
+  }
+
+  const button = Factory.createElement('button')
+  button.render() // Render Button
+  ```
+
+---
+
+### 3. **观察者模式（Observer Pattern）**
+
+- **概念**：一个对象（观察者）订阅另一个对象（被观察者）的变化。
+- **应用场景**：
+  - 数据绑定和事件系统，例如 Vue 的响应式系统、EventEmitter。
+  - 实现消息推送功能。
+- **示例**：
+
+  ```javascript
+  class Subject {
+    constructor() {
+      this.observers = []
+    }
+
+    subscribe(observer) {
+      this.observers.push(observer)
+    }
+
+    notify(data) {
+      this.observers.forEach((observer) => observer.update(data))
+    }
+  }
+
+  class Observer {
+    update(data) {
+      console.log(`Received: ${data}`)
+    }
+  }
+
+  const subject = new Subject()
+  const observer1 = new Observer()
+  subject.subscribe(observer1)
+  subject.notify('Hello!') // Received: Hello!
+  ```
+
+---
+
+### 4. **策略模式（Strategy Pattern）**
+
+- **概念**：将一组算法封装到独立的类中，使得它们可以互换。
+- **应用场景**：
+  - 表单验证策略。
+  - 动态路由匹配。
+- **示例**：
+
+  ```javascript
+  class AddStrategy {
+    execute(a, b) {
+      return a + b
+    }
+  }
+
+  class MultiplyStrategy {
+    execute(a, b) {
+      return a * b
+    }
+  }
+
+  class Calculator {
+    constructor(strategy) {
+      this.strategy = strategy
+    }
+
+    calculate(a, b) {
+      return this.strategy.execute(a, b)
+    }
+  }
+
+  const calculator = new Calculator(new MultiplyStrategy())
+  console.log(calculator.calculate(2, 3)) // 6
+  ```
+
+---
+
+### 5. **代理模式（Proxy Pattern）**
+
+- **概念**：通过代理控制对对象的访问。
+- **应用场景**：
+  - API 请求的缓存代理。
+  - 数据过滤或格式化。
+- **示例**：
+
+  ```javascript
+  const apiProxy = new Proxy(
+    {},
+    {
+      get(target, property) {
+        if (property in target) {
+          return target[property]
+        } else {
+          console.log(`Fetching ${property} from API...`)
+          // 模拟 API 请求
+          return `Data for ${property}`
+        }
+      },
+    }
+  )
+
+  console.log(apiProxy.user) // Fetching user from API...
+  ```
+
+---
+
+### 6. **装饰器模式（Decorator Pattern）**
+
+- **概念**：在不修改原始对象的情况下动态扩展功能。
+- **应用场景**：
+  - 动态扩展类的功能，例如权限控制。
+  - React 的高阶组件（HOC）。
+- **示例**：
+
+  ```javascript
+  function withLogging(fn) {
+    return function (...args) {
+      console.log(`Calling ${fn.name} with`, args)
+      return fn(...args)
+    }
+  }
+
+  function add(a, b) {
+    return a + b
+  }
+
+  const loggedAdd = withLogging(add)
+  console.log(loggedAdd(2, 3)) // Calling add with [2, 3]
+  ```
+
+---
+
+### 7. **中介者模式（Mediator Pattern）**
+
+- **概念**：通过一个中介对象来管理不同对象之间的交互，避免对象之间的直接引用。
+- **应用场景**：
+  - 模块之间的解耦，例如前端组件通信。
+- **示例**：
+
+  ```javascript
+  class Mediator {
+    constructor() {
+      this.channels = {}
+    }
+
+    subscribe(channel, fn) {
+      if (!this.channels[channel]) {
+        this.channels[channel] = []
+      }
+      this.channels[channel].push(fn)
+    }
+
+    publish(channel, data) {
+      if (this.channels[channel]) {
+        this.channels[channel].forEach((fn) => fn(data))
+      }
+    }
+  }
+
+  const mediator = new Mediator()
+  mediator.subscribe('event', (data) => console.log(`Received: ${data}`))
+  mediator.publish('event', 'Hello from Mediator!') // Received: Hello from Mediator!
+  ```
+
+---
+
+### 8. **命令模式（Command Pattern）**
+
+- **概念**：将请求封装为对象，以便参数化不同的请求。
+- **应用场景**：
+  - 撤销与重做功能。
+  - 任务队列管理。
+- **示例**：
+
+  ```javascript
+  class Command {
+    constructor(execute, undo) {
+      this.execute = execute
+      this.undo = undo
+    }
+  }
+
+  class Light {
+    turnOn() {
+      console.log('Light is ON')
+    }
+
+    turnOff() {
+      console.log('Light is OFF')
+    }
+  }
+
+  const light = new Light()
+  const turnOnCommand = new Command(
+    () => light.turnOn(),
+    () => light.turnOff()
+  )
+  turnOnCommand.execute() // Light is ON
+  turnOnCommand.undo() // Light is OFF
+  ```
+
+---
+
+### 9. **适配器模式（Adapter Pattern）**
+
+- **概念**：将一个类的接口转换成另一个接口，以便兼容不同系统。
+- **应用场景**：
+  - 前端组件库的接口适配。
+  - 数据格式转换。
+- **示例**：
+
+  ```javascript
+  class OldAPI {
+    getData() {
+      return 'Old API Data'
+    }
+  }
+
+  class NewAPI {
+    fetchData() {
+      return 'New API Data'
+    }
+  }
+
+  class Adapter {
+    constructor(api) {
+      this.api = api
+    }
+
+    getData() {
+      if (this.api instanceof OldAPI) {
+        return this.api.getData()
+      } else if (this.api instanceof NewAPI) {
+        return this.api.fetchData()
+      }
+    }
+  }
+
+  const adapter = new Adapter(new NewAPI())
+  console.log(adapter.getData()) // New API Data
+  ```
+
+---
+
+### 10. **组合模式（Composite Pattern）**
+
+- **概念**：将对象组合成树形结构，以表示“部分-整体”的层次结构。
+- **应用场景**：
+  - UI 组件树。
+  - 文件系统管理。
+- **示例**：
+
+  ```javascript
+  class Component {
+    constructor(name) {
+      this.name = name
+    }
+
+    display() {
+      console.log(this.name)
+    }
+  }
+
+  class Composite extends Component {
+    constructor(name) {
+      super(name)
+      this.children = []
+    }
+
+    add(child) {
+      this.children.push(child)
+    }
+
+    display() {
+      console.log(this.name)
+      this.children.forEach((child) => child.display())
+    }
+  }
+
+  const root = new Composite('Root')
+  const leaf1 = new Component('Leaf 1')
+  const leaf2 = new Component('Leaf 2')
+
+  root.add(leaf1)
+  root.add(leaf2)
+  root.display()
+  ```
+
+:::
+
 ## 观察者模式和发布订阅模式的区别
 
 ## 后端返回 10w 条数据，前端该如何处理？
