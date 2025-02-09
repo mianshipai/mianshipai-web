@@ -991,6 +991,92 @@ Source Map 是一种将压缩、混淆后的代码映射回源代码的文件，
 
 ## 什么是 OOP ，面向对象三要素是什么？
 
+::: details
+
+### **1. 什么是 OOP (Object-Oriented Programming)?**
+
+面向对象编程（Object-Oriented Programming，简称 OOP）是一种编程范式，通过将程序中的功能和数据封装为对象来实现模块化和复用。对象是具有属性（状态）和方法（行为）的实体，能够与其他对象进行交互。OOP 的核心思想是**通过模拟现实世界的模型来提高软件开发的灵活性与维护性**。
+
+### **2. 面向对象的三要素**
+
+1. **封装（Encapsulation）**
+
+   - **概念**：将数据和操作数据的方法绑定在一起，对外隐藏对象的内部实现细节。
+   - **作用**：
+     - 提高代码安全性，避免外部直接修改数据。
+     - 便于代码维护，减少不同模块之间的耦合。
+   - **示例**
+
+     ```javascript
+     class Person {
+       constructor(name, age) {
+         this._name = name // 私有变量（约定形式）
+         this._age = age
+       }
+
+       get name() {
+         return this._name
+       }
+
+       set name(newName) {
+         if (newName) this._name = newName
+       }
+     }
+     const person = new Person('Alice', 25)
+     console.log(person.name) // Alice
+     ```
+
+2. **继承（Inheritance）**
+
+   - **概念**：子类继承父类的属性和方法，从而避免重复代码。
+   - **作用**：
+     - 代码复用，减少重复。
+     - 建立层次结构，实现多态。
+   - **示例**
+
+     ```javascript
+     class Animal {
+       speak() {
+         console.log('Animal sound')
+       }
+     }
+
+     class Dog extends Animal {
+       speak() {
+         console.log('Woof!')
+       }
+     }
+     const dog = new Dog()
+     dog.speak() // Woof!
+     ```
+
+3. **多态（Polymorphism）**
+
+   - **概念**：不同对象可以以不同的形式执行相同的方法调用。
+   - **作用**：
+     - 增强代码的灵活性。
+     - 提高系统的扩展性。
+   - **示例**
+
+     ```javascript
+     class Shape {
+       draw() {
+         console.log('Drawing shape')
+       }
+     }
+
+     class Circle extends Shape {
+       draw() {
+         console.log('Drawing circle')
+       }
+     }
+
+     const shapes = [new Shape(), new Circle()]
+     shapes.forEach((shape) => shape.draw())
+     ```
+
+:::
+
 ## 前端常见的设计模式有哪些？以及应用场景
 
 ## 观察者模式和发布订阅模式的区别
