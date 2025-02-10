@@ -1150,23 +1150,199 @@ setTimeOut
 
 ## 宏任务和微任务的区别
 
-@雨夜 将于 2025.02.15 之前提交答案。
+参考答案
+
+::: details
+在 JavaScript 的 事件循环（Event Loop） 机制中，任务分为 **宏任务（Macro Task）** 和 **微任务（Micro Task）**：
+
+- **微任务优先**：微任务队列会在每次 宏任务执行完毕 后立即执行，保证微任务先执行完再进入下一个宏任务。
+- **宏任务**：常见的宏任务包括 `setTimeout、setInterval、setImmediate（Node.js）、I/O、UI 渲染`。
+- **微任务**：常见的微任务包括 `Promise.then、MutationObserver、queueMicrotask、process.nextTick（Node.js）`。
+
+```js
+console.log('start')
+
+setTimeout(() => {
+  console.log('setTimeout')
+}, 0)
+
+Promise.resolve()
+  .then(() => {
+    console.log('promise1')
+  })
+  .then(() => {
+    console.log('promise2')
+  })
+
+console.log('end')
+
+// 输出：
+// start
+// end
+// promise1
+// promise2
+// setTimeout
+```
+
+:::
 
 ## 描述 Event Loop 运行机制
 
-@雨夜 将于 2025.02.15 之前提交答案。
+参考答案
+
+::: details
+Event Loop（事件循环）是 JavaScript 处理 **异步操作** 的核心机制。它允许 JavaScript 以 **非阻塞** 的方式执行代码，即使遇到 I/O 操作（如网络请求、定时器），也不会影响主线程继续执行其他任务。
+
+**执行流程（核心步骤）**
+
+1. **执行同步任务**
+
+- 所有同步任务在 调用栈（Call Stack） 中依次执行，直到调用栈清空。
+
+2. **处理微任务**
+
+- 检查 微任务队列（MicroTask Queue） 是否有任务（如 Promise.then()、queueMicrotask()）。
+- 依次执行所有微任务，直到微任务队列清空。
+
+3. **执行宏任务**
+
+- 从 宏任务队列（MacroTask Queue） 取出 一个 任务（如 setTimeout 回调、I/O 任务），放入调用栈执行。
+
+4. **重复步骤 2（处理新的微任务）**
+
+- 宏任务执行完毕后，再次检查微任务队列，如果有新产生的微任务，立即执行所有微任务。
+
+5. **重复步骤 3（执行下一个宏任务）**
+
+- 继续取出下一个 宏任务，重复整个过程，形成循环（Event Loop）
+
+:::
 
 ## Set 和 Array 有什么区别
 
-@雨夜 将于 2025.02.15 之前提交答案。
+参考答案
+
+::: details
+
+| 特性               | **Array**                       | **Set**                        |
+| ------------------ | ------------------------------- | ------------------------------ |
+| **是否允许重复值** | ✅ 允许重复元素                 | ❌ 只能存储唯一值，自动去重    |
+| **索引访问**       | ✅ 可通过索引 (`arr[0]`) 访问   | ❌ 不支持索引访问              |
+| **查找性能**       | 🔴 `O(n)`，需要遍历整个数组     | 🟢 `O(1)`，基于哈希表查找更快  |
+| **删除性能**       | 🔴 `O(n)`，需要遍历查找删除     | 🟢 `O(1)`，删除性能更优        |
+| **遍历方式**       | ✅ `forEach` / `map` / `filter` | ✅ `forEach` / `for...of`      |
+| **适合的场景**     | 存储有序数据，支持索引访问      | 需要唯一值集合，去重、快速查找 |
+| **转换方式**       | `Array.from(set)` (Set → Array) | `new Set(array)` (Array → Set) |
+
+```js
+// Array 允许重复值
+const arr = [1, 2, 2, 3, 4, 4]
+console.log(arr) // [1, 2, 2, 3, 4, 4]
+
+// Set 自动去重
+const set = new Set(arr)
+console.log([...set]) // [1, 2, 3, 4]
+
+// Set 无索引访问
+console.log(set[0]) // undefined
+
+// Set 转 Array
+const arrFromSet = Array.from(set)
+console.log(arrFromSet) // [1, 2, 3, 4]
+```
+
+:::
 
 ## Map 和 Object 有什么区别
 
-@雨夜 将于 2025.02.15 之前提交答案。
+参考答案
 
-## setTimeout requestAnimationFrame 和 requestIdleCallback 有什么区别
+::: details
 
-@雨夜 将于 2025.02.15 之前提交答案。
+| 特性                      | **Object**                              | **Map**                               |
+| ------------------------- | --------------------------------------- | ------------------------------------- |
+| **键的类型**              | 只能是 `string` 或 `symbol`             | 可以是任何类型（对象、函数等）        |
+| **键值对的存储顺序**      | **无序**（属性顺序可能变化）            | **有序**（插入顺序保持不变）          |
+| **查找性能**              | 相对较慢（基于哈希表）                  | 更快（专门优化的键值存储结构）        |
+| **迭代方式**              | `for...in`，`Object.keys()` 等          | `forEach()`，`for...of`（支持迭代器） |
+| **获取键的方式**          | `Object.keys(obj)` 只能获取 `string` 键 | `map.keys()` 可获取所有类型的键       |
+| **获取大小**              | 需手动计算 `Object.keys(obj).length`    | `map.size` 直接获取大小               |
+| **是否能轻松转换为 JSON** | ✅ 可以 `JSON.stringify()`              | ❌ 不能直接 `JSON.stringify()`        |
+| **适用场景**              | 适用于存储结构化数据，如对象属性        | 适用于 **高效键值存储和查找**         |
+
+```js
+// Object 只能用字符串作为键
+const obj = {}
+obj['key1'] = 'value1'
+obj[1] = 'value2' // 这里的 1 会被转换为 "1"
+console.log(obj) // { '1': 'value2', key1: 'value1' }
+
+// Map 可用任何类型作为键
+const map = new Map()
+map.set('key1', 'value1')
+map.set(1, 'value2') // 数字 1 不会被转换为字符串
+console.log(map) // Map(2) { 'key1' => 'value1', 1 => 'value2' }
+
+// Object 迭代（无序）
+console.log(Object.keys(obj)) // ['1', 'key1']
+
+// Map 迭代（有序）
+console.log([...map.keys()]) // ['key1', 1]
+
+// Map 直接获取大小
+console.log(map.size) // 2
+
+// Object 需要手动计算大小
+console.log(Object.keys(obj).length) // 2
+```
+
+:::
+
+## setTimeout、requestAnimationFrame 和 requestIdleCallback 有什么区别
+
+参考答案
+
+::: details
+
+| 特性                | `setTimeout`                 | `requestAnimationFrame`          | `requestIdleCallback`                              |
+| ------------------- | ---------------------------- | -------------------------------- | -------------------------------------------------- |
+| **执行时机**        | 设定时间后执行（不保证准时） | **下一帧渲染前**（16.6ms 以内）  | **浏览器空闲时**（可能延迟执行）                   |
+| **主要用途**        | 延迟执行代码                 | **动画和流畅渲染**               | **低优先级任务**（如日志、分析）                   |
+| **帧率控制**        | **无**，可能丢帧             | **跟随屏幕刷新率**（一般 60FPS） | **不受限制**，完全取决于浏览器                     |
+| **影响页面性能**    | **可能影响页面流畅度**       | **保证流畅动画**                 | **不会阻塞主线程**                                 |
+| **是否适用于动画**  | ❌ 可能卡顿                  | ✅ 适合                          | ❌ 不适合                                          |
+| **是否受 CPU 影响** | ✅ 受影响                    | ✅ 受影响                        | ✅ 受影响                                          |
+| **适用场景**        | **定时任务、轮询**           | **动画、过渡、流畅 UI 渲染**     | **后台任务、低优先级执行（如数据同步、日志收集）** |
+
+**`setTimeout` - 定时执行**
+
+```js
+setTimeout(() => {
+  console.log('100ms 后执行')
+}, 100)
+```
+
+**`requestAnimationFrame` - 适用于动画**
+
+```js
+function animate() {
+  console.log('下一帧渲染前执行')
+  requestAnimationFrame(animate)
+}
+requestAnimationFrame(animate)
+```
+
+**`requestIdleCallback` - 空闲时执行**
+
+```js
+requestIdleCallback((deadline) => {
+  while (deadline.timeRemaining() > 0) {
+    console.log('空闲时执行低优先级任务')
+  }
+})
+```
+
+:::
 
 ## 写一个验证 email 的正则表达式
 
@@ -1183,15 +1359,25 @@ reg.test(email)
 
 ## JS 模块化规范有哪些？
 
+@雨夜 将于 2025.02.15 之前提交答案。
+
 ## JS 如何捕获异常？有几种方式？
 
 第三方 js ？？
 
+@雨夜 将于 2025.02.15 之前提交答案。
+
 ## `0.1 + 0.2 === 0.3` 表达式返回什么？
+
+@雨夜 将于 2025.02.15 之前提交答案。
 
 ## 如何理解 JS 单线程？
 
+@雨夜 将于 2025.02.15 之前提交答案。
+
 ## 什么是 WebWorker 如何理解它
+
+@雨夜 将于 2025.02.15 之前提交答案。
 
 ## JS 如何进行内存管理和垃圾回收？
 
