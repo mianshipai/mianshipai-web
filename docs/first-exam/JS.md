@@ -599,6 +599,8 @@ for (let value of arr) {
 
 ::: details
 
+![proto](../imgs/proto.jpg)
+
 **1. 原型（Prototype）**
 
 - 每个 **函数**（构造函数）都有一个 `prototype` 属性，指向其 **原型对象**。
@@ -838,13 +840,269 @@ foo() // 10
 
 ## JS 闭包，如何理解
 
+参考答案
+
+::: details
+**闭包的核心特性：**
+
+1. 访问外部函数作用域的变量
+2. 即使外部函数执行结束，变量依然被保留
+3. 不会被垃圾回收，直到闭包不再被引用
+
+**闭包的应用场景：**
+
+1. 私有变量（模拟封装）
+
+```js
+function createCounter() {
+  let count = 0 // 私有变量，外部无法直接访问
+  return {
+    increment: () => ++count,
+    decrement: () => --count,
+    getCount: () => count,
+  }
+}
+
+const counter = createCounter()
+console.log(counter.increment()) // 1
+console.log(counter.increment()) // 2
+console.log(counter.getCount()) // 2
+console.log(counter.count) // undefined（外部无法直接访问）
+```
+
+2. 回调 & 事件监听
+
+```js
+function addEventLogger(eventName) {
+  return function () {
+    console.log(`Event ${eventName} triggered!`)
+  }
+}
+
+document.addEventListener('click', addEventLogger('click'))
+```
+
+3. 定时器 & 异步操作
+
+```js
+function delayedGreeting(name) {
+  setTimeout(() => {
+    console.log(`Hello, ${name}!`)
+  }, 2000)
+}
+
+delayedGreeting('Rain') // 2 秒后打印 "Hello, Rain!"
+```
+
+**闭包的缺点：**
+
+1. 可能导致内存泄漏
+
+- 闭包会持有外部变量的引用，导致变量无法被垃圾回收
+- 解决方案：手动将变量置为 null 或谨慎管理作用域
+
+2. 滥用闭包可能影响性能
+
+- 每次调用都会创建新的作用域，影响垃圾回收机制
+- 适度使用，避免不必要的闭包
+
+:::
+
 ## 同步和异步有什么区别？异步的意义是什么？
+
+参考答案
+
+::: details
+**同步**：任务按顺序执行，当前任务未完成时，后续代码必须等待，代码是**阻塞**的。  
+**异步**：任务可以**不按顺序执行**，不会阻塞代码，后续代码可以继续执行，代码是**非阻塞**的。
+
+| 特性         | **同步**                         | **异步**                     |
+| ------------ | -------------------------------- | ---------------------------- |
+| **执行方式** | 顺序执行，阻塞后续任务           | 非阻塞，任务可以并行执行     |
+| **代码特点** | **阻塞**，必须等待上一个任务完成 | **非阻塞**，任务可以同时进行 |
+| **适用场景** | 计算密集型、简单逻辑处理         | 网络请求、I/O 操作、高并发   |
+
+```js
+// 同步
+console.log('任务 1')
+alert('等待用户操作...')
+console.log('任务 2') // 只有用户关闭 alert，任务 2 才能执行
+```
+
+```js
+// 异步
+console.log('任务 1')
+
+setTimeout(() => {
+  console.log('任务 2（延迟 2 秒）')
+}, 2000)
+
+console.log('任务 3') // 任务 3 不会等待 任务 2
+// 任务 1
+// 任务 3
+// （2 秒后）
+// 任务 2（延迟 2 秒）
+```
+
+**为什么要用异步？（异步的意义）**
+
+1. 避免阻塞，提升用户体验
+
+- 异步任务（如网络请求、文件读写）可以在后台执行，避免阻塞 UI，保证页面流畅。
+
+2. 提升系统性能，支持高并发
+
+- 服务器可以同时处理多个请求，提高吞吐量（如 Node.js 处理高并发）。
+
+3. 更适合现代 Web 开发
+
+- `Promise` / `async-await` 让异步代码更可读，配合 `fetch` 进行网络请求，提升开发效率。
+
+:::
 
 ## JS Promise 有几种状态？如何变化
 
+参考答案
+
+::: details
+
+**1. Promise 有几种状态？**
+
+| 状态                    | 说明                          | 是否可变更  |
+| ----------------------- | ----------------------------- | ----------- |
+| **Pending（进行中）**   | 初始状态，异步操作未完成      | ✅ 可以变更 |
+| **Fulfilled（已完成）** | 操作成功，返回 `resolve` 结果 | ❌ 变更结束 |
+| **Rejected（已拒绝）**  | 操作失败，返回 `reject` 错误  | ❌ 变更结束 |
+
+**2. Promise 状态如何变化？**
+
+Promise 的状态**只会从 `Pending` → `Fulfilled` 或 `Pending` → `Rejected`**，且**一旦变化就不会再改变**（不可逆）。
+
+```js
+const promise = new Promise((resolve, reject) => {
+  setTimeout(() => {
+    resolve('成功')
+    // reject("失败"); // 只会触发一次，状态不可逆
+  }, 1000)
+})
+
+promise.then((result) => console.log('Fulfilled:', result)).catch((error) => console.log('Rejected:', error))
+```
+
+---
+
+**3. 面试回答技巧**
+
+> **Promise 有三种状态**：`Pending`（进行中）、`Fulfilled`（已完成）、`Rejected`（已拒绝）。  
+> 状态只能从 `Pending` 变为 `Fulfilled` 或 `Rejected`，一旦改变**不可逆**。  
+> `then()` 处理成功，`catch()` 处理失败，`finally()` 总会执行。  
+> :::
+
 ## JS Promise 使用
 
+参考答案
+
+::: details
+**1. 什么是 Promise？**
+
+> **Promise 是 JavaScript 处理异步操作的一种方式**，用于解决回调地狱（Callback Hell）问题。  
+> 它表示一个未来才会完成（或失败）的异步操作，并提供 `.then()`、`.catch()`、`.finally()` 方法进行处理。
+
+**2. Promise 的基本用法**
+
+**创建一个 Promise**
+
+```js
+const myPromise = new Promise((resolve, reject) => {
+  setTimeout(() => {
+    let success = true
+    success ? resolve('操作成功') : reject('操作失败')
+  }, 1000)
+})
+```
+
+**使用 `then`、`catch` 处理结果**
+
+```js
+myPromise
+  .then((result) => console.log('成功:', result)) // 处理成功
+  .catch((error) => console.log('失败:', error)) // 处理失败
+  .finally(() => console.log('操作结束')) // 无论成功或失败都会执行
+```
+
+**3. Promise 串行执行**
+
+**多个异步操作依次执行（避免回调地狱）**
+
+```js
+function step1() {
+  return new Promise((resolve) => setTimeout(() => resolve('Step 1 完成'), 1000))
+}
+function step2() {
+  return new Promise((resolve) => setTimeout(() => resolve('Step 2 完成'), 1000))
+}
+
+step1()
+  .then((result) => {
+    console.log(result)
+    return step2() // 返回 Promise
+  })
+  .then((result) => console.log(result))
+  .catch((error) => console.error('错误:', error))
+```
+
+**4. Promise 并行执行**
+
+**多个异步任务同时执行，全部完成后再处理**
+
+```js
+const p1 = new Promise((resolve) => setTimeout(() => resolve('任务 1'), 1000))
+const p2 = new Promise((resolve) => setTimeout(() => resolve('任务 2'), 1500))
+
+Promise.all([p1, p2])
+  .then((results) => console.log('所有任务完成:', results))
+  .catch((error) => console.error('任务失败:', error))
+```
+
+**如果只要最快完成的结果**
+
+```js
+Promise.race([p1, p2])
+  .then((result) => console.log('最先完成的:', result))
+  .catch((error) => console.error('失败:', error))
+```
+
+**5. 面试回答总结**
+
+> **Promise 解决异步回调问题，提供 `.then()`、`.catch()`、`.finally()` 处理状态变化。支持 `Promise.all()` 并行执行，`Promise.race()` 竞争执行。用 `async/await` 可以让异步代码更清晰。**
+
+:::
+
 ## async/await 使用
+
+参考答案
+
+::: details
+
+async/await 是 ES2017（ES8）引入的 基于 Promise 的语法糖，用于更清晰地编写异步代码，使其看起来像同步代码，提高可读性。
+
+- async 关键字：用于声明一个异步函数，返回值始终是 Promise。
+- await 关键字：只能在 async 函数中使用，等待 Promise 解析（resolve）并返回结果，而不会阻塞线程。
+
+```js
+async function fetchData() {
+  try {
+    let response = await fetch('https://api.example.com/data')
+    let data = await response.json()
+    console.log(data)
+  } catch (error) {
+    console.error('Error:', error)
+  }
+}
+fetchData()
+```
+
+:::
 
 ## JS 异步执行顺序
 
@@ -892,13 +1150,199 @@ setTimeOut
 
 ## 宏任务和微任务的区别
 
+参考答案
+
+::: details
+在 JavaScript 的 事件循环（Event Loop） 机制中，任务分为 **宏任务（Macro Task）** 和 **微任务（Micro Task）**：
+
+- **微任务优先**：微任务队列会在每次 宏任务执行完毕 后立即执行，保证微任务先执行完再进入下一个宏任务。
+- **宏任务**：常见的宏任务包括 `setTimeout、setInterval、setImmediate（Node.js）、I/O、UI 渲染`。
+- **微任务**：常见的微任务包括 `Promise.then、MutationObserver、queueMicrotask、process.nextTick（Node.js）`。
+
+```js
+console.log('start')
+
+setTimeout(() => {
+  console.log('setTimeout')
+}, 0)
+
+Promise.resolve()
+  .then(() => {
+    console.log('promise1')
+  })
+  .then(() => {
+    console.log('promise2')
+  })
+
+console.log('end')
+
+// 输出：
+// start
+// end
+// promise1
+// promise2
+// setTimeout
+```
+
+:::
+
 ## 描述 Event Loop 运行机制
+
+参考答案
+
+::: details
+Event Loop（事件循环）是 JavaScript 处理 **异步操作** 的核心机制。它允许 JavaScript 以 **非阻塞** 的方式执行代码，即使遇到 I/O 操作（如网络请求、定时器），也不会影响主线程继续执行其他任务。
+
+**执行流程（核心步骤）**
+
+1. **执行同步任务**
+
+- 所有同步任务在 调用栈（Call Stack） 中依次执行，直到调用栈清空。
+
+2. **处理微任务**
+
+- 检查 微任务队列（MicroTask Queue） 是否有任务（如 Promise.then()、queueMicrotask()）。
+- 依次执行所有微任务，直到微任务队列清空。
+
+3. **执行宏任务**
+
+- 从 宏任务队列（MacroTask Queue） 取出 一个 任务（如 setTimeout 回调、I/O 任务），放入调用栈执行。
+
+4. **重复步骤 2（处理新的微任务）**
+
+- 宏任务执行完毕后，再次检查微任务队列，如果有新产生的微任务，立即执行所有微任务。
+
+5. **重复步骤 3（执行下一个宏任务）**
+
+- 继续取出下一个 宏任务，重复整个过程，形成循环（Event Loop）
+
+:::
 
 ## Set 和 Array 有什么区别
 
+参考答案
+
+::: details
+
+| 特性               | **Array**                       | **Set**                        |
+| ------------------ | ------------------------------- | ------------------------------ |
+| **是否允许重复值** | ✅ 允许重复元素                 | ❌ 只能存储唯一值，自动去重    |
+| **索引访问**       | ✅ 可通过索引 (`arr[0]`) 访问   | ❌ 不支持索引访问              |
+| **查找性能**       | 🔴 `O(n)`，需要遍历整个数组     | 🟢 `O(1)`，基于哈希表查找更快  |
+| **删除性能**       | 🔴 `O(n)`，需要遍历查找删除     | 🟢 `O(1)`，删除性能更优        |
+| **遍历方式**       | ✅ `forEach` / `map` / `filter` | ✅ `forEach` / `for...of`      |
+| **适合的场景**     | 存储有序数据，支持索引访问      | 需要唯一值集合，去重、快速查找 |
+| **转换方式**       | `Array.from(set)` (Set → Array) | `new Set(array)` (Array → Set) |
+
+```js
+// Array 允许重复值
+const arr = [1, 2, 2, 3, 4, 4]
+console.log(arr) // [1, 2, 2, 3, 4, 4]
+
+// Set 自动去重
+const set = new Set(arr)
+console.log([...set]) // [1, 2, 3, 4]
+
+// Set 无索引访问
+console.log(set[0]) // undefined
+
+// Set 转 Array
+const arrFromSet = Array.from(set)
+console.log(arrFromSet) // [1, 2, 3, 4]
+```
+
+:::
+
 ## Map 和 Object 有什么区别
 
-## setTimeout requestAnimationFrame 和 requestIdleCallback 有什么区别
+参考答案
+
+::: details
+
+| 特性                      | **Object**                              | **Map**                               |
+| ------------------------- | --------------------------------------- | ------------------------------------- |
+| **键的类型**              | 只能是 `string` 或 `symbol`             | 可以是任何类型（对象、函数等）        |
+| **键值对的存储顺序**      | **无序**（属性顺序可能变化）            | **有序**（插入顺序保持不变）          |
+| **查找性能**              | 相对较慢（基于哈希表）                  | 更快（专门优化的键值存储结构）        |
+| **迭代方式**              | `for...in`，`Object.keys()` 等          | `forEach()`，`for...of`（支持迭代器） |
+| **获取键的方式**          | `Object.keys(obj)` 只能获取 `string` 键 | `map.keys()` 可获取所有类型的键       |
+| **获取大小**              | 需手动计算 `Object.keys(obj).length`    | `map.size` 直接获取大小               |
+| **是否能轻松转换为 JSON** | ✅ 可以 `JSON.stringify()`              | ❌ 不能直接 `JSON.stringify()`        |
+| **适用场景**              | 适用于存储结构化数据，如对象属性        | 适用于 **高效键值存储和查找**         |
+
+```js
+// Object 只能用字符串作为键
+const obj = {}
+obj['key1'] = 'value1'
+obj[1] = 'value2' // 这里的 1 会被转换为 "1"
+console.log(obj) // { '1': 'value2', key1: 'value1' }
+
+// Map 可用任何类型作为键
+const map = new Map()
+map.set('key1', 'value1')
+map.set(1, 'value2') // 数字 1 不会被转换为字符串
+console.log(map) // Map(2) { 'key1' => 'value1', 1 => 'value2' }
+
+// Object 迭代（无序）
+console.log(Object.keys(obj)) // ['1', 'key1']
+
+// Map 迭代（有序）
+console.log([...map.keys()]) // ['key1', 1]
+
+// Map 直接获取大小
+console.log(map.size) // 2
+
+// Object 需要手动计算大小
+console.log(Object.keys(obj).length) // 2
+```
+
+:::
+
+## setTimeout、requestAnimationFrame 和 requestIdleCallback 有什么区别
+
+参考答案
+
+::: details
+
+| 特性                | `setTimeout`                 | `requestAnimationFrame`          | `requestIdleCallback`                              |
+| ------------------- | ---------------------------- | -------------------------------- | -------------------------------------------------- |
+| **执行时机**        | 设定时间后执行（不保证准时） | **下一帧渲染前**（16.6ms 以内）  | **浏览器空闲时**（可能延迟执行）                   |
+| **主要用途**        | 延迟执行代码                 | **动画和流畅渲染**               | **低优先级任务**（如日志、分析）                   |
+| **帧率控制**        | **无**，可能丢帧             | **跟随屏幕刷新率**（一般 60FPS） | **不受限制**，完全取决于浏览器                     |
+| **影响页面性能**    | **可能影响页面流畅度**       | **保证流畅动画**                 | **不会阻塞主线程**                                 |
+| **是否适用于动画**  | ❌ 可能卡顿                  | ✅ 适合                          | ❌ 不适合                                          |
+| **是否受 CPU 影响** | ✅ 受影响                    | ✅ 受影响                        | ✅ 受影响                                          |
+| **适用场景**        | **定时任务、轮询**           | **动画、过渡、流畅 UI 渲染**     | **后台任务、低优先级执行（如数据同步、日志收集）** |
+
+**`setTimeout` - 定时执行**
+
+```js
+setTimeout(() => {
+  console.log('100ms 后执行')
+}, 100)
+```
+
+**`requestAnimationFrame` - 适用于动画**
+
+```js
+function animate() {
+  console.log('下一帧渲染前执行')
+  requestAnimationFrame(animate)
+}
+requestAnimationFrame(animate)
+```
+
+**`requestIdleCallback` - 空闲时执行**
+
+```js
+requestIdleCallback((deadline) => {
+  while (deadline.timeRemaining() > 0) {
+    console.log('空闲时执行低优先级任务')
+  }
+})
+```
+
+:::
 
 ## 写一个验证 email 的正则表达式
 
@@ -915,15 +1359,25 @@ reg.test(email)
 
 ## JS 模块化规范有哪些？
 
+@雨夜 将于 2025.02.15 之前提交答案。
+
 ## JS 如何捕获异常？有几种方式？
 
 第三方 js ？？
 
+@雨夜 将于 2025.02.15 之前提交答案。
+
 ## `0.1 + 0.2 === 0.3` 表达式返回什么？
+
+@雨夜 将于 2025.02.15 之前提交答案。
 
 ## 如何理解 JS 单线程？
 
+@雨夜 将于 2025.02.15 之前提交答案。
+
 ## 什么是 WebWorker 如何理解它
+
+@雨夜 将于 2025.02.15 之前提交答案。
 
 ## JS 如何进行内存管理和垃圾回收？
 
