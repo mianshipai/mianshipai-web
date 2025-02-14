@@ -1558,8 +1558,6 @@ JavaScript 的设计目的是为了简化开发，尤其是在浏览器环境中
 
 **工作原理：**
 
--
-
 1. **独立线程**：Web Worker 在一个与主线程（UI 线程）分离的线程中运行，主线程和 Worker 线程之间通过消息传递（postMessage）进行通信。
 2. **主线程与 Worker 通信**：主线程可以通过 `postMessage()` 方法向 Worker 发送数据，Worker 完成计算后，通过 `postMessage()` 将结果返回给主线程。
 
@@ -1607,7 +1605,8 @@ JavaScript 的设计目的是为了简化开发，尤其是在浏览器环境中
      postMessage('Hello, Main Thread!') // 发送响应到主线程
    }
    ```
-   :::
+
+:::
 
 ## JS 如何进行内存管理和垃圾回收？
 
@@ -1744,7 +1743,8 @@ JavaScript 的内存管理是自动的，主要通过 **垃圾回收（GC）** �
 - **游戏开发**：通过高效的计算，WebAssembly 可以让 Web 上的游戏运行得更流畅。
 - **图像/视频处理**：利用 WebAssembly 进行高效的图像处理和视频编解码。
 - **科学计算**：WebAssembly 能大大提升 JavaScript 在处理大数据和复杂计算时的性能。
-  :::
+
+:::
 
 ## JS V8 Nodejs Deno Bun 这几个，他们是什么关系？
 
