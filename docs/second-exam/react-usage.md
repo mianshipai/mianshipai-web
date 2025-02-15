@@ -37,11 +37,15 @@ React18 更新了“自动批处理”，全部都是异步更新
 const { count } = useTimer()
 ```
 
+@石小石 将于 2025.02.20 之前提交答案。
+
 ## 使用 React Hook 实现 useRequest
 
 ```js
 const { loading, data, error } = useRequest(url) // 可只考虑 get 请求
 ```
+
+@石小石 将于 2025.02.20 之前提交答案。
 
 ## React 项目可做哪些性能优化？
 
