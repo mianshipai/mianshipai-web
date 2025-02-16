@@ -1191,6 +1191,9 @@ console.log('end')
 参考答案
 
 ::: details
+
+![eventloop](../imgs/js-eventloop.png)
+
 Event Loop（事件循环）是 JavaScript 处理 **异步操作** 的核心机制。它允许 JavaScript 以 **非阻塞** 的方式执行代码，即使遇到 I/O 操作（如网络请求、定时器），也不会影响主线程继续执行其他任务。
 
 **执行流程（核心步骤）**
@@ -1359,30 +1362,423 @@ reg.test(email)
 
 ## JS 模块化规范有哪些？
 
-@雨夜 将于 2025.02.15 之前提交答案。
+参考答案
+
+::: details
+
+1. **CommonJS**
+
+   - **概述**：这是 Node.js 中使用的模块化规范。它通过 `module.exports` 和 `require()` 来导出和引入模块。
+   - **特点**：同步加载，主要用于服务器端（Node.js）。
+   - **使用场景**：服务器端开发，尤其是在 Node.js 中。
+
+   ```javascript
+   // 导出模块
+   module.exports = function () {
+     console.log('Hello, CommonJS!')
+   }
+
+   // 导入模块
+   const hello = require('./hello')
+   hello()
+   ```
+
+2. **AMD（Asynchronous Module Definition）**
+
+   - **概述**：AMD 是一种异步加载模块的规范，常用于浏览器端。
+   - **特点**：支持异步加载，模块和依赖是按需加载的，通常使用 `define()` 和 `require()`。
+   - **使用场景**：浏览器端的模块化，尤其是当需要异步加载模块时。
+
+   ```javascript
+   define(['dependency'], function (dep) {
+     return function () {
+       console.log('Hello, AMD!')
+     }
+   })
+   ```
+
+3. **UMD（Universal Module Definition）**
+
+   - **概述**：UMD 是一个兼容多种模块化规范（CommonJS、AMD 和全局变量）的模块化方案。
+   - **特点**：确保模块在不同的环境中都能使用。
+   - **使用场景**：需要在多种环境下（如 Node.js、浏览器）使用的库或框架。
+
+   ```javascript
+   ;(function (root, factory) {
+     if (typeof exports === 'object' && typeof module !== 'undefined') {
+       module.exports = factory()
+     } else if (typeof define === 'function' && define.amd) {
+       define(factory)
+     } else {
+       root.myModule = factory()
+     }
+   })(this, function () {
+     return function () {
+       console.log('Hello, UMD!')
+     }
+   })
+   ```
+
+4. **ES6 Modules（ESM）**
+
+   - **概述**：ES6 模块化是 JavaScript 原生的模块化标准，使用 `import` 和 `export` 语法。
+   - **特点**：支持静态分析，加载时可以进行优化，现代 JavaScript 标准。
+   - **使用场景**：现代前端开发（浏览器和 Node.js）。
+
+   ```javascript
+   // 导出模块
+   export function greet() {
+     console.log('Hello, ESM!')
+   }
+
+   // 导入模块
+   import { greet } from './greet.js'
+   greet()
+   ```
+
+5. **SystemJS**
+
+   - **概述**：SystemJS 是一个支持多种模块规范（CommonJS、AMD 和 ESM）的模块加载器。
+   - **特点**：支持多种模块格式，动态加载模块。
+   - **使用场景**：需要跨模块加载器兼容的复杂应用。
+
+   ```javascript
+   System.config({
+     map: {
+       greet: './greet.js',
+     },
+   })
+   System.import('greet').then((greet) => {
+     greet()
+   })
+   ```
+
+   :::
 
 ## JS 如何捕获异常？有几种方式？
 
-第三方 js ？？
+参考答案
 
-@雨夜 将于 2025.02.15 之前提交答案。
+::: details
+
+1. **try...catch 语句**
+
+```js
+try {
+  // 可能会抛出异常的代码
+  throw new Error('Something went wrong!')
+} catch (error) {
+  // 捕获并处理异常
+  console.error('Caught an error:', error.message)
+}
+```
+
+2. **Promise 中的错误捕获（catch）**
+
+```js
+someAsyncFunction()
+  .then((result) => {
+    console.log(result)
+  })
+  .catch((error) => {
+    console.error('Async error caught:', error)
+  })
+```
+
+3. **window.onerror（全局错误处理）**
+
+```js
+window.onerror = function (message, source, lineno, colno, error) {
+  console.error(`Error occurred: ${message}`)
+  return true // 阻止默认错误处理
+}
+```
+
+:::
 
 ## `0.1 + 0.2 === 0.3` 表达式返回什么？
 
-@雨夜 将于 2025.02.15 之前提交答案。
+参考答案
+
+::: details
+`0.1 + 0.2 === 0.3` 在 JavaScript 中会返回 **`false`**。
+
+**原因：**
+JavaScript 中的浮点数运算存在精度问题。由于计算机在内部表示浮点数时不能精确表示某些小数，导致 `0.1 + 0.2` 的结果并不是精确的 `0.3`，而是一个接近于 `0.3` 的小数。
+
+具体来说，`0.1 + 0.2` 的计算结果是 `0.30000000000000004`，而不是 `0.3`。因此，当你用 `===`（严格相等）进行比较时，`0.30000000000000004` 和 `0.3` 不相等，结果为 `false`。
+
+**解决方法：**
+
+1. **四舍五入**：
+
+   ```javascript
+   console.log(Math.abs(0.1 + 0.2 - 0.3) < Number.EPSILON) // true
+   ```
+
+2. **自定义精度比较**：
+   将浮动值限制到一定的小数位，进行比较：
+   ```javascript
+   console.log(Math.round((0.1 + 0.2) * 100) / 100 === 0.3) // true
+   ```
+   :::
 
 ## 如何理解 JS 单线程？
 
-@雨夜 将于 2025.02.15 之前提交答案。
+参考答案
 
-## 什么是 WebWorker 如何理解它
+::: details
+**什么是 JavaScript 单线程？**
 
-@雨夜 将于 2025.02.15 之前提交答案。
+JavaScript 是 **单线程** 的意思是它只有一个线程来执行代码，这意味着它一次只能执行一个任务。所有的 JavaScript 代码，默认情况下，都会按照顺序在同一个线程中依次执行。单线程的特性使得 JavaScript 相比多线程语言在处理并发时有一些限制，但它也有一套机制来处理异步操作，避免阻塞主线程。
+
+**为什么是单线程？**
+
+JavaScript 的设计目的是为了简化开发，尤其是在浏览器环境中。单线程可以避免多线程带来的复杂性，比如线程同步、资源竞争等问题。为了不让长时间的任务阻塞 UI 渲染，JavaScript 提供了异步编程的机制。
+
+**如何处理并发任务？**
+
+虽然 JavaScript 是单线程的，但它通过以下机制来实现并发任务的处理：
+
+1. **事件循环（Event Loop）**：JavaScript 使用事件循环来管理异步任务。通过事件循环，JavaScript 可以在任务执行时不中断主线程的执行。异步任务（比如 `setTimeout`、`Promise`、`XHR` 等）会先进入 **消息队列（Event Queue）**，当主线程空闲时，再从队列中取出任务执行。
+
+2. **Web APIs**：浏览器提供了 **Web APIs**（如 `setTimeout`、`fetch`、`DOM` 等）来处理一些异步操作。这些操作会被交给浏览器的 API 处理，处理完后通过事件循环机制将回调函数推送到消息队列，等待主线程执行。
+
+3. **异步编程**：通过 **`setTimeout`**、**`Promise`**、**`async/await`** 等方式，JavaScript 可以非阻塞地处理 I/O 操作，避免卡住整个程序的执行。
+
+:::
+
+## 什么是 WebWorker 如何理解它？
+
+参考答案
+
+::: details
+
+**Web Worker** 是一种浏览器提供的 API，允许你在一个独立的线程中执行 JavaScript 代码，**与主线程（UI 线程）分离**。Web Worker 可以处理计算密集型任务，如数据处理、文件解析等，这些任务通常会阻塞主线程，导致 UI 卡顿。通过 Web Worker，你可以将这些耗时操作移到后台线程，确保主线程始终保持响应状态。
+
+**工作原理：**
+
+1. **独立线程**：Web Worker 在一个与主线程（UI 线程）分离的线程中运行，主线程和 Worker 线程之间通过消息传递（postMessage）进行通信。
+2. **主线程与 Worker 通信**：主线程可以通过 `postMessage()` 方法向 Worker 发送数据，Worker 完成计算后，通过 `postMessage()` 将结果返回给主线程。
+
+3. **异步操作**：由于 Worker 在后台线程中运行，因此它的执行不会阻塞主线程，所有的计算任务都是异步执行的。
+
+4. **线程间通信**：Worker 无法直接访问主线程的 DOM、`window` 或者 `document` 等对象，它只能通过 `postMessage()` 与主线程进行数据交换。返回的数据是通过事件机制传递的，使用 `onmessage` 监听数据的返回。
+
+**Web Worker 的优势：**
+
+- **性能提升**：Web Worker 可以让长时间的计算任务在后台线程中执行，避免 UI 阻塞，提升用户体验。
+- **非阻塞性**：主线程可以继续处理用户交互和渲染，而不被复杂计算所阻塞。
+- **多线程处理**：对于 CPU 密集型任务，Web Worker 可以将工作分配给多个 Worker，实现并行计算，提高性能。
+
+**Web Worker 的应用场景：**
+
+- **大数据处理**：例如，处理大量的数组计算、排序、数据筛选等任务。
+- **图像处理**：例如，进行图像的处理和转换，而不影响 UI 渲染。
+- **音视频处理**：例如，音视频的编码、解码等计算密集型操作。
+- **异步任务**：一些需要后台执行的异步任务，可以通过 Worker 来处理。
+
+**Web Worker 的局限性：**
+
+- **无法操作 DOM**：Web Worker 在独立线程中运行，不能直接访问 DOM 和 `window`，只能通过消息传递来与主线程交换数据。
+- **数据传递**：数据通过 `postMessage()` 传递时会发生深拷贝，因此传递大数据时可能会有性能开销。
+- **浏览器支持**：大多数现代浏览器支持 Web Worker，但在旧版浏览器中可能不被支持。
+
+1. **创建一个 Web Worker：**
+
+   ```javascript
+   // main.js (主线程)
+   const worker = new Worker('worker.js') // 创建 Worker 实例
+
+   worker.postMessage('Hello, Worker!') // 向 Worker 发送消息
+
+   worker.onmessage = function (event) {
+     console.log('Worker says: ', event.data) // 接收 Worker 的响应
+   }
+   ```
+
+2. **Worker 文件（worker.js）：**
+   ```javascript
+   // worker.js (Worker 线程)
+   onmessage = function (event) {
+     console.log('Main thread says: ', event.data)
+     postMessage('Hello, Main Thread!') // 发送响应到主线程
+   }
+   ```
+
+:::
 
 ## JS 如何进行内存管理和垃圾回收？
 
+参考答案
+
+::: details
+
+JavaScript 的内存管理是自动的，主要通过 **垃圾回收（GC）** 来实现。
+
+**内存管理：**
+
+1. JavaScript 使用 自动内存管理，开发者不需要手动分配和释放内存。
+2. 内存通过 堆（用于存储对象和数组等动态分配的内存）和 栈（用于存储函数调用和局部变量）进行管理。
+
+**常用的垃圾回收机制有：**
+
+1. **标记-清除（Mark-and-Sweep）**：标记活动对象，清除未标记对象，释放内存。
+2. **引用计数**：计算对象的引用次数，引用为 0 时回收。但会有循环引用的问题。
+3. **生成式垃圾回收**：通过将内存分为年轻代和老年代，优化垃圾回收频率，减少内存碎片。
+
+:::
+
 ## 如何检测 JS 内存泄漏？内存泄漏的场景有哪些？
 
-## 如何理解 WebAssembly
+参考答案
+
+::: details
+
+1. **使用浏览器开发者工具**：
+
+   - **Chrome DevTools** 中的 **Memory** 面板可以用来检测内存泄漏。可以查看 **Heap Snapshot** 和 **Allocation instrumentation on timeline**，分析对象分配、释放情况。
+   - **Heap Snapshot**：查看对象的分配情况，并通过比较不同时间点的快照来发现泄漏。
+   - **Timeline**：在页面交互过程中，查看内存的使用情况，发现持续增长的内存占用。
+
+2. **通过 `performance.memory` API**：
+
+   - 在支持的浏览器中，可以通过 `performance.memory` API 获取当前的内存使用情况（如 JS 堆内存大小），来跟踪内存的变化。
+
+   ```javascript
+   console.log(window.performance.memory)
+   ```
+
+3. **手动检测**：
+
+   - 通过创建和销毁对象，使用 `setInterval` 或 `setTimeout` 来检测是否有对象未被回收。
+   - 观察垃圾回收器是否清理不再使用的对象，如果内存不断增长，可能就是内存泄漏。
+
+4. **第三方工具**：
+   - **Valgrind**、**Memory.js** 等工具可以帮助检测内存泄漏。
+
+**内存泄漏的常见场景：**
+
+1. **全局变量**：
+
+   - 意外的全局变量会导致对象无法被回收。
+     ```javascript
+     function test() {
+       leakedVar = 'This is a global variable' // 未声明的变量成为全局变量
+     }
+     ```
+
+2. **未移除的事件监听器**：
+
+   - 如果事件监听器被绑定在 DOM 元素上，但没有在元素移除后正确移除，可能导致内存泄漏。
+     ```javascript
+     const button = document.getElementById('myButton')
+     button.addEventListener('click', function () {
+       /* some logic */
+     })
+     // 如果没有 button.removeEventListener，按钮被移除后内存仍未释放
+     ```
+
+3. **闭包（Closures）**：
+
+   - 闭包会保持对外部函数变量的引用，如果闭包生命周期过长，会导致外部函数的变量无法释放。
+     ```javascript
+     function createClosure() {
+       let largeObject = new Array(1000).fill('Some data')
+       return function () {
+         console.log(largeObject) // largeObject 被闭包引用，无法被 GC 回收
+       }
+     }
+     let closure = createClosure()
+     ```
+
+4. **DOM 引用**：
+
+   - 保留对已删除 DOM 元素的引用，导致内存泄漏。
+     ```javascript
+     let div = document.createElement('div')
+     document.body.appendChild(div)
+     // 如果没有将 div 设置为 null，垃圾回收器可能无法回收它
+     div = null
+     ```
+
+5. **定时器（setInterval/setTimeout）未清除**：
+
+   - 如果定时器没有清除，仍然会占用内存。
+     ```javascript
+     let interval = setInterval(function () {
+       console.log('Running')
+     }, 1000)
+     // 如果没有 clearInterval(interval)，定时器将一直运行，导致内存泄漏
+     ```
+
+6. **Web Workers 和后台线程**：
+   - 如果 Web Worker 或后台线程没有正确终止，可能会导致内存泄漏。
+     ```javascript
+     const worker = new Worker('worker.js')
+     // 如果没有 worker.terminate()，worker 可能导致内存泄漏
+     ```
+
+:::
+
+## 如何理解 WebAssembly？
+
+参考答案
+
+::: details
+
+**WebAssembly（Wasm）** 是一种新的 Web 技术，它允许开发者将其他编程语言（如 C、C++、Rust 等）编译成高效的二进制代码，并在浏览器中运行。WebAssembly 旨在提供接近原生性能的 Web 体验，特别适用于高性能计算任务。
+
+**关键点：**
+
+1. **高效性**：WebAssembly 是一种二进制格式，比 JavaScript 的文本格式更紧凑，加载速度更快，执行速度更快，适用于 CPU 密集型任务，如图像处理、游戏开发和科学计算。
+
+2. **与 JavaScript 协作**：WebAssembly 和 JavaScript 可以协同工作，JavaScript 用于 UI 操作和事件处理，WebAssembly 负责计算密集型任务。它们通过 **共享内存** 和 **消息传递** 进行通信。
+
+3. **跨平台**：WebAssembly 是跨平台的，可以在所有支持 WebAssembly 的现代浏览器中运行，并且不需要针对不同操作系统和硬件做额外的修改。
+
+4. **安全性**：WebAssembly 运行在沙盒环境中，不能直接访问操作系统资源，保证了 Web 应用的安全性。
+
+**应用场景**：
+
+- **游戏开发**：通过高效的计算，WebAssembly 可以让 Web 上的游戏运行得更流畅。
+- **图像/视频处理**：利用 WebAssembly 进行高效的图像处理和视频编解码。
+- **科学计算**：WebAssembly 能大大提升 JavaScript 在处理大数据和复杂计算时的性能。
+
+:::
 
 ## JS V8 Nodejs Deno Bun 这几个，他们是什么关系？
+
+参考答案
+
+::: details
+
+**1. V8**
+
+- **V8** 是一个开源的 **JavaScript 引擎**，由 Google 开发，主要用于 Chrome 浏览器和 Node.js。
+- V8 将 JavaScript 代码编译成机器代码并执行，从而提高 JavaScript 的执行效率。
+- **作用**：V8 是 JavaScript 执行的“心脏”，负责解析和执行 JavaScript 代码。
+- **关系**：V8 是 **Node.js** 和 **Deno** 的底层引擎。它本身不提供完整的 JavaScript 环境或库，只负责执行 JavaScript。
+
+**2. Node.js**
+
+- **Node.js** 是一个基于 V8 引擎的 **JavaScript 运行时环境**，使得 JavaScript 不仅可以在浏览器中运行，还可以在服务器端运行。
+- 它为 JavaScript 提供了 I/O 操作、文件系统访问、网络请求等功能，这些功能通常由操作系统提供。
+- **作用**：Node.js 使得 JavaScript 可以用于构建服务器端应用，支持事件驱动、非阻塞式 I/O 机制。
+- **关系**：Node.js 使用 V8 作为其 JavaScript 引擎，除此之外，它还包含一些额外的 API（如 `fs`、`http`、`path` 等）来提供对文件系统、网络等资源的访问。
+
+**3. Deno**
+
+- **Deno** 是一个由 **Node.js** 的原始开发者 **Ryan Dahl** 创建的新的 JavaScript/TypeScript 运行时环境。
+- 它同样使用 **V8 引擎**，但是与 Node.js 不同的是，Deno 内置了对 TypeScript 的支持，且具有现代化的安全特性（如权限控制）。
+- **作用**：Deno 旨在修复 Node.js 中存在的一些设计问题，提供更简洁和安全的运行时环境。
+- **关系**：Deno 使用 V8 作为 JavaScript 引擎，但它不是 Node.js 的直接继承者，而是对现有 JavaScript 运行时环境的一次重构，加入了许多新的功能和改进。
+
+**4. Bun**
+
+- **Bun** 是一个新兴的 **JavaScript/TypeScript 运行时**，其目标是提供更高效的性能，特别是在构建工具和服务器端应用中。
+- Bun 是基于 **JavaScriptCore**（Safari 浏览器的 JavaScript 引擎）构建的，而不是 V8。
+- **作用**：Bun 具有非常快速的执行速度，提供类似于 Node.js 的 API，同时它也是一个现代的构建工具（例如，能够快速打包、转译和运行 JavaScript/TypeScript 代码）。
+- **关系**：Bun 不是基于 V8 引擎，它使用的是 **JavaScriptCore** 引擎，但它与 Node.js 和 Deno 类似，作为一个 JavaScript 运行时环境提供底层支持。
+
+:::
