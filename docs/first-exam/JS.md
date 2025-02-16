@@ -1714,11 +1714,12 @@ JavaScript 的内存管理是自动的，主要通过 **垃圾回收（GC）** �
 
 6. **Web Workers 和后台线程**：
    - 如果 Web Worker 或后台线程没有正确终止，可能会导致内存泄漏。
-     `javascript
-const worker = new Worker('worker.js');
-// 如果没有 worker.terminate()，worker 可能导致内存泄漏
-`
-     :::
+     ```javascript
+     const worker = new Worker('worker.js')
+     // 如果没有 worker.terminate()，worker 可能导致内存泄漏
+     ```
+
+:::
 
 ## 如何理解 WebAssembly？
 
