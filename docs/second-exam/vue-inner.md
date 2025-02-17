@@ -287,9 +287,26 @@ Vue 的响应式原理在 2.x 和 3.x 中有所不同，分别基于 `Object.def
 
 ## Vue diff 算法的过程
 
-使用最长递增子序列算法...
+::: details 参考答案
 
-@石小石 将于 2025.02.20 之前提交答案。
+Vue的diff算法执行，依赖数据的的响应式系统：当数据发生改变时， `setter` 方法会让调用 `Dep.notify` 通知所有订阅者 `Watcher` ，订阅者会重新执行渲染函数，渲染函数内部通过diff 算法用于比较新旧虚拟 DOM 树的差异，并计算出最小的更新操作，最终更新相应的视图。
+
+![](../imgs/vue/render.png)
+
+diff 算法的核心算法流程如下：
+
+- 节点对比
+  如果新旧节点类型相同，则继续比较它们的属性。如果节点类型不同（如元素和文本节点不同），则直接**替换**整个节点。
+- 属性更新：
+  如果节点类型相同，接下来检查节点的属性。对于不同的属性值进行更新，移除旧属性，添加新属性。
+- 子节点比对：
+  对于有子节点的元素（如 div），Vue 会使用不同的策略来优化子节点更新：
+  🎯 文本节点的更新：如果新旧子节点都是文本节点，直接更新文本内容。
+  🎯 数组类型子节点的比对：如果新旧子节点都是数组，Vue 会通过 `LIS 算法` 来优化节点的重新排列，避免过多的 DOM 操作。
+
+![](../imgs/vue/diff.png)
+
+:::
 
 ## Vue3 diff 算法做了哪些优化？
 
@@ -313,7 +330,107 @@ Vue 的响应式原理在 2.x 和 3.x 中有所不同，分别基于 `Object.def
 
 ## Vue diff 算法和 React diff 算法的区别
 
-@石小石 将于 2025.02.20 之前提交答案。
+::: details
+
+Vue 和 React 的 Diff 算法均基于虚拟 DOM，但在 `实现策略` 、 `优化手段` 和 `设计哲学` 上存在显著差异：
+
+**1. 核心算法策略对比**
+
+| **维度**     | **React**                      | **Vue 2/3**                          |
+| ------------ | ------------------------------ | ------------------------------------ |
+| **遍历方式** | 单向递归（同层顺序对比）       | 双端对比（头尾指针优化）             |
+| **节点复用** | 类型相同则复用，否则销毁重建   | 类型相同则尝试复用，优先移动而非重建 |
+| **静态优化** | 需手动优化（如 `React.memo` ） | 编译阶段自动标记静态节点             |
+| **更新粒度** | 组件级更新（默认）             | 组件级 + 块级（Vue3 Fragments）      |
+
+**2. 列表 Diff 实现细节**
+
+**a. React 的索引对比策略**
+
+- **无 key 时**：按索引顺序对比，可能导致无效更新
+
+```jsx
+// 旧列表：[A, B, C]
+// 新列表：[D, A, B, C]（插入头部）
+// React 对比结果：更新索引 0-3，性能低下
+```
+
+- **有 key 时**：通过 key 匹配节点，减少移动操作
+
+```jsx
+// key 匹配后，仅插入 D，其他节点不更新
+```
+
+**b. Vue 的双端对比策略**
+
+分四步优化对比效率（Vue2 核心逻辑，Vue3 优化为最长递增子序列）：
+
+1. **头头对比**：新旧头指针节点相同则复用，指针后移
+2. **尾尾对比**：新旧尾指针节点相同则复用，指针前移
+3. **头尾交叉对比**：旧头 vs 新尾，旧尾 vs 新头
+4. **中间乱序对比**：建立 key-index 映射表，复用可匹配节点
+
+```js
+// 旧列表：[A, B, C, D]
+// 新列表：[D, A, B, C]
+// Vue 通过步骤3头尾对比，仅移动 D 到头部
+```
+
+**3. 静态优化机制**
+
+**a. Vue 的编译时优化**
+
+- **静态节点标记**：  
+  模板中的静态节点（无响应式绑定）会被编译为常量，跳过 Diff
+
+```html
+<!-- 编译前 -->
+<div>Hello Vue</div>
+
+<!-- 编译后 -->
+_hoisted_1 = createVNode("div", null, "Hello Vue")
+```
+
+- **Block Tree（Vue3）**：  
+  动态节点按区块（Block）组织，Diff 时仅对比动态部分
+
+**b. React 的运行时优化**
+
+- **手动控制更新**：  
+  需通过 `React.memo` 、 `shouldComponentUpdate` 或 `useMemo` 避免无效渲染
+
+```jsx
+const MemoComp = React.memo(() => <div>Static Content</div>)
+```
+
+**4. 响应式更新触发**
+
+| **框架** | **机制**                   | **Diff 触发条件**                |
+| -------- | -------------------------- | -------------------------------- |
+| React    | 状态变化触发组件重新渲染   | 父组件渲染 → 子组件默认递归 Diff |
+| Vue      | 响应式数据变更触发组件更新 | 依赖收集 → 仅受影响组件触发 Diff |
+
+```javascript
+// Vue：只有 data.value 变化才会触发更新
+const vm = new Vue({
+  data: {
+    value: 1,
+  },
+})
+
+// React：需显式调用 setState
+const [value, setValue] = useState(1)
+```
+
+**5. 设计哲学差异**
+
+| **维度**     | **React**                  | **Vue**                    |
+| ------------ | -------------------------- | -------------------------- |
+| **控制粒度** | 组件级控制（开发者主导）   | 细粒度依赖追踪（框架主导） |
+| **优化方向** | 运行时优化（Fiber 调度）   | 编译时优化（模板静态分析） |
+| **适用场景** | 大型动态应用（需精细控制） | 中小型应用（快速开发）     |
+
+:::
 
 ## 简述 Vue 组件异步更新的过程
 
@@ -321,9 +438,83 @@ Vue 的响应式原理在 2.x 和 3.x 中有所不同，分别基于 `Object.def
 
 ## Vue 组件是如何渲染和更新的
 
+::: details 参考答案
+
+Vue 组件的渲染和更新过程涉及从 `模板编译` 到 `虚拟 DOM` 的**构建**、**更新**和最终的实际 DOM 更新。下面是 Vue 组件渲染和更新的主要步骤：
+
+1️⃣ 组件渲染过程
+Vue 的组件的渲染过程核心是其[模板编译](./vue-inner/#vue-模板编译的过程)过程，大致流程如下：
+首先，Vue会通过其响应式系统完成组件的 `data、computed 和 props` 等数据和模板的绑定，这个过程Vue 会利用 `Object.defineProperty（Vue2）` 或 `Proxy（Vue3）` 来追踪数据的依赖，保证数据变化时，视图能够重新渲染。随后，Vue会将模板编译成渲染函数，这个渲染函数会在每次更新时被调用，从而生成虚拟 DOM。
+最终，虚拟DOM被渲染成真实的 DOM 并插入到页面中，组件渲染完成，组件渲染的过程中，Vue 会依次触发相关的生命周期钩子。
+
+2️⃣ 组件更新过程
+当组件的状态（如 data、props、computed）发生变化时，响应式数据的 `setter` 方法会让调用Dep.notify通知所有 `订阅者Watcher` ，重新执行渲染函数触发更新。
+
+![](../imgs/vue/模板编译.png)
+
+渲染函数在执行时，会使用 diff 算法（例如：双端对比、静态标记优化等）生成新的虚拟DOM。计算出需要更新的部分后（插入、删除或更新 DOM），然后对实际 DOM 进行最小化的更新。在组件更新的过程中，Vue 会依次触发beforeUpdate、updated等相关的生命周期钩子。
+
+:::
+
 ## 如何实现 keep-alive 缓存机制
 
-@石小石 将于 2025.02.20 之前提交答案。
+::: details 参考答案
+
+`keep-alive` 是 Vue 提供的一个内置组件，用来缓存组件的状态，避免在切换组件时重新渲染和销毁，从而提高性能。
+
+```vue
+<template>
+  <keep-alive>
+    <component :is="currentComponent" />
+  </keep-alive>
+</template>
+```
+
+Vue 3 的 keep-alive 的缓存机制原理如下：
+
+- 缓存池：keep-alive 内部使用一个 Map 存储已渲染的组件实例，键通常是组件的 key（或 name）。
+- 激活与挂起：如果组件切换时已经缓存，直接复用缓存的组件实例；如果组件未缓存，则渲染并缓存新的组件实例。
+  此外，keep-alive 还会激活特殊的钩子函数：
+- 当组件被缓存时，会触发 deactivated 钩子。
+- 当组件从缓存中恢复时，会触发 activated 钩子。
+
+一个简单的实现如下：
+
+```javascript
+const KeepAliveImpl = {
+  name: 'KeepAlive',
+  // 已缓存的组件实例。
+  _cache: new Map(),
+  _activeCache: new Map(),
+
+  render() {
+    const vnode = this.$slots.default()[0] // 获取动态组件的 vnode
+    const key = vnode.key || vnode.type.name
+
+    if (this._cache.has(key)) {
+      const cachedVnode = this._cache.get(key)
+      this._activeCache.set(key, cachedVnode)
+      return cachedVnode
+    } else {
+      return vnode // 未缓存，直接渲染
+    }
+  },
+
+  mounted() {
+    const key = this.$vnode.key
+    if (!this._cache.has(key)) {
+      this._cache.set(key, this.$vnode)
+    }
+  },
+
+  beforeDestroy() {
+    const key = this.$vnode.key
+    this._cache.delete(key)
+  },
+}
+```
+
+:::
 
 ## 为何 ref 需要 value 属性
 
