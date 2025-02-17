@@ -482,7 +482,39 @@ function ControlledInput() {
 const { count } = useTimer()
 ```
 
-@石小石 将于 2025.02.20 之前提交答案。
+::: details 参考答案
+
+```jsx
+import { useState, useEffect } from 'react'
+
+function useTimer() {
+  const [count, setCount] = useState(0)
+
+  useEffect(() => {
+    // 设置定时器，每秒钟增加 count
+    const intervalId = setInterval(() => {
+      setCount((prevCount) => prevCount + 1)
+    }, 1000)
+
+    // 清理定时器
+    return () => clearInterval(intervalId)
+  }, []) // 空数组表示仅在组件挂载时执行一次
+
+  return { count }
+}
+
+export default function TimerComponent() {
+  const { count } = useTimer()
+
+  return (
+    <div>
+      <p>Count: {count}</p>
+    </div>
+  )
+}
+```
+
+:::
 
 ## 使用 React Hook 实现 useRequest
 
@@ -490,7 +522,57 @@ const { count } = useTimer()
 const { loading, data, error } = useRequest(url) // 可只考虑 get 请求
 ```
 
-@石小石 将于 2025.02.20 之前提交答案。
+::: details 参考答案
+
+```jsx
+import { useState, useEffect } from 'react'
+import axios from 'axios'
+
+function useRequest(url) {
+  const [data, setData] = useState(null) // 存储请求的数据
+  const [loading, setLoading] = useState(true) // 加载状态
+  const [error, setError] = useState(null) // 错误信息
+
+  useEffect(() => {
+    const fetchData = async () => {
+      setLoading(true) // 设置加载状态为 true
+      setError(null) // 清空先前的错误
+
+      try {
+        const response = await axios.get(url)
+        if (!response.ok) {
+          throw new Error('请求失败!')
+        }
+        setData(response.data) // 设置数据
+      } catch (err) {
+        setError(err.message) // 捕获错误并设置错误信息
+      } finally {
+        setLoading(false) // 请求结束，设置加载状态为 false
+      }
+    }
+
+    fetchData()
+  }, [url]) // 依赖于 url，当 url 改变时重新发起请求
+
+  return { loading, data, error }
+}
+
+// 使用示例
+export default function RequestComponent() {
+  const { loading, data, error } = useRequest('https://xxx.xxxx.com/data')
+
+  if (loading) return <p>Loading...</p>
+  if (error) return <p>错误信息: {error}</p>
+  return (
+    <div>
+      <h3>请求结果:</h3>
+      <pre>{JSON.stringify(data)}</pre>
+    </div>
+  )
+}
+```
+
+:::
 
 ## React 项目可做哪些性能优化？
 
