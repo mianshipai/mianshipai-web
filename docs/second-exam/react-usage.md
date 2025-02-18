@@ -4,15 +4,638 @@ React 是全球应用最广泛的框架，国内大厂多用 React
 
 ## React 组件生命周期
 
-@大骆 将于 2025.02.18 之前提交答案。
+::: details 参考答案
+
+不管是React类组件还是函数组件，其生命周期都是分为以下三个阶段。
+
+**挂载阶段**：这是组件首次被创建并插入到 DOM 中的阶段。
+
+**更新阶段**：当组件的 props 或 state 发生变化时，就会触发更新阶段。
+
+**卸载阶段**：组件从 DOM 中移除时进入卸载阶段。
+
+但其生命周期钩子方法是不同的，函数组件是没有明确的生命周期方法，但可以通过 `useEffect` 来模拟生命周期行为。下面分别介绍一下，类组件和函数组件的生命周期方法以及作用方便记忆。
+
+**类组件的生命周期方法**
+
+**挂载阶段**会按以下顺序调用生命周期方法：
+
+- **constructor(props)**：通常在这个方法中做两件事情，一件是通过给 `this.state` 赋值对象来初始化内部 state，另外一件是为事件处理函数绑定实例。但是**不要调用 `setState()` 方法**，不要把**props 的值复制给 state**。
+
+  ```js
+  constructor(props) {
+    super(props);
+    // 不要在这里调用 this.setState()
+    this.state = { counter: 0 };
+    this.handleClick = this.handleClick.bind(this);
+    // 不要这样做
+    this.state = { color: props.color };
+  }
+  ```
+
+- **static getDerivedStateFromProps(props, state)**：让组件在 **props 变化** 时更新 state，或者返回`null`来表明新的props不需要任何状态的更新。
+
+  ```js
+  class ExampleComponent extends React.Component {
+    // 在构造函数中初始化 state，
+    // 或者使用属性初始化器。
+    state = {
+      isScrollingDown: false,
+      lastRow: null,
+    }
+
+    static getDerivedStateFromProps(props, state) {
+      if (props.currentRow !== state.lastRow) {
+        return {
+          isScrollingDown: props.currentRow > state.lastRow,
+          lastRow: props.currentRow,
+        }
+      }
+      // 返回 null 表示无需更新 state。
+      return null
+    }
+  }
+  ```
+
+- **render()**：是类组件中唯一必须实现的方法。返回你想渲染的React元素。`render()`方法应该是纯函数的，这意味着不应该包含修改组件状态的操作。
+
+- **componentDidMount()**：可以初始化DOM节点以及加载网络请求。
+
+**更新阶段**会按以下顺序调用生命周期方法：
+
+- **static getDerivedStateFromProps(props, state)**：在16.3版本中只有在props更改时才会调用该方法，16.4及以后的版本中props更改、调用 `setState()` 方法和调用 `forceUpdate()` 方法时都会调用该方法。
+
+- **shouldComponentUpdate(nextProps, nextState)**：当 props 或 state 发生变化时，会调用该方法，返回值默认为 true，返回 `false` 则表示可以跳过更新。但是不会阻止子组件在 state 更改时重新渲染。若使用 `forceUpdate()` 时触发组件更新则不会调用该方法。
+
+- **render()**：根据新的props和state再次被调用。
+
+- **getSnapshotBeforeUpdate(prevProps, prevState)**：在最新的渲染输出提交到DOM之前调用，它允许你捕获一些组件DOM状态（如滚动位置）。
+
+- **componentDidUpdate(prevProps, prevState, snapshot)**：在更新后立即调用。可以在此进行DOM的操作或执行更多网络请求。
+
+**卸载阶段**会调用以下生命周期方法：
+
+- **componentWillUnmount()**
+  - 在组件即将被卸载和销毁之前调用。适用于执行必要的清理操作，如取消网络请求、清除组件中使用的定时器等。
+
+**函数组件的生命周期方法**
+
+函数组件不像类组件那样具有显式的生命周期方法。我们可以通过 `useEffect` 来模拟生命周期行为。
+
+模拟**挂载阶段**的生命周期方法：
+
+- 只需要在 `useEffect` 的依赖数组中传入一个空数组 `[]`。这样，该副作用只会在组件挂载后运行一次。
+
+  ```js
+  useEffect(() => {
+    console.log('代码只会在组件挂载后执行一次')
+  }, [])
+  ```
+
+模拟**更新阶段**的生命周期方法：
+
+- 通过将依赖项放入依赖数组中，`useEffect` 可以在依赖项更改时执行。如果你省略了依赖数组，副作用将在每次渲染后执行。
+  ```js
+  // 注意这里没有提供依赖数组
+  useEffect(() => {
+    console.log('代码会在组件挂载后以及每次更新后执行')
+  })
+  // 特定依赖更新时执行
+  useEffect(() => {
+    console.log('代码会在 count 更新后执行')
+  }, [count])
+  ```
+
+模拟**卸载阶段**的生命周期方法：
+
+- 在 `useEffect` 的函数中返回一个函数，该函数会在组件卸载前执行。
+
+  ```js
+  useEffect(() => {
+    return () => {
+      console.log('代码会在组件卸载前执行')
+    }
+  }, [])
+  ```
+
+  :::
 
 ## React 父子组件生命周期调用顺序
 
-@大骆 将于 2025.02.18 之前提交答案。
+::: details 参考答案
+
+React 父子组件有四种组合方式：
+
+1、**父子组件都是类组件**
+
+**挂载阶段**
+
+- **父组件**：`constructor`
+- **父组件**：`getDerivedStateFromProps`
+- **父组件**：`render`
+- **子组件**：`constructor`
+- **子组件**：`getDerivedStateFromProps`
+- **子组件**：`render`
+- **子组件**：`componentDidMount`
+- **父组件**：`componentDidMount`
+
+**更新阶段**
+
+- **父组件**：`getDerivedStateFromProps`
+- **父组件**：`shouldComponentUpdate`
+- **父组件**：`render`
+- **子组件**：`getDerivedStateFromProps`
+- **子组件**：`shouldComponentUpdate`
+- **子组件**：`render`
+- **子组件**：`getSnapshotBeforeUpdate`
+- **父组件**：`getSnapshotBeforeUpdate`
+- **子组件**：`componentDidUpdate`
+- **父组件**：`componentDidUpdate`
+
+**卸载阶段**
+
+- **父组件**：`componentWillUnmount`
+- **子组件**：`componentWillUnmount`
+
+2、**父子组件都是函数组件**
+
+函数组件的生命周期通过 `useEffect` 模拟，其调用顺序如下：
+
+**挂载阶段**
+
+- **父组件**：执行函数体（首次渲染）
+- **子组件**：执行函数体（首次渲染）
+- **子组件**：`useEffect`（挂载阶段）
+- **父组件**：`useEffect`（挂载阶段）
+
+**更新阶段**
+
+- **父组件**：执行函数体（重新渲染）
+- **子组件**：执行函数体（重新渲染）
+- **子组件**：`useEffect` 清理函数（如果依赖项变化）
+- **父组件**：`useEffect` 清理函数（如果依赖项变化）
+- **子组件**：`useEffect`（如果依赖项变化）
+- **父组件**：`useEffect`（如果依赖项变化）
+
+**卸载阶段**
+
+- **父组件**：`useEffect` 清理函数
+- **子组件**：`useEffect` 清理函数
+
+3、**父组件是类组件，子组件是函数组件**
+
+**挂载阶段**
+
+- **父组件**：`constructor`
+- **父组件**：`getDerivedStateFromProps`
+- **父组件**：`render`
+- **子组件**： 执行函数体（首次渲染）
+- **父组件**：`componentDidMount`
+- **子组件**：`useEffect`（挂载阶段）
+
+**更新阶段**
+
+- **父组件**：`getDerivedStateFromProps`
+- **父组件**：`shouldComponentUpdate`
+- **父组件**：`render`
+- **子组件**： 执行函数体（重新渲染）
+- **父组件**：`getSnapshotBeforeUpdate`
+- **父组件**：`componentDidUpdate`
+- **子组件**：`useEffect` 清理函数（如果依赖项变化）
+- **子组件**：`useEffect`（如果依赖项变化）
+
+**卸载阶段**
+
+- **父组件**：`componentWillUnmount`
+- **子组件**：`useEffect` 清理函数
+
+4、**父组件是函数组件，子组件是类组件**
+
+**挂载阶段**
+
+- **父组件**：执行函数体（首次渲染）
+- **子组件**：`constructor`
+- **子组件**：`getDerivedStateFromProps`
+- **子组件**：`render`
+- **子组件**：`componentDidMount`
+- **父组件**：`useEffect`（挂载阶段）
+
+**更新阶段**
+
+- **父组件**：执行函数体（重新渲染）
+- **子组件**：`getDerivedStateFromProps`
+- **子组件**：`shouldComponentUpdate`
+- **子组件**：`render`
+- **子组件**：`getSnapshotBeforeUpdate`
+- **子组件**：`componentDidUpdate`
+- **父组件**：`useEffect` 清理函数（如果依赖项变化）
+- **父组件**：`useEffect`（如果依赖项变化）
+
+**卸载阶段**
+
+- **子组件**：`componentWillUnmount`
+- **父组件**：`useEffect` 清理函数
+
+:::
 
 ## React 组件通讯方式
 
-@大骆 将于 2025.02.18 之前提交答案。
+::: details 参考答案
+
+- **通过props向子组件传递数据**
+
+```js
+//父组件
+const Parent = () => {
+  const message = 'Hello from Parent'
+  return <Child message={message} />
+}
+
+// 子组件
+const Child = ({ message }) => {
+  return <div>{message}</div>
+}
+```
+
+- **通过回调函数向父组件传递数据**
+
+```js
+//父组件
+const Parent = () => {
+  const handleData = (data) => {
+    console.log('Data from Child:', data)
+  }
+  return <Child onSendData={handleData} />
+}
+
+// 子组件
+const Child = ({ message }) => {
+  return <button onClick={() => onSendData('Hello from Child')}>Send Data</button>
+}
+```
+
+- **使用refs调用子组件暴露的方法**
+
+子组件是类组件：
+
+```js
+import React, { useRef } from 'react'
+
+// 子组件
+class Child extends React.Component {
+  // 子组件暴露的方法
+  sayHello() {
+    alert('Hello from Child Component!')
+  }
+
+  render() {
+    return <div>Child Component</div>
+  }
+}
+
+// 父组件
+function Parent() {
+  // 创建一个 ref 来引用子组件
+  const childRef = useRef(null)
+
+  // 点击按钮时调用子组件的方法
+  const handleClick = () => {
+    if (childRef.current) {
+      childRef.current.sayHello()
+    }
+  }
+
+  return (
+    <div>
+      {/* 将 ref 传递给子组件 */}
+      <Child ref={childRef} />
+      <button onClick={handleClick}>Call Child Method</button>
+    </div>
+  )
+}
+
+export default Parent
+```
+
+子组件是函数组件：
+
+```js
+import React, { useRef, forwardRef, useImperativeHandle } from 'react'
+
+// 子组件（函数组件）
+const Child = forwardRef((props, ref) => {
+  // 暴露方法给父组件
+  useImperativeHandle(ref, () => ({
+    sayHello() {
+      alert('Hello from Child Component!')
+    },
+  }))
+
+  return <div>Child Component</div>
+})
+
+// 父组件
+function Parent() {
+  const childRef = useRef(null)
+
+  const handleClick = () => {
+    if (childRef.current) {
+      childRef.current.sayHello()
+    }
+  }
+
+  return (
+    <div>
+      <Child ref={childRef} />
+      <button onClick={handleClick}>Call Child Method</button>
+    </div>
+  )
+}
+
+export default Parent
+```
+
+- **通过Context进行跨组件通信**
+
+函数组件：
+
+```js
+import React, { useState } from 'react'
+
+// 创建一个 Context
+const MyContext = React.createContext()
+
+// 父组件
+function Parent() {
+  const [sharedData, setSharedData] = useState('Hello from Context')
+
+  const updateData = () => {
+    setSharedData('Updated Data from Context')
+  }
+
+  return (
+    // 提供数据和更新函数
+    <MyContext.Provider value={{ sharedData, updateData }}>
+      <ChildA />
+    </MyContext.Provider>
+  )
+}
+
+// 子组件 A（引用子组件 B）
+function ChildA() {
+  return (
+    <div>
+      <ChildB />
+    </div>
+  )
+}
+
+// 子组件 B（使用 useContext）
+function ChildB() {
+  const { sharedData, updateData } = React.useContext(MyContext)
+  return (
+    <div>
+      <div>ChildB: {sharedData}</div>
+      <button onClick={updateData}>Update Data</button>
+    </div>
+  )
+}
+
+export default Parent
+```
+
+在类组件中，使用 `Context` 进行跨组件通信的方式与函数组件类似，但需要通过 `Context.Consumer` 或 `static contextType` 来消费数据。
+
+```js
+import React from 'react'
+
+// 创建一个 Context
+const MyContext = React.createContext()
+
+// 父组件
+class Parent extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      sharedData: 'Hello from Context',
+    }
+  }
+
+  updateData = () => {
+    this.setState({ sharedData: 'Updated Data from Context' })
+  }
+
+  render() {
+    return (
+      // 提供数据和更新函数
+      <MyContext.Provider value={{ sharedData: this.state.sharedData, updateData: this.updateData }}>
+        <ChildA />
+        <ChildB />
+      </MyContext.Provider>
+    )
+  }
+}
+
+// 子组件 A（使用 Consumer）
+class ChildA extends React.Component {
+  render() {
+    return <MyContext.Consumer>{({ sharedData }) => <div>ChildA: {sharedData}</div>}</MyContext.Consumer>
+  }
+}
+
+// 子组件 B（使用 contextType）
+class ChildB extends React.Component {
+  // 使用静态属性 contextType 绑定 Context
+  static contextType = MyContext
+
+  render() {
+    const { sharedData, updateData } = this.context
+    return (
+      <div>
+        <div>ChildB: {sharedData}</div>
+        <button onClick={updateData}>Update Data</button>
+      </div>
+    )
+  }
+}
+
+export default Parent
+```
+
+- **使用状态管理库进行通信**
+
+  - **React Context + useReducer**
+
+    ```js
+    import React, { useReducer } from 'react'
+
+    const initialState = { count: 0 }
+
+    function reducer(state, action) {
+      switch (action.type) {
+        case 'increment':
+          return { count: state.count + 1 }
+        case 'decrement':
+          return { count: state.count - 1 }
+        default:
+          throw new Error()
+      }
+    }
+
+    const CounterContext = React.createContext()
+
+    function CounterProvider({ children }) {
+      const [state, dispatch] = useReducer(reducer, initialState)
+      return <CounterContext.Provider value={{ state, dispatch }}>{children}</CounterContext.Provider>
+    }
+
+    function Counter() {
+      const { state, dispatch } = React.useContext(CounterContext)
+      return (
+        <div>
+          Count: {state.count}
+          <button onClick={() => dispatch({ type: 'increment' })}>+</button>
+          <button onClick={() => dispatch({ type: 'decrement' })}>-</button>
+        </div>
+      )
+    }
+
+    function App() {
+      return (
+        <CounterProvider>
+          <Counter />
+        </CounterProvider>
+      )
+    }
+
+    export default App
+    ```
+
+  - **Redux**：使用 `Redux Toolkit` 简化 Redux 开发。
+
+    ```js
+    import { createSlice, configureStore } from '@reduxjs/toolkit'
+
+    const counterSlice = createSlice({
+      name: 'counter',
+      initialState: { value: 0 },
+      reducers: {
+        increment: (state) => {
+          state.value += 1
+        },
+        decrement: (state) => {
+          state.value -= 1
+        },
+      },
+    })
+
+    const { increment, decrement } = counterSlice.actions
+
+    const store = configureStore({
+      reducer: counterSlice.reducer,
+    })
+
+    store.subscribe(() => console.log(store.getState()))
+
+    store.dispatch(increment())
+    store.dispatch(decrement())
+    ```
+
+  - **MobX**
+
+  ```js
+  import { makeAutoObservable } from 'mobx'
+  import { observer } from 'mobx-react-lite'
+
+  class CounterStore {
+    count = 0
+
+    constructor() {
+      makeAutoObservable(this)
+    }
+
+    increment() {
+      this.count += 1
+    }
+
+    decrement() {
+      this.count -= 1
+    }
+  }
+
+  const counterStore = new CounterStore()
+
+  const Counter = observer(() => {
+    return (
+      <div>
+        Count: {counterStore.count}
+        <button onClick={() => counterStore.increment()}>+</button>
+        <button onClick={() => counterStore.decrement()}>-</button>
+      </div>
+    )
+  })
+
+  export default Counter
+  ```
+
+  - **Zustand**
+
+  ```
+  import create from "zustand";
+
+  const useStore = create((set) => ({
+    count: 0,
+    increment: () => set((state) => ({ count: state.count + 1 })),
+    decrement: () => set((state) => ({ count: state.count - 1 })),
+  }));
+
+  function Counter() {
+    const { count, increment, decrement } = useStore();
+    return (
+      <div>
+        Count: {count}
+        <button onClick={increment}>+</button>
+        <button onClick={decrement}>-</button>
+      </div>
+    );
+  }
+
+  export default Counter;
+  ```
+
+- **使用事件总线（Event Bus）进行通信**
+
+可以使用第三方库如 pubsub-js 来实现父子组件间通信。在父组件中订阅一个事件，子组件在特定情况下发布这个事件并传递数据。
+
+```js
+import React from 'react'
+import PubSub from 'pubsub-js'
+
+const ParentComponent = () => {
+  React.useEffect(() => {
+    const token = PubSub.subscribe('childData', (msg, data) => {
+      console.log('Received data from child:', data)
+    })
+    return () => {
+      PubSub.unsubscribe(token)
+    }
+  }, [])
+
+  return <ChildComponent />
+}
+
+const ChildComponent = () => {
+  const sendData = () => {
+    PubSub.publish('childData', { message: 'Hello from child' })
+  }
+
+  return <button onClick={sendData}>Send data from child</button>
+}
+
+export default ParentComponent
+```
+
+:::
 
 ## state 和 props 有什么区别？
 
