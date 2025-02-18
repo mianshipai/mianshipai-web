@@ -4,6 +4,8 @@ React 是全球应用最广泛的框架，国内大厂多用 React
 
 ## React 组件生命周期
 
+::: details 参考答案
+
 不管是React类组件还是函数组件，其生命周期都是分为以下三个阶段。
 
 **挂载阶段**：这是组件首次被创建并插入到 DOM 中的阶段。
@@ -116,7 +118,11 @@ React 是全球应用最广泛的框架，国内大厂多用 React
   }, [])
   ```
 
+  :::
+
 ## React 父子组件生命周期调用顺序
+
+::: details 参考答案
 
 React 父子组件有四种组合方式：
 
@@ -230,7 +236,11 @@ React 父子组件有四种组合方式：
 - **子组件**：`componentWillUnmount`
 - **父组件**：`useEffect` 清理函数
 
+:::
+
 ## React 组件通讯方式
+
+::: details 参考答案
 
 - **通过props向子组件传递数据**
 
@@ -624,6 +634,8 @@ const ChildComponent = () => {
 
 export default ParentComponent
 ```
+
+:::
 
 ## state 和 props 有什么区别？
 
