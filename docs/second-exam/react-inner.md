@@ -526,25 +526,412 @@ const [value, setValue] = useState(1)
 
 ## 为何 React JSX 循环需要使用 `key` ？
 
-@雨夜 将于 2025.02.21 之前提交答案。
+参考答案
+
+::: details
+
+1. **元素的高效识别与复用**
+
+React 通过 `key` 唯一标识列表中的每个元素。当列表发生变化（增删改排序）时，React 会通过 `key` 快速判断：
+
+- **哪些元素是新增的**（需要创建新 DOM 节点）
+- **哪些元素是移除的**（需要销毁旧 DOM 节点）
+- **哪些元素是移动的**（直接复用现有 DOM 节点，仅调整顺序）
+
+如果没有 `key`，React 会默认使用数组索引（`index`）作为标识，这在动态列表中会导致 **性能下降** 或 **状态错误**。
+
+2. **避免状态混乱**
+
+如果列表项是 **有状态的组件**（比如输入框、勾选框等），错误的 `key` 会导致状态与错误的内容绑定。例如：
+
+```jsx
+// 如果初始列表是 [A, B]，用索引 index 作为 key：
+<ul>
+  {items.map((item, index) => (
+    <li key={index}>{item}</li>
+  ))}
+</ul>
+
+// 在头部插入新元素变为 [C, A, B] 时：
+// React 会认为 key=0 → C（重新创建）
+// key=1 → A（复用原 key=0 的 DOM，但状态可能残留）
+// 此时，原本属于 A 的输入框状态可能会错误地出现在 C 中。
+```
+
+3. **提升渲染性能**
+
+通过唯一且稳定的 `key`（如数据 ID），React 可以精准判断如何复用 DOM 节点。如果使用随机数或索引，每次渲染都会强制重新创建所有元素，导致性能浪费。
+
+:::
 
 ## React 事件和 DOM 事件有什么区别？
 
-合成事件
+参考答案
 
-@雨夜 将于 2025.02.21 之前提交答案。
+::: details
+
+1. **事件绑定方式**
+
+- **React 事件**  
+  使用**驼峰命名法**（如 `onClick`、`onChange`），通过 JSX 属性直接绑定函数：
+
+  ```jsx
+  <button onClick={handleClick}>点击</button>
+  ```
+
+- **DOM 事件**  
+  使用**全小写命名**（如 `onclick`、`onchange`），通过字符串或 `addEventListener` 绑定：
+  ```html
+  <button onclick="handleClick()">点击</button>
+  ```
+  ```javascript
+  button.addEventListener('click', handleClick)
+  ```
+
+2. **事件对象（Event Object）**
+
+- **React 事件**  
+  使用**合成事件（SyntheticEvent）**，是原生事件对象的跨浏览器包装。
+
+  - 通过 `e.nativeEvent` 访问原生事件。
+  - 事件对象会被复用（事件池机制），异步访问需调用 `e.persist()`。
+
+  ```jsx
+  const handleClick = (e) => {
+    e.persist() // 保持事件对象引用
+    setTimeout(() => console.log(e.target), 100)
+  }
+  ```
+
+- **DOM 事件**  
+  直接使用浏览器原生事件对象，无复用机制。
+  ```javascript
+  button.addEventListener('click', (e) => {
+    console.log(e.target) // 直接访问
+  })
+  ```
+
+3. **事件传播与默认行为**
+
+- **React 事件**
+
+  - **阻止默认行为**：必须显式调用 `e.preventDefault()`。
+  - **阻止冒泡**：调用 `e.stopPropagation()`。
+
+  ```jsx
+  const handleSubmit = (e) => {
+    e.preventDefault() // 阻止表单默认提交
+    e.stopPropagation() // 阻止事件冒泡
+  }
+  ```
+
+- **DOM 事件**
+  - **阻止默认行为**：可调用 `e.preventDefault()` 或 `return false`（在 HTML 属性中）。
+  - **阻止冒泡**：调用 `e.stopPropagation()` 或 `return false`（仅部分情况）。
+  ```html
+  <form onsubmit="return false">
+    <!-- 阻止默认提交 -->
+    <button onclick="event.stopPropagation()">按钮</button>
+  </form>
+  ```
+
+4. **性能优化**
+
+- **React 事件**  
+  采用**事件委托**机制：
+
+  - React 17 之前将事件委托到 `document` 层级。
+  - React 17+ 改为委托到渲染的根容器（如 `ReactDOM.render` 挂载的节点）。
+  - 减少内存占用，动态添加元素无需重新绑定事件。
+
+- **DOM 事件**  
+  直接绑定到元素，大量事件监听时可能导致性能问题。
+
+5. **跨浏览器兼容性**
+
+- **React 事件**  
+  合成事件抹平了浏览器差异（如 `event.target` 的一致性），无需处理兼容性问题。
+
+- **DOM 事件**  
+  需手动处理浏览器兼容性（如 IE 的 `attachEvent` vs 标准 `addEventListener`）。
+
+6. **`this` 绑定**
+
+- **React 事件**  
+  类组件中需手动绑定 `this` 或使用箭头函数：
+
+  ```jsx
+  class MyComponent extends React.Component {
+    handleClick() {
+      console.log(this) // 需绑定，否则为 undefined
+    }
+
+    render() {
+      return <button onClick={this.handleClick.bind(this)}>点击</button>
+    }
+  }
+  ```
+
+- **DOM 事件**  
+  事件处理函数中的 `this` 默认指向触发事件的元素：
+  ```javascript
+  button.addEventListener('click', function () {
+    console.log(this) // 指向 button 元素
+  })
+  ```
+
+| 特性             | React 事件                   | DOM 事件                               |
+| ---------------- | ---------------------------- | -------------------------------------- |
+| **命名规则**     | 驼峰命名（`onClick`）        | 全小写（`onclick`）                    |
+| **事件对象**     | 合成事件（`SyntheticEvent`） | 原生事件对象                           |
+| **默认行为阻止** | `e.preventDefault()`         | `e.preventDefault()` 或 `return false` |
+| **事件委托**     | 自动委托到根容器             | 需手动实现                             |
+| **跨浏览器兼容** | 内置处理                     | 需手动适配                             |
+| **`this` 指向**  | 类组件中需手动绑定           | 默认指向触发元素                       |
+
+React 事件系统通过抽象和优化，提供了更高效、一致的事件处理方式，避免了直接操作 DOM 的繁琐和兼容性问题。
+
+:::
 
 ## 简述 React batchUpdate 机制
 
-@雨夜 将于 2025.02.21 之前提交答案。
+参考答案
+
+::: details
+
+React 的 **batchUpdate（批处理更新）机制** 是一种优化策略，旨在将多个状态更新合并为一次渲染，减少不必要的组件重新渲染次数，从而提高性能。
+
+**核心机制**
+
+1. **异步合并更新**  
+   当在 **同一执行上下文**（如同一个事件处理函数、生命周期方法或 React 合成事件）中多次调用状态更新（如 `setState`、`useState` 的 `setter` 函数），React 不会立即触发渲染，而是将多个更新收集到一个队列中，最终合并为一次更新，统一计算新状态并渲染。
+
+2. **更新队列**  
+   React 内部维护一个更新队列。在触发更新的代码块中，所有状态变更会被暂存到队列，直到代码执行完毕，React 才会一次性处理队列中的所有更新，生成新的虚拟 DOM，并通过 Diff 算法高效更新真实 DOM。
+
+**触发批处理的场景**
+
+1. **React 合成事件**  
+   如 `onClick`、`onChange` 等事件处理函数中的多次状态更新会自动批处理。
+
+   ```jsx
+   const handleClick = () => {
+     setCount(1) // 更新入队
+     setName('Alice') // 更新入队
+     // 最终合并为一次渲染
+   }
+   ```
+
+2. **React 生命周期函数**  
+   在 `componentDidMount`、`componentDidUpdate` 等生命周期方法中的更新会被批处理。
+
+3. **React 18+ 的自动批处理增强**  
+   React 18 引入 `createRoot` 后，即使在异步操作（如 `setTimeout`、`Promise`、原生事件回调）中的更新也会自动批处理：
+   ```jsx
+   setTimeout(() => {
+     setCount(1) // React 18 中自动批处理
+     setName('Alice') // 合并为一次渲染
+   }, 1000)
+   ```
+
+**绕过批处理的场景**
+
+1. **React 17 及之前的异步代码**  
+   在 `setTimeout`、`Promise` 或原生事件回调中的更新默认**不会**批处理，每次 `setState` 触发一次渲染：
+
+   ```jsx
+   // React 17 中会触发两次渲染
+   setTimeout(() => {
+     setCount(1) // 渲染一次
+     setName('Alice') // 渲染第二次
+   }, 1000)
+   ```
+
+2. **手动强制同步更新**  
+   使用 `flushSync`（React 18+）可强制立即更新，绕过批处理：
+
+   ```jsx
+   import { flushSync } from 'react-dom'
+
+   flushSync(() => {
+     setCount(1) // 立即渲染
+   })
+   setName('Alice') // 再次渲染
+   ```
+
+**设计目的**
+
+1. **性能优化**  
+   避免频繁的 DOM 操作，减少浏览器重绘和回流，提升应用性能。
+
+2. **状态一致性**  
+   确保在同一个上下文中多次状态变更后，组件最终基于最新的状态值渲染，避免中间状态导致的 UI 不一致。
+
+**示例对比**
+
+- **自动批处理（React 18+）**
+
+  ```jsx
+  const handleClick = () => {
+    setCount((prev) => prev + 1) // 更新入队
+    setCount((prev) => prev + 1) // 更新入队
+    // 最终 count 增加 2，仅一次渲染
+  }
+  ```
+
+- **非批处理（React 17 异步代码）**
+  ```jsx
+  setTimeout(() => {
+    setCount((prev) => prev + 1) // 渲染一次
+    setCount((prev) => prev + 1) // 再渲染一次
+    // React 17 中触发两次渲染，count 仍为 2
+  }, 1000)
+  ```
+
+| 场景                  | React 17 及之前 | React 18+（使用 `createRoot`） |
+| --------------------- | --------------- | ------------------------------ |
+| **合成事件/生命周期** | 自动批处理      | 自动批处理                     |
+| **异步操作**          | 不批处理        | 自动批处理                     |
+| **原生事件回调**      | 不批处理        | 自动批处理                     |
+
+React 的批处理机制通过合并更新减少了渲染次数，但在需要即时反馈的场景（如动画）中，可通过 `flushSync` 强制同步更新。
+
+:::
 
 ## 简述 React 事务机制
 
-@雨夜 将于 2025.02.21 之前提交答案。
+参考答案
+
+::: details
+
+React 的 **事务机制（Transaction）** 是早期版本（React 16 之前）中用于 **批量处理更新** 和 **管理副作用** 的核心设计模式，其核心思想是通过“包装”操作流程，确保在更新过程中执行特定的前置和后置逻辑（如生命周期钩子、事件监听等）。随着 React Fiber 架构的引入，事务机制逐渐被更灵活的调度系统取代。
+
+**核心概念**
+
+1. **事务的定义**  
+   事务是一个包含 **初始化阶段**、**执行阶段** 和 **收尾阶段** 的流程控制单元。每个事务通过 `Transaction` 类实现，提供 `initialize` 和 `close` 方法，用于在操作前后插入逻辑。例如：
+
+   ```javascript
+   const MyTransaction = {
+     initialize() {
+       /* 前置操作（如记录状态） */
+     },
+     close() {
+       /* 后置操作（如触发更新） */
+     },
+   }
+   ```
+
+2. **包装函数**  
+   事务通过 `perform` 方法执行目标函数，将其包裹在事务的生命周期中：
+   ```javascript
+   function myAction() {
+     /* 核心逻辑（如调用 setState） */
+   }
+   MyTransaction.perform(myAction)
+   ```
+
+**在 React 中的应用场景**
+
+1. **批量更新（Batching Updates）**  
+   在事件处理或生命周期方法中，多次调用 `setState` 会被事务合并为一次更新。例如：
+
+   ```javascript
+   class Component {
+     onClick() {
+       // 事务包裹下的多次 setState 合并为一次渲染
+       this.setState({ a: 1 })
+       this.setState({ b: 2 })
+     }
+   }
+   ```
+
+2. **生命周期钩子的触发**  
+   在组件挂载或更新时，事务确保 `componentWillMount`、`componentDidMount` 等钩子在正确时机执行。
+
+3. **事件系统的委托**  
+   合成事件（如 `onClick`）的处理逻辑通过事务绑定和解绑，确保事件监听的一致性和性能优化。
+
+**事务的工作流程**
+
+1. **初始化阶段**  
+   执行所有事务的 `initialize` 方法（如记录当前 DOM 状态、锁定事件监听）。
+2. **执行目标函数**  
+   运行核心逻辑（如用户定义的 `setState` 或事件处理函数）。
+3. **收尾阶段**  
+   执行所有事务的 `close` 方法（如对比 DOM 变化、触发更新、解锁事件）。
+
+**事务机制的局限性**
+
+1. **同步阻塞**  
+   事务的执行是同步且不可中断的，无法支持异步优先级调度（如 Concurrent Mode 的时间切片）。
+2. **复杂性高**  
+   事务的嵌套和组合逻辑复杂，难以维护和扩展。
+
+**Fiber 架构的演进**
+React 16 引入的 **Fiber 架构** 替代了事务机制，核心改进包括：
+
+1. **异步可中断更新**  
+   通过 Fiber 节点的链表结构，支持暂停、恢复和优先级调度。
+2. **更细粒度的控制**  
+   将渲染拆分为多个阶段（如 `render` 和 `commit`），副作用管理更灵活。
+3. **替代批量更新策略**  
+   使用调度器（Scheduler）和优先级队列实现更高效的批处理（如 React 18 的自动批处理）。
+
+| 特性           | 事务机制（React <16）  | Fiber 架构（React 16+）        |
+| -------------- | ---------------------- | ------------------------------ |
+| **更新方式**   | 同步批量更新           | 异步可中断、优先级调度         |
+| **副作用管理** | 通过事务生命周期控制   | 通过 Effect Hook、提交阶段处理 |
+| **复杂度**     | 高（嵌套事务逻辑复杂） | 高（但更模块化和可扩展）       |
+| **适用场景**   | 简单同步更新           | 复杂异步渲染（如动画、懒加载） |
+
+事务机制是 React 早期实现批量更新的基石，但其同步设计无法满足现代前端应用的复杂需求。Fiber 架构通过解耦渲染过程，为 Concurrent Mode 和 Suspense 等特性奠定了基础，成为 React 高效渲染的核心。
+:::
 
 ## 如何理解 React concurrency 并发机制
 
-@雨夜 将于 2025.02.21 之前提交答案。
+参考答案
+
+::: details
+
+React 的并发机制（Concurrency）是 React 18 引入的一项重要特性，旨在提升应用的响应性和性能。
+
+**1. 什么是 React 的并发机制？**
+
+React 的并发机制允许 React 在渲染过程中根据任务的优先级进行调度和中断，从而确保高优先级的更新能够及时渲染，而不会被低优先级的任务阻塞。
+
+**2. 并发机制的工作原理：**
+
+- **时间分片（Time Slicing）：** React 将渲染任务拆分为多个小片段，每个片段在主线程空闲时执行。这使得浏览器可以在渲染过程中处理用户输入和其他高优先级任务，避免长时间的渲染阻塞用户交互。
+
+- **优先级调度（Priority Scheduling）：** React 为不同的更新分配不同的优先级。高优先级的更新（如用户输入）会被优先处理，而低优先级的更新（如数据预加载）可以在空闲时处理。
+
+- **可中断渲染（Interruptible Rendering）：** 在并发模式下，React 可以中断当前的渲染任务，处理更高优先级的任务，然后再恢复之前的渲染。这确保了应用在长时间渲染过程中仍能保持响应性。
+
+**3. 并发机制的优势：**
+
+- **提升响应性：** 通过优先处理高优先级任务，React 能够更快地响应用户输入，提升用户体验。
+
+- **优化性能：** 将渲染任务拆分为小片段，避免长时间的渲染阻塞，提升应用的整体性能。
+
+- **更好的资源利用：** 在主线程空闲时处理低优先级任务，充分利用系统资源。
+
+**4. 如何启用并发模式：**
+
+要在 React 应用中启用并发模式，需要使用 `createRoot` API：
+
+```javascript
+import React from 'react'
+import ReactDOM from 'react-dom/client'
+import App from './App'
+
+const root = ReactDOM.createRoot(document.getElementById('root'))
+root.render(<App />)
+```
+
+在并发模式下，React 会自动根据任务的优先级进行调度和渲染。
+
+:::
 
 ## 简述 React reconciliation 协调的过程
 

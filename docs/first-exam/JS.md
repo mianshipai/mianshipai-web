@@ -989,14 +989,7 @@ const promise = new Promise((resolve, reject) => {
 promise.then((result) => console.log('Fulfilled:', result)).catch((error) => console.log('Rejected:', error))
 ```
 
----
-
-**3. 面试回答技巧**
-
-> **Promise 有三种状态**：`Pending`（进行中）、`Fulfilled`（已完成）、`Rejected`（已拒绝）。  
-> 状态只能从 `Pending` 变为 `Fulfilled` 或 `Rejected`，一旦改变**不可逆**。  
-> `then()` 处理成功，`catch()` 处理失败，`finally()` 总会执行。  
-> :::
+:::
 
 ## JS Promise 使用
 
@@ -1453,7 +1446,7 @@ reg.test(email)
    })
    ```
 
-   :::
+:::
 
 ## JS 如何捕获异常？有几种方式？
 
@@ -1521,7 +1514,8 @@ JavaScript 中的浮点数运算存在精度问题。由于计算机在内部表
    ```javascript
    console.log(Math.round((0.1 + 0.2) * 100) / 100 === 0.3) // true
    ```
-   :::
+
+:::
 
 ## 如何理解 JS 单线程？
 
