@@ -145,4 +145,5 @@ export default defineConfig({
       copyright: 'Copyright © 2025-present Mianshipai 面试派',
     },
   },
+  ignoreDeadLinks: ['./vue-inner/index'],
 })
