@@ -97,7 +97,7 @@ export default defineConfig({
           { text: 'React 使用', link: '/docs/second-exam/react-usage.md' },
           { text: 'React 原理', link: '/docs/second-exam/react-inner.md' },
           // { text: '小程序', link: '/docs/second-exam/mini-program.md' },
-          // { text: '前端工程化', link: '/docs/second-exam/engineering.md' },
+          { text: '前端工程化', link: '/docs/second-exam/engineering.md' },
         ],
       },
       {
@@ -145,4 +145,5 @@ export default defineConfig({
       copyright: 'Copyright © 2025-present Mianshipai 面试派',
     },
   },
+  ignoreDeadLinks: ['./vue-inner/index'],
 })
