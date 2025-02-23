@@ -159,9 +159,381 @@ document.getElementById('hero-img').src = imgUrl
 
 ## 什么是 Webpack？它的作用是什么？
 
+参考答案
+
+::: details
+
+Webpack 是一个开源的 **前端静态模块打包工具**，主要用于将现代 JavaScript 应用中的各种资源（代码、样式、图片等）转换为优化的静态文件。它是现代前端开发的核心工具之一，尤其在复杂项目中扮演着关键角色。
+
+**Webpack 的核心作用**
+
+1. **模块化支持**
+   - **解决问题**：将代码拆分为多个模块（文件），管理依赖关系。
+   - **支持语法**：
+     - ES Modules (`import/export`)
+     - CommonJS (`require/module.exports`)
+     - AMD 等模块化方案。
+
+```javascript
+// 模块化开发
+import Header from './components/Header.js'
+import styles from './styles/main.css'
+```
+
+2. **资源整合**
+   - **处理非 JS 文件**：将 CSS、图片、字体、JSON 等资源视为模块，统一管理。
+
+```javascript
+// webpack.config.js
+module.exports = {
+  module: {
+    rules: [
+      { test: /\.css$/, use: ['style-loader', 'css-loader'] },
+      { test: /\.(png|svg)$/, type: 'asset/resource' },
+    ],
+  },
+}
+```
+
+3. **代码优化**
+   - **功能**：
+     - **Tree Shaking**：删除未使用的代码。
+     - **代码分割（Code Splitting）**：按需加载代码，减少首屏体积。
+     - **压缩**：减小文件体积，提升加载速度。
+
+```javascript
+// 动态导入实现按需加载
+button.addEventListener('click', () => {
+  import('./module.js').then((module) => module.run())
+})
+```
+
+4. **开发工具集成**
+   - **功能**：
+     - **热更新（HMR）**：实时预览代码修改效果。
+     - **Source Map**：调试时映射压缩代码到源代码。
+     - **本地服务器**：快速启动开发环境。
+
+```javascript
+devServer: {
+  hot: true,       // 启用热更新
+  open: true,      // 自动打开浏览器
+},
+devtool: 'source-map', // 生成 Source Map
+```
+
+5. **生态扩展**
+   - **Loader**：处理特定类型文件（如 `.scss` → `.css`）。
+   - **Plugin**：优化构建流程（如生成 HTML、压缩代码）。
+
+```javascript
+plugins: [
+  new HtmlWebpackPlugin({ template: './src/index.html' }),
+  new MiniCssExtractPlugin(),
+],
+```
+
+**Webpack 的工作流程**
+
+1. **入口（Entry）**：从指定文件（如 `index.js`）开始分析依赖。
+2. **依赖图（Dependency Graph）**：递归构建模块间的依赖关系。
+3. **加载器（Loaders）**：转换非 JS 资源（如编译 Sass、处理图片）。
+4. **插件（Plugins）**：在构建生命周期中执行优化任务。
+5. **输出（Output）**：生成优化后的静态文件（如 `bundle.js`）。
+
+**与其他工具对比**
+| **工具** | **定位** | **与 Webpack 的区别** |
+|----------------|-----------------------------|-------------------------------------------|
+| Gulp/Grunt | 任务运行器（Task Runner） | 处理文件流，但无模块化支持 |
+| Rollup | 库打包工具 | 更适合库开发，Tree Shaking 更激进 |
+| Vite | 新一代构建工具 | 基于原生 ESM，开发环境更快，生产依赖 Rollup |
+
+**适用场景**
+
+- **单页应用（SPA）**：如 React、Vue、Angular 项目。
+- **复杂前端工程**：多页面、微前端架构。
+- **静态网站生成**：结合 Markdown、模板引擎使用。
+
+Webpack 通过 **模块化整合**、**代码优化** 和 **开发效率提升**，解决了前端工程中资源管理混乱、性能瓶颈和开发体验差的问题。它不仅是打包工具，更是现代前端工程化的基础设施。
+
+:::
+
 ## 如何使用 Webpack 配置多环境的不同构建配置？
 
+参考答案
+
+::: details
+
+在 Webpack 中配置多环境（如开发环境、测试环境、生产环境）的构建配置，可以通过 **环境变量注入** 和 **配置合并** 的方式实现。
+
+**步骤 1：安装依赖工具**
+
+```bash
+npm install webpack-merge cross-env --save-dev
+```
+
+- **webpack-merge**：用于合并基础配置和环境专属配置。
+- **cross-env**：跨平台设置环境变量（兼容 Windows 和 macOS/Linux）。
+
+**步骤 2：创建配置文件结构**
+
+```
+project/
+├── config/
+│   ├── webpack.common.js    # 公共配置
+│   ├── webpack.dev.js       # 开发环境配置
+│   └── webpack.prod.js      # 生产环境配置
+├── src/
+│   └── ...                  # 项目源码
+└── package.json
+```
+
+**步骤 3：编写公共配置 (`webpack.common.js`)**
+
+```javascript
+// config/webpack.common.js
+const path = require('path')
+const HtmlWebpackPlugin = require('html-webpack-plugin')
+
+module.exports = {
+  entry: './src/index.js',
+  output: {
+    filename: '[name].bundle.js',
+    path: path.resolve(__dirname, '../dist'),
+    clean: true,
+  },
+  plugins: [new HtmlWebpackPlugin({ template: './src/index.html' })],
+  module: {
+    rules: [
+      {
+        test: /\.js$/,
+        exclude: /node_modules/,
+        use: 'babel-loader',
+      },
+      {
+        test: /\.css$/,
+        use: ['style-loader', 'css-loader'],
+      },
+    ],
+  },
+}
+```
+
+**步骤 4：编写环境专属配置**
+
+开发环境 (`webpack.dev.js`)
+
+```javascript
+// config/webpack.dev.js
+const { merge } = require('webpack-merge')
+const common = require('./webpack.common.js')
+const webpack = require('webpack')
+
+module.exports = merge(common, {
+  mode: 'development',
+  devtool: 'eval-source-map',
+  devServer: {
+    hot: true,
+    open: true,
+    port: 3000,
+  },
+  plugins: [
+    // 注入环境变量（可在代码中通过 process.env.API_URL 访问）
+    new webpack.DefinePlugin({
+      'process.env.API_URL': JSON.stringify('https://dev.api.com'),
+      'process.env.NODE_ENV': JSON.stringify('development'),
+    }),
+  ],
+})
+```
+
+生产环境 (`webpack.prod.js`)
+
+```javascript
+// config/webpack.prod.js
+const { merge } = require('webpack-merge')
+const common = require('./webpack.common.js')
+const CssMinimizerPlugin = require('css-minimizer-webpack-plugin')
+const webpack = require('webpack')
+
+module.exports = merge(common, {
+  mode: 'production',
+  devtool: 'source-map',
+  optimization: {
+    minimizer: [
+      '...', // 保留默认的 JS 压缩配置
+      new CssMinimizerPlugin(),
+    ],
+  },
+  plugins: [
+    new webpack.DefinePlugin({
+      'process.env.API_URL': JSON.stringify('https://prod.api.com'),
+      'process.env.NODE_ENV': JSON.stringify('production'),
+    }),
+  ],
+})
+```
+
+**步骤 5：配置 `package.json` 脚本**
+
+```json
+{
+  "scripts": {
+    "start": "cross-env NODE_ENV=development webpack serve --config config/webpack.dev.js",
+    "build:dev": "cross-env NODE_ENV=development webpack --config config/webpack.dev.js",
+    "build:prod": "cross-env NODE_ENV=production webpack --config config/webpack.prod.js"
+  }
+}
+```
+
+**步骤 6：在代码中使用环境变量**
+
+```javascript
+// src/index.js
+console.log('当前环境:', process.env.NODE_ENV)
+console.log('API 地址:', process.env.API_URL)
+
+// 根据不同环境执行不同逻辑
+if (process.env.NODE_ENV === 'development') {
+  console.log('这是开发环境')
+} else {
+  console.log('这是生产环境')
+}
+```
+
+**步骤 7：运行命令**
+
+```bash
+# 启动开发服务器（热更新）
+npm run start
+
+# 构建开发环境产物
+npm run build:dev
+
+# 构建生产环境产物
+npm run build:prod
+```
+
+**扩展：支持更多环境（如测试环境）**
+
+1. 创建 `webpack.stage.js`
+
+```javascript
+// config/webpack.stage.js
+const { merge } = require('webpack-merge')
+const common = require('./webpack.common.js')
+const webpack = require('webpack')
+
+module.exports = merge(common, {
+  mode: 'production',
+  plugins: [
+    new webpack.DefinePlugin({
+      'process.env.API_URL': JSON.stringify('https://stage.api.com'),
+      'process.env.NODE_ENV': JSON.stringify('staging'),
+    }),
+  ],
+})
+```
+
+2. 添加 `package.json` 脚本
+
+```json
+{
+  "scripts": {
+    "build:stage": "cross-env NODE_ENV=staging webpack --config config/webpack.stage.js"
+  }
+}
+```
+
+| **配置项**   | **开发环境**          | **生产环境**           | **测试环境**            |
+| ------------ | --------------------- | ---------------------- | ----------------------- |
+| `mode`       | `development`         | `production`           | `production`            |
+| `devtool`    | `eval-source-map`     | `source-map`           | `source-map`            |
+| `devServer`  | ✅ 启用               | ❌ 不启用              | ❌ 不启用               |
+| **代码压缩** | ❌ 不压缩             | ✅ CSS/JS 压缩         | ✅ CSS/JS 压缩          |
+| **环境变量** | `API_URL=dev.api.com` | `API_URL=prod.api.com` | `API_URL=stage.api.com` |
+
+:::
+
 ## Webpack 的核心概念有哪些？请简单解释。
+
+参考答案
+
+::: details
+
+Webpack 的核心概念是理解其工作原理和配置的基础，以下是它们的简要解释：
+
+**1. 入口（Entry）**
+
+- **作用**：定义 Webpack **构建依赖图的起点**，通常为项目的主文件（如 `index.js`）。
+
+```javascript
+entry: './src/index.js', // 单入口
+entry: { app: './src/app.js', admin: './src/admin.js' }, // 多入口
+```
+
+**2. 出口（Output）**
+
+- **作用**：指定打包后的资源**输出位置和命名规则**。
+
+```javascript
+output: {
+  filename: '[name].bundle.js', // 输出文件名（[name] 为入口名称）
+  path: path.resolve(__dirname, 'dist'), // 输出目录（绝对路径）
+  clean: true, // 自动清理旧文件（Webpack 5+）
+}
+```
+
+**3. 加载器（Loaders）**
+
+- **作用**：让 Webpack **处理非 JavaScript 文件**（如 CSS、图片、字体等），将其转换为有效模块。
+
+```javascript
+module: {
+  rules: [
+    { test: /\.css$/, use: ['style-loader', 'css-loader'] }, // 处理 CSS
+    { test: /\.(png|svg)$/, type: 'asset/resource' }, // 处理图片（Webpack 5+）
+  ],
+}
+```
+
+**4. 插件（Plugins）**
+
+- **作用**：扩展 Webpack 功能，干预**整个构建流程**（如生成 HTML、压缩代码、提取 CSS）。
+
+```javascript
+plugins: [
+  new HtmlWebpackPlugin({ template: './src/index.html' }), // 生成 HTML
+  new MiniCssExtractPlugin(), // 提取 CSS 为独立文件
+]
+```
+
+**5. 模式（Mode）**
+
+- **作用**：预设优化策略，区分**开发环境**（`development`）和**生产环境**（`production`）。
+
+```javascript
+mode: 'production', // 启用代码压缩、Tree Shaking 等优化
+```
+
+**6. 模块（Modules）**
+
+- **作用**：Webpack 将每个文件视为**模块**（如 JS、CSS、图片），通过依赖关系构建依赖图。
+- **特点**：支持 ESM、CommonJS、AMD 等模块化语法。
+
+**7. 代码分割（Code Splitting）**
+
+- **作用**：将代码拆分为多个文件（chunks），实现**按需加载**或**并行加载**，优化性能。
+- **实现方式**：
+  - 动态导入（`import()`）
+  - 配置 `optimization.splitChunks`
+
+**8. Tree Shaking**
+
+- **作用**：通过静态分析**移除未使用的代码**，减小打包体积。
+- **前提**：使用 ES Module（`import/export`），并启用生产模式（`mode: 'production'`）。
+
+:::
 
 ## 如何在 Webpack 中实现 CSS 和 Sass 的处理？
 
