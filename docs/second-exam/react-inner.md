@@ -935,8 +935,6 @@ root.render(<App />)
 
 ## 简述 React reconciliation 协调的过程
 
-@大洛 将于 2025.02.23 之前提交答案。
-
 ## React 组件渲染和更新的全过程
 
 参考答案
