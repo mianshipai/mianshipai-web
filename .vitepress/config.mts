@@ -87,6 +87,7 @@ export default defineConfig({
           { text: 'JS 基础知识', link: '/docs/first-exam/JS' },
           { text: 'TS 类型', link: '/docs/first-exam/TS' },
           { text: 'HTTP 网络请求', link: '/docs/first-exam/HTTP.md' },
+          { text: '计算机基础', link: '/docs/first-exam/ComputerBase.md' },
         ],
       },
       {
