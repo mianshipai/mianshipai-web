@@ -4,6 +4,18 @@
 
 ## Vite为什么更快？
 
+::: details 参考答案
+
+Vite 相比传统构建工具（如 Webpack）更快🚀，主要得益于以下几个核心特性：
+
+- 基于原生 ES 模块（ESM）：Vite 利用浏览器原生的 ES 模块，在开发模式下`按需加载`模块，避免了整体打包，从而减少了启动时间。它通过只编译实际修改的文件，提升了开发过程中的反馈速度。
+- 高效的热模块替换（HMR）：Vite 在开发模式下利用原生 ES 模块实现模块级的热更新。当文件发生变化时，Vite 只会重新加载发生变化的模块，而不是重新打包整个应用，极大提高了热更新的速度。
+- 使用 esbuild 进行快速编译：Vite 默认使用 esbuild 作为编译工具，相比传统的 JavaScript 编译工具（如 Babel、Terser），esbuild 提供显著的性能提升，能够快速完成代码转换和压缩，从而加速开发和构建过程。
+- 现代 JavaScript 特性支持：Vite 在生产环境中使用 Rollup 构建，支持优秀的树摇和代码拆分，有效减小构建体积。同时，Vite 利用现代浏览器特性（如动态导入、ES2015+ 模块），减少了 polyfill 的使用，提升了加载速度。
+- 预构建和缓存：Vite 在开发时会预构建常用依赖（如 Vue、React），并将其转换为浏览器可执行的格式，避免每次启动时重新编译。同时，Vite 会缓存这些预构建的依赖，并在启动时复用缓存，从而加快启动速度。
+
+:::
+
 ## vite中如何使用环境变量？
 
 ::: details 参考答案
@@ -114,6 +126,20 @@ export default defineConfig({
 
 ## 简述Vite的依赖预加载机制。
 
+::: details 参考答案
+
+Vite 的依赖预构建机制通过在开发模式下提前处理常用依赖（如 Vue、React 等），将这些依赖转换为浏览器可以直接执行的格式。这避免了每次启动时重新编译这些依赖，显著提升了启动速度。预构建的依赖被缓存，并在后续启动时复用缓存，进一步加速了开发过程中的构建和启动时间。
+
+具体来说，它的工作原理如下：
+
+- **依赖识别和路径补全**： Vite 会首先识别项目中需要的依赖，并对非绝对路径或相对路径的引用进行路径补全。比如，`Vue` 的加载路径会变为 `node_modules/.vite/deps/Vue.js?v=1484ebe8`，这一路径显示了 Vite 在 `node_modules/.vite/deps` 文件夹下存放了经过预处理的依赖文件。
+- **转换成 ES 模块**： 一些第三方包（特别是遵循 CommonJS 规范的包）在浏览器中无法直接使用。为了应对这种情况，Vite 会使用 **esbuild** 工具将这些依赖转换为符合 ES 模块规范的代码。转换后的代码会被存放在 `node_modules/.vite/deps` 文件夹下，这样浏览器就能直接识别并加载这些依赖。
+- **统一集成 ES 模块**： Vite 会对每个包的不同模块进行统一集成，将各个分散的模块（如不同的 ES 函数或组件）合并成一个或几个文件。这不仅减少了浏览器发起多个请求的次数，还能够加快页面加载速度。
+
+> 参考博文：[vite的基础使用及其依赖预加载机制](https://juejin.cn/post/7172007612379054093#heading-3)、[手写vite让你深刻了解Vite的文件加载原理](https://juejin.cn/post/7178803290820804667)
+
+:::
+
 ## vite中如何加载、处理静态资源？
 
 ::: details 参考答案
@@ -149,19 +175,685 @@ document.getElementById('hero-img').src = imgUrl
 
 ## 如何在Vite项目中引入CSS预处理器?
 
+::: details 参考答案
+
+在 Vite 中使用 CSS 预处理器（如 Sass、Less）是非常简单的，Vite 默认支持这些预处理器，我们只需要安装相应的依赖即可。
+
+安装依赖：
+
+```js
+npm install sass--save - dev
+```
+
+在 Vue 组件中使用：
+
+```vue
+<style lang="scss">
+$primary-color: #42b983;
+body {
+  background-color: $primary-color;
+}
+</style>
+```
+
+此外，我们可以通过在vite的 `preprocessorOptions` 中进行配置，使用CSS 预处理器的一些强大功能。
+
+对于 Less，假如我们需要在项目中全局使用某些变量，我们可以在 `vite.config.js` 中配置 `globalVars` ，使得变量在所有文件中无需单独引入：
+
+```javascript
+// vite.config.js
+import { defineConfig } from 'vite'
+import vue from '@vitejs/plugin-vue'
+
+export default defineConfig({
+  plugins: [vue()],
+  css: {
+    preprocessorOptions: {
+      less: {
+        globalVars: {
+          blue: '#1CC0FF', // 定义全局变量
+        },
+      },
+    },
+  },
+})
+```
+
+一旦配置了全局变量，我们就可以在任何 Vue 组件中直接使用它，无需再次引入：
+
+```vue
+<style scoped lang="less">
+.wrap {
+  background: red;
+  color: @blue; // 使用全局变量
+}
+</style>
+```
+
+> 参考博文：[vite中如何更优雅的使用css](https://juejin.cn/post/7175366648659411000)、[Vite中预处理器(如less)的配置](https://juejin.cn/post/7177549666291515447)、[使用postcss完善vite项目中的css配置](https://juejin.cn/post/7178454300572516409)
+
+:::
+
 ## vite中可做的项目优化有哪些？
+
+::: details 参考答案
+
+1️⃣ 启用 Gzip/Brotli 压缩
+
+使用 `vite-plugin-compression` 插件开启 Gzip 或 Brotli 压缩，可以有效减小传输的文件体积，提升加载速度。
+
+安装依赖：
+
+```javascript
+npm install vite - plugin - compression--save - dev
+```
+
+配置示例：
+
+```javascript
+import compression from 'vite-plugin-compression'
+export default defineConfig({
+  plugins: [
+    compression({
+      algorithm: 'gzip', // 或 'brotli' 压缩
+      threshold: 10240, // 文件大于 10KB 时启用压缩
+    }),
+  ],
+})
+```
+
+> 参考博文：[vite打包优化vite-plugin-compression的使用](https://juejin.cn/post/7222901994840244279)
+
+2️⃣ 代码分割
+
+- 🎯 路由分割
+
+使用动态导入实现按需加载，减小初始包的体积，提高页面加载速度。
+
+```javascript
+const module = import('./module.js') // 动态导入
+```
+
+或者在路由中使用懒加载：
+
+```javascript
+const MyComponent = () => import('./MyComponent.vue')
+```
+
+- 🎯 手动控制分包
+
+在 Vite 中，你可以通过配置 Rollup 的 `manualChunks` 选项来手动控制如何分割代码。这个策略适用于想要将特定的依赖或模块提取成单独的 chunk 文件。
+
+```javascript
+import { defineConfig } from 'vite'
+export default defineConfig({
+  build: {
+    minify: false,
+    // 在这里配置打包时的rollup配置
+    rollupOptions: {
+      manualChunks: (id) => {
+        if (id.includes('node_modules')) {
+          return 'vendor'
+        }
+      },
+    },
+  },
+})
+```
+
+> 参考博文：[Vite性能优化之分包策略](https://juejin.cn/post/7177982374259949624)
+
+3️⃣ 图片优化
+
+使用 `vite-plugin-imagemin` 插件对项目中的图片进行压缩，减少图片体积，提升加载速度。
+
+```javascript
+npm install vite - plugin - imagemin--save - dev
+```
+
+```javascript
+export default defineConfig({
+  plugins: [
+    ViteImagemin({
+      gifsicle: {
+        optimizationLevel: 3,
+      },
+      optipng: {
+        optimizationLevel: 7,
+      },
+      mozjpeg: {
+        quality: 85,
+      },
+      pngquant: {
+        quality: [0.65, 0.9],
+      },
+    }),
+  ],
+})
+```
+
+4️⃣ 依赖优化
+
+配置 Vite 的 `optimizeDeps` 选项，提前预构建常用依赖，减少开发环境下的启动时间。
+
+```javascript
+export default defineConfig({
+  optimizeDeps: {
+    include: ['lodash', 'vue', 'react'], // 预构建依赖
+  },
+})
+```
+
+> 参考博文：[vite的基础使用及其依赖预加载机制](https://juejin.cn/post/7172007612379054093#heading-3)
+
+:::
 
 ## 简述vite插件开发流程？
 
+@石小石 于2月27日前完成
+
 ## 如何在Vite中配置代理？
+
+@石小石 于2月27日前完成
 
 ## Vite如何集成TypeScript？如何配置？
 
+::: details 参考方案
+
+Vite 对 TypeScript 提供了开箱即用的支持，无需额外安装插件。
+
+我们创建一个 `index.html` 文件并引入 `main.ts` 文件：
+
+```javascript
+<script src="./main.ts" type="module">
+  {' '}
+</script>
+```
+
+在 `main.ts` 中，可以写入一些 TypeScript 代码：
+
+```javascript
+let tip: string = "这是一个vite项目，使用了ts语法";
+console.log('tip: ', tip);
+```
+
+运行 `vite` 后，可以看到控制台输出内容，表明 Vite 天生支持 TypeScript。
+
+在 Vite 项目中，虽然默认支持 TypeScript，但 Vite 本身不会阻止编译时出现 TypeScript 错误。为了更严格的类型检查和错误提示，我们需要配置 TypeScript。
+
+- 添加 TypeScript 配置（如果没有）
+
+通过以下命令生成 `tsconfig.json` 配置文件
+
+```plain
+npx tsc --init
+```
+
+创建好 `tsconfig.json` 后，Vite 会根据该配置文件来编译 TypeScript。
+
+- 强化 TypeScript 错误提示
+
+Vite 默认不会阻止编译时的 TypeScript 错误。如果我们想要在开发时严格检查 TypeScript 错误并阻止编译，可以使用 `vite-plugin-checker` 插件。
+
+```javascript
+npm i vite - plugin - checker--save - dev
+```
+
+然后在 `vite.config.ts` 中引入并配置该插件：
+
+```typescript
+// vite.config.ts
+import checker from 'vite-plugin-checker'
+import { defineConfig } from 'vite'
+
+export default defineConfig({
+  plugins: [checker({ typescript: true })],
+})
+```
+
+这样，任何 TypeScript 语法错误都会在控制台显示，并阻止编译。
+
+- 打包时进行 TypeScript 检查
+
+虽然 Vite 只会执行 `.ts` 文件的转译，而不会执行类型检查，但我们可以通过以下方式确保在打包时进行 TypeScript 类型检查。
+
+修改 `package.json` 配置
+
+```json
+{
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build"
+  }
+}
+```
+
+`tsc --noEmit` 会执行类型检查，但不会生成编译后的文件。如果存在类型错误，打包过程会被阻止。
+
+- TypeScript 智能提示
+
+Vite 默认为 `import.meta.env` 提供了类型定义，但是对于自定义的 `.env` 文件，TypeScript 的智能提示默认不生效。为了实现智能提示，可以在 `src` 目录下创建一个 `env.d.ts` 文件：
+
+```typescript
+/// <reference types="vite/client" />
+
+interface ImportMetaEnv {
+  readonly VITE_APP_TITLE: string
+  readonly VITE_APP_HAHA: string
+}
+
+interface ImportMeta {
+  readonly env: ImportMetaEnv
+}
+```
+
+:::
+
 ## 什么是 Webpack？它的作用是什么？
+
+参考答案
+
+::: details
+
+Webpack 是一个开源的 **前端静态模块打包工具**，主要用于将现代 JavaScript 应用中的各种资源（代码、样式、图片等）转换为优化的静态文件。它是现代前端开发的核心工具之一，尤其在复杂项目中扮演着关键角色。
+
+**Webpack 的核心作用**
+
+1. **模块化支持**
+
+   - **解决问题**：将代码拆分为多个模块（文件），管理依赖关系。
+   - **支持语法**：
+
+     - ES Modules ( `import/export` )
+     - CommonJS ( `require/module.exports` )
+     - AMD 等模块化方案。
+
+```javascript
+// 模块化开发
+import Header from './components/Header.js'
+import styles from './styles/main.css'
+```
+
+2. **资源整合**
+   - **处理非 JS 文件**：将 CSS、图片、字体、JSON 等资源视为模块，统一管理。
+
+```javascript
+// webpack.config.js
+module.exports = {
+  module: {
+    rules: [
+      {
+        test: /\.css$/,
+        use: ['style-loader', 'css-loader'],
+      },
+      {
+        test: /\.(png|svg)$/,
+        type: 'asset/resource',
+      },
+    ],
+  },
+}
+```
+
+3. **代码优化**
+
+   - **功能**：
+
+     - **Tree Shaking**：删除未使用的代码。
+     - **代码分割（Code Splitting）**：按需加载代码，减少首屏体积。
+     - **压缩**：减小文件体积，提升加载速度。
+
+```javascript
+// 动态导入实现按需加载
+button.addEventListener('click', () => {
+  import('./module.js').then((module) => module.run())
+})
+```
+
+4. **开发工具集成**
+
+   - **功能**：
+
+     - **热更新（HMR）**：实时预览代码修改效果。
+     - **Source Map**：调试时映射压缩代码到源代码。
+     - **本地服务器**：快速启动开发环境。
+
+```javascript
+devServer: {
+        hot: true, // 启用热更新
+        open: true, // 自动打开浏览器
+    },
+    devtool: 'source-map', // 生成 Source Map
+```
+
+5. **生态扩展**
+   - **Loader**：处理特定类型文件（如 `.scss` → `.css` ）。
+   - **Plugin**：优化构建流程（如生成 HTML、压缩代码）。
+
+```javascript
+plugins: [
+    new HtmlWebpackPlugin({
+        template: './src/index.html'
+    }),
+    new MiniCssExtractPlugin(),
+],
+```
+
+**Webpack 的工作流程**
+
+1. **入口（Entry）**：从指定文件（如 `index.js`）开始分析依赖。
+2. **依赖图（Dependency Graph）**：递归构建模块间的依赖关系。
+3. **加载器（Loaders）**：转换非 JS 资源（如编译 Sass、处理图片）。
+4. **插件（Plugins）**：在构建生命周期中执行优化任务。
+5. **输出（Output）**：生成优化后的静态文件（如 `bundle.js`）。
+
+**与其他工具对比**
+| **工具** | **定位** | **与 Webpack 的区别** |
+|----------------|-----------------------------|-------------------------------------------|
+| Gulp/Grunt | 任务运行器（Task Runner） | 处理文件流，但无模块化支持 |
+| Rollup | 库打包工具 | 更适合库开发，Tree Shaking 更激进 |
+| Vite | 新一代构建工具 | 基于原生 ESM，开发环境更快，生产依赖 Rollup |
+
+**适用场景**
+
+- **单页应用（SPA）**：如 React、Vue、Angular 项目。
+- **复杂前端工程**：多页面、微前端架构。
+- **静态网站生成**：结合 Markdown、模板引擎使用。
+
+Webpack 通过 **模块化整合**、**代码优化** 和 **开发效率提升**，解决了前端工程中资源管理混乱、性能瓶颈和开发体验差的问题。它不仅是打包工具，更是现代前端工程化的基础设施。
+
+:::
 
 ## 如何使用 Webpack 配置多环境的不同构建配置？
 
+参考答案
+
+::: details
+
+在 Webpack 中配置多环境（如开发环境、测试环境、生产环境）的构建配置，可以通过 **环境变量注入** 和 **配置合并** 的方式实现。
+
+**步骤 1：安装依赖工具**
+
+```bash
+npm install webpack-merge cross-env --save-dev
+```
+
+- **webpack-merge**：用于合并基础配置和环境专属配置。
+- **cross-env**：跨平台设置环境变量（兼容 Windows 和 macOS/Linux）。
+
+**步骤 2：创建配置文件结构**
+
+```
+project/
+├── config/
+│   ├── webpack.common.js    # 公共配置
+│   ├── webpack.dev.js       # 开发环境配置
+│   └── webpack.prod.js      # 生产环境配置
+├── src/
+│   └── ...                  # 项目源码
+└── package.json
+```
+
+**步骤 3：编写公共配置 ( `webpack.common.js` )**
+
+```javascript
+// config/webpack.common.js
+const path = require('path')
+const HtmlWebpackPlugin = require('html-webpack-plugin')
+
+module.exports = {
+  entry: './src/index.js',
+  output: {
+    filename: '[name].bundle.js',
+    path: path.resolve(__dirname, '../dist'),
+    clean: true,
+  },
+  plugins: [
+    new HtmlWebpackPlugin({
+      template: './src/index.html',
+    }),
+  ],
+  module: {
+    rules: [
+      {
+        test: /\.js$/,
+        exclude: /node_modules/,
+        use: 'babel-loader',
+      },
+      {
+        test: /\.css$/,
+        use: ['style-loader', 'css-loader'],
+      },
+    ],
+  },
+}
+```
+
+**步骤 4：编写环境专属配置**
+
+开发环境 ( `webpack.dev.js` )
+
+```javascript
+// config/webpack.dev.js
+const { merge } = require('webpack-merge')
+const common = require('./webpack.common.js')
+const webpack = require('webpack')
+
+module.exports = merge(common, {
+  mode: 'development',
+  devtool: 'eval-source-map',
+  devServer: {
+    hot: true,
+    open: true,
+    port: 3000,
+  },
+  plugins: [
+    // 注入环境变量（可在代码中通过 process.env.API_URL 访问）
+    new webpack.DefinePlugin({
+      'process.env.API_URL': JSON.stringify('https://dev.api.com'),
+      'process.env.NODE_ENV': JSON.stringify('development'),
+    }),
+  ],
+})
+```
+
+生产环境 ( `webpack.prod.js` )
+
+```javascript
+// config/webpack.prod.js
+const { merge } = require('webpack-merge')
+const common = require('./webpack.common.js')
+const CssMinimizerPlugin = require('css-minimizer-webpack-plugin')
+const webpack = require('webpack')
+
+module.exports = merge(common, {
+  mode: 'production',
+  devtool: 'source-map',
+  optimization: {
+    minimizer: [
+      '...', // 保留默认的 JS 压缩配置
+      new CssMinimizerPlugin(),
+    ],
+  },
+  plugins: [
+    new webpack.DefinePlugin({
+      'process.env.API_URL': JSON.stringify('https://prod.api.com'),
+      'process.env.NODE_ENV': JSON.stringify('production'),
+    }),
+  ],
+})
+```
+
+**步骤 5：配置 `package.json` 脚本**
+
+```json
+{
+  "scripts": {
+    "start": "cross-env NODE_ENV=development webpack serve --config config/webpack.dev.js",
+    "build:dev": "cross-env NODE_ENV=development webpack --config config/webpack.dev.js",
+    "build:prod": "cross-env NODE_ENV=production webpack --config config/webpack.prod.js"
+  }
+}
+```
+
+**步骤 6：在代码中使用环境变量**
+
+```javascript
+// src/index.js
+console.log('当前环境:', process.env.NODE_ENV)
+console.log('API 地址:', process.env.API_URL)
+
+// 根据不同环境执行不同逻辑
+if (process.env.NODE_ENV === 'development') {
+  console.log('这是开发环境')
+} else {
+  console.log('这是生产环境')
+}
+```
+
+**步骤 7：运行命令**
+
+```bash
+# 启动开发服务器（热更新）
+npm run start
+
+# 构建开发环境产物
+npm run build:dev
+
+# 构建生产环境产物
+npm run build:prod
+```
+
+**扩展：支持更多环境（如测试环境）**
+
+1. 创建 `webpack.stage.js`
+
+```javascript
+// config/webpack.stage.js
+const { merge } = require('webpack-merge')
+const common = require('./webpack.common.js')
+const webpack = require('webpack')
+
+module.exports = merge(common, {
+  mode: 'production',
+  plugins: [
+    new webpack.DefinePlugin({
+      'process.env.API_URL': JSON.stringify('https://stage.api.com'),
+      'process.env.NODE_ENV': JSON.stringify('staging'),
+    }),
+  ],
+})
+```
+
+2. 添加 `package.json` 脚本
+
+```json
+{
+  "scripts": {
+    "build:stage": "cross-env NODE_ENV=staging webpack --config config/webpack.stage.js"
+  }
+}
+```
+
+| **配置项**   | **开发环境**          | **生产环境**           | **测试环境**            |
+| ------------ | --------------------- | ---------------------- | ----------------------- |
+| `mode`       | `development`         | `production`           | `production`            |
+| `devtool`    | `eval-source-map`     | `source-map`           | `source-map`            |
+| `devServer`  | ✅ 启用               | ❌ 不启用              | ❌ 不启用               |
+| **代码压缩** | ❌ 不压缩             | ✅ CSS/JS 压缩         | ✅ CSS/JS 压缩          |
+| **环境变量** | `API_URL=dev.api.com` | `API_URL=prod.api.com` | `API_URL=stage.api.com` |
+
+:::
+
 ## Webpack 的核心概念有哪些？请简单解释。
+
+参考答案
+
+::: details
+
+Webpack 的核心概念是理解其工作原理和配置的基础，以下是它们的简要解释：
+
+**1. 入口（Entry）**
+
+- **作用**：定义 Webpack **构建依赖图的起点**，通常为项目的主文件（如 `index.js`）。
+
+```javascript
+entry: './src/index.js', // 单入口
+    entry: {
+        app: './src/app.js',
+        admin: './src/admin.js'
+    }, // 多入口
+```
+
+**2. 出口（Output）**
+
+- **作用**：指定打包后的资源**输出位置和命名规则**。
+
+```javascript
+output: {
+    filename: '[name].bundle.js', // 输出文件名（[name] 为入口名称）
+    path: path.resolve(__dirname, 'dist'), // 输出目录（绝对路径）
+    clean: true, // 自动清理旧文件（Webpack 5+）
+}
+```
+
+**3. 加载器（Loaders）**
+
+- **作用**：让 Webpack **处理非 JavaScript 文件**（如 CSS、图片、字体等），将其转换为有效模块。
+
+```javascript
+module: {
+    rules: [{
+            test: /\.css$/,
+            use: ['style-loader', 'css-loader']
+        }, // 处理 CSS
+        {
+            test: /\.(png|svg)$/,
+            type: 'asset/resource'
+        }, // 处理图片（Webpack 5+）
+    ],
+}
+```
+
+**4. 插件（Plugins）**
+
+- **作用**：扩展 Webpack 功能，干预**整个构建流程**（如生成 HTML、压缩代码、提取 CSS）。
+
+```javascript
+plugins: [
+  new HtmlWebpackPlugin({
+    template: './src/index.html',
+  }), // 生成 HTML
+  new MiniCssExtractPlugin(), // 提取 CSS 为独立文件
+]
+```
+
+**5. 模式（Mode）**
+
+- **作用**：预设优化策略，区分**开发环境**（`development`）和**生产环境**（`production`）。
+
+```javascript
+mode: 'production', // 启用代码压缩、Tree Shaking 等优化
+```
+
+**6. 模块（Modules）**
+
+- **作用**：Webpack 将每个文件视为**模块**（如 JS、CSS、图片），通过依赖关系构建依赖图。
+- **特点**：支持 ESM、CommonJS、AMD 等模块化语法。
+
+**7. 代码分割（Code Splitting）**
+
+- **作用**：将代码拆分为多个文件（chunks），实现**按需加载**或**并行加载**，优化性能。
+- **实现方式**：
+  - 动态导入（`import()`）
+  - 配置 `optimization.splitChunks`
+
+**8. Tree Shaking**
+
+- **作用**：通过静态分析**移除未使用的代码**，减小打包体积。
+- **前提**：使用 ES Module（`import/export`），并启用生产模式（`mode: 'production'`）。
+
+:::
 
 ## 如何在 Webpack 中实现 CSS 和 Sass 的处理？
 
@@ -245,7 +937,7 @@ module.exports = {
 ```
 
 **3. 配置 PostCSS（可选）**
-创建 `postcss.config.js` 文件以启用 `autoprefixer`：
+创建 `postcss.config.js` 文件以启用 `autoprefixer` ：
 
 ```javascript
 module.exports = {
@@ -258,7 +950,7 @@ module.exports = {
 }
 ```
 
-通过配置 `css-loader`、`sass-loader` 和 `MiniCssExtractPlugin`，Webpack 可以高效处理 CSS 和 Sass。关键点包括：
+通过配置 `css-loader` 、 `sass-loader` 和 `MiniCssExtractPlugin` ，Webpack 可以高效处理 CSS 和 Sass。关键点包括：
 
 1. 加载器顺序：从右到左（如 `[sass-loader, css-loader, style-loader]`）。
 2. 生产环境提取 CSS：使用 `MiniCssExtractPlugin`。
@@ -331,7 +1023,7 @@ module.exports = {
 **常用占位符**
 | 占位符 | 说明 |
 |---------------------|-------------------------------|
-| `[name]` | 入口名称（如多入口的 `home`） |
+| `[name]` | 入口名称（如多入口的 `home` ） |
 | `[hash]` | 根据构建生成的唯一哈希值 |
 | `[contenthash]` | 根据文件内容生成的哈希值 |
 | `[chunkhash]` | 根据代码块生成的哈希值 |
@@ -353,7 +1045,7 @@ module.exports = {
 | **执行时机** | 在模块加载时（文件转换为模块时） | 在整个构建生命周期（从初始化到输出）的各个阶段 |
 | **配置方式** | 通过 `module.rules` 数组配置 | 通过 `plugins` 数组配置（需要 `new` 实例化） |
 | **典型场景** | 处理 JS/CSS/图片等文件转译 | 生成 HTML、压缩代码、提取 CSS 等全局操作 |
-| **依赖关系** | 针对特定文件类型（如 `.scss`） | 不依赖文件类型，可干预整个构建流程 |
+| **依赖关系** | 针对特定文件类型（如 `.scss` ） | 不依赖文件类型，可干预整个构建流程 |
 
 **2. Loaders 的作用与使用**
 **核心功能**
@@ -437,8 +1129,8 @@ module.exports = {
 ```
 
 - **顺序关键**：Loaders 从右到左（或从下到上）执行。  
-  例如：`use: ['style-loader', 'css-loader', 'sass-loader']` 的执行顺序为：  
-  `sass-loader` → `css-loader` → `style-loader`。
+   例如： `use: ['style-loader', 'css-loader', 'sass-loader']` 的执行顺序为：  
+  `sass-loader` → `css-loader` → `style-loader` 。
 
 **Plugins 的执行流程**
 
@@ -506,7 +1198,7 @@ document.getElementById('btn').addEventListener('click', async () => {
 ```
 
 **2. 配置 Webpack**
-确保 `webpack.config.js` 的 `output` 配置中包含 `chunkFilename`：
+确保 `webpack.config.js` 的 `output` 配置中包含 `chunkFilename` ：
 
 ```javascript
 module.exports = {
@@ -534,12 +1226,12 @@ const About = lazy(() => import('./routes/About'))
 function App() {
   return (
     <Router>
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense fallback={<div> Loading... </div>}>
+        {' '}
         <Switch>
-          <Route exact path="/" component={Home} />
-          <Route path="/about" component={About} />
-        </Switch>
-      </Suspense>
+          <Route exact path="/" component={Home} /> <Route path="/about" component={About} />{' '}
+        </Switch>{' '}
+      </Suspense>{' '}
     </Router>
   )
 }
@@ -651,7 +1343,7 @@ const About = lazy(
 
 **在 Webpack 中启用 Tree Shaking 的步骤**
 **1. 使用 ES Module 语法**
-确保项目代码使用 `import/export`，而非 CommonJS 的 `require`。
+确保项目代码使用 `import/export` ，而非 CommonJS 的 `require` 。
 
 ```javascript
 // ✅ 正确：ESM 导出
@@ -666,11 +1358,14 @@ export function subtract(a, b) {
 import { add } from './math'
 
 // ❌ 错误：CommonJS 导出
-module.exports = { add, subtract }
+module.exports = {
+  add,
+  subtract,
+}
 ```
 
-**2. 配置 Webpack 的 `mode` 为 `production`**
-在 `webpack.config.js` 中设置 `mode: 'production'`，这会自动启用 Tree Shaking 和代码压缩。
+**2. 配置 Webpack 的 `mode` 为 `production` **
+在 `webpack.config.js` 中设置 `mode: 'production'` ，这会自动启用 Tree Shaking 和代码压缩。
 
 ```javascript
 module.exports = {
@@ -702,7 +1397,7 @@ module.exports = {
 }
 ```
 
-若项目无副作用文件，直接设为 `false`：
+若项目无副作用文件，直接设为 `false` ：
 
 ```json
 {
@@ -710,8 +1405,8 @@ module.exports = {
 }
 ```
 
-**5. 显式配置 `optimization.usedExports`**
-在 `webpack.config.js` 中启用 `usedExports`，让 Webpack 标记未使用的导出：
+**5. 显式配置 `optimization.usedExports` **
+在 `webpack.config.js` 中启用 `usedExports` ，让 Webpack 标记未使用的导出：
 
 ```javascript
 module.exports = {
@@ -724,7 +1419,7 @@ module.exports = {
 
 **验证 Tree Shaking 是否生效**
 **方法 1：检查打包后的代码**
-若未使用的函数（如 `subtract`）被删除，说明 Tree Shaking 生效：
+若未使用的函数（如 `subtract` ）被删除，说明 Tree Shaking 生效：
 
 ```javascript
 // 打包前 math.js
@@ -748,7 +1443,7 @@ function add(a, b) {
 npm install --save-dev webpack-bundle-analyzer
 ```
 
-配置 `webpack.config.js`：
+配置 `webpack.config.js` ：
 
 ```javascript
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin

@@ -185,7 +185,7 @@ React 通过 **Lane 模型** 管理任务优先级（共 31 个优先级车道�
 
 :::
 
-## Fiber 结构和普通 VNode 有什么区别？
+## Fiber 结构和普通 VNode 区别
 
 参考答案
 
@@ -426,7 +426,7 @@ React 仅对 **同一层级的兄弟节点** 进行对比，若节点跨层级�
 
 :::
 
-## 简述 React 和 Vue diff 算法的区别
+## React 和 Vue diff 算法的区别
 
 参考答案
 
@@ -524,7 +524,7 @@ const [value, setValue] = useState(1)
 
 :::
 
-## 为何 React JSX 循环需要使用 `key` ？
+## React JSX 循环为何使用 `key` ？
 
 参考答案
 
@@ -564,7 +564,7 @@ React 通过 `key` 唯一标识列表中的每个元素。当列表发生变化�
 
 :::
 
-## React 事件和 DOM 事件有什么区别？
+## React 事件和 DOM 事件区别
 
 参考答案
 
@@ -888,7 +888,7 @@ React 16 引入的 **Fiber 架构** 替代了事务机制，核心改进包括�
 事务机制是 React 早期实现批量更新的基石，但其同步设计无法满足现代前端应用的复杂需求。Fiber 架构通过解耦渲染过程，为 Concurrent Mode 和 Suspense 等特性奠定了基础，成为 React 高效渲染的核心。
 :::
 
-## 如何理解 React concurrency 并发机制
+## 理解 React concurrency 并发机制
 
 参考答案
 
@@ -933,14 +933,135 @@ root.render(<App />)
 
 :::
 
-## 简述 React reconciliation 协调的过程
+## React reconciliation 协调的过程
 
-@大洛 将于 2025.02.23 之前提交答案。
+参考答案
+
+::: details
+
+React 的 **协调（Reconciliation）** 是用于高效更新 UI 的核心算法。当组件状态或属性变化时，React 会通过对比新旧虚拟 DOM（Virtual DOM）树，找出最小化的差异并应用更新。以下是协调过程的详细步骤：
+
+1. **生成虚拟 DOM 树**
+
+- 当组件状态或属性变化时，React 会重新调用组件的 `render` 方法，生成新的**虚拟 DOM 树**（一个轻量级的 JavaScript 对象，描述 UI 结构）。
+- 虚拟 DOM 是实际 DOM 的抽象表示，操作成本远低于直接操作真实 DOM。
+
+2. **Diffing 算法（差异对比）**
+   React 使用 **Diffing 算法** 比较新旧两棵虚拟 DOM 树，找出需要更新的部分。对比规则如下：
+
+**规则一：不同类型的元素**
+
+- 如果新旧元素的 `type` 不同（例如从 `<div>` 变为 `<span>`），React 会**销毁旧子树**，**重建新子树**。
+  - 旧组件的生命周期方法（如 `componentWillUnmount`）会被触发。
+  - 新组件的生命周期方法（如 `constructor`、`componentDidMount`）会被触发。
+
+**规则二：相同类型的元素**
+
+- 如果元素的 `type` 相同（例如 `<div className="old">` → `<div className="new">`），React 会**保留 DOM 节点**，仅更新变化的属性。
+  - 对比新旧属性，仅更新差异部分（例如 `className`）。
+  - 组件实例保持不变，生命周期方法（如 `componentDidUpdate`）会被触发。
+
+**规则三：递归处理子节点**
+
+- 对于子节点的对比，React 默认使用**逐层递归**的方式。
+- **列表对比优化**：
+  - 当子元素是列表（例如通过 `map` 生成的元素）时，React 需要唯一 `key` 来标识元素，以高效复用 DOM 节点。
+  - 若未提供 `key`，React 会按顺序对比子节点，可能导致性能下降或状态错误（例如列表顺序变化时）。
+
+3. **更新真实 DOM**
+
+- 通过 Diffing 算法找出差异后，React 将生成一系列**最小化的 DOM 操作指令**（例如 `updateTextContent`、`replaceChild`）。
+- 这些指令会被批量应用到真实 DOM 上，以减少重绘和重排的次数，提高性能。
+
+4. **协调的优化策略**
+
+- **Key 的作用**：为列表元素提供唯一的 `key`，帮助 React 识别元素的移动、添加或删除，避免不必要的重建。
+- **批量更新（Batching）**：React 会将多个状态更新合并为一次渲染，减少重复计算。
+- **Fiber 架构**（React 16+）：
+  - 将协调过程拆分为可中断的“工作单元”（Fiber 节点），允许高优先级任务（如动画）优先处理。
+  - 支持异步渲染（Concurrent Mode），避免长时间阻塞主线程。
+
+:::
 
 ## React 组件渲染和更新的全过程
 
-@大洛 将于 2025.02.23 之前提交答案。
+参考答案
 
-## 为何 React Hooks 不能放在条件或循环之内？
+::: details
 
-@大洛 将于 2025.02.23 之前提交答案。
+React 组件的渲染和更新过程涉及多个阶段，包括 **初始化、渲染、协调、提交、清理** 等。以下是 React 组件渲染和更新的全过程，结合源码逻辑和关键步骤进行详细分析。
+
+---
+
+**1. 整体流程概述**
+React 的渲染和更新过程可以分为以下几个阶段：
+
+1. **初始化阶段**：创建 Fiber 树和 Hooks 链表。
+2. **渲染阶段**：生成新的虚拟 DOM（Fiber 树）。
+3. **协调阶段**：对比新旧 Fiber 树，找出需要更新的部分。
+4. **提交阶段**：将更新应用到真实 DOM。
+5. **清理阶段**：重置全局变量，准备下一次更新。
+
+**2. 详细流程分析**
+
+**（1）初始化阶段**
+
+- **触发条件**：组件首次渲染或状态/属性更新。
+- **关键函数**：`render`、`createRoot`、`scheduleUpdateOnFiber`。
+- **逻辑**：
+  1. 通过 `ReactDOM.render` 或 `createRoot` 初始化应用。
+  2. 创建根 Fiber 节点（`HostRoot`）。
+  3. 调用 `scheduleUpdateOnFiber`，将更新任务加入调度队列。
+
+**（2）渲染阶段**
+
+- **触发条件**：调度器开始执行任务。
+- **关键函数**：`performSyncWorkOnRoot`、`beginWork`、`renderWithHooks`。
+- **逻辑**：
+  1. 调用 `performSyncWorkOnRoot`，开始渲染任务。
+  2. 调用 `beginWork`，递归处理 Fiber 节点。
+  3. 对于函数组件，调用 `renderWithHooks`，执行组件函数并生成新的 Hooks 链表。
+  4. 对于类组件，调用 `instance.render`，生成新的虚拟 DOM。
+  5. 对于 Host 组件（如 `div`），生成对应的 DOM 节点。
+
+**（3）协调阶段**
+
+- **触发条件**：新的虚拟 DOM 生成后。
+- **关键函数**：`reconcileChildren`、`diff`。
+- **逻辑**：
+  1. 调用 `reconcileChildren`，对比新旧 Fiber 节点。
+  2. 根据 `diff` 算法，找出需要更新的节点。
+  3. 为需要更新的节点打上 `Placement`、`Update`、`Deletion` 等标记。
+
+**（4）提交阶段**
+
+- **触发条件**：协调阶段完成后。
+- **关键函数**：`commitRoot`、`commitWork`。
+- **逻辑**：
+  1. 调用 `commitRoot`，开始提交更新。
+  2. 调用 `commitWork`，递归处理 Fiber 节点。
+  3. 根据节点的标记，执行 DOM 操作（如插入、更新、删除）。
+  4. 调用生命周期钩子（如 `componentDidMount`、`componentDidUpdate`）。
+
+**（5）清理阶段**
+
+- **触发条件**：提交阶段完成后。
+- **关键函数**：`resetHooks`、`resetContext`。
+- **逻辑**：
+  1. 重置全局变量（如 `currentlyRenderingFiber`、`currentHook`）。
+  2. 清理上下文和副作用。
+  3. 准备下一次更新。
+
+:::
+
+## 为何 Hooks 不能放在条件或循环之内？
+
+参考答案
+
+::: details
+
+一个组件中的 hook 会以链表的形式串起来， FiberNode 的 memoizedState 中保存了 Hooks 链表中的第一个 Hook。
+
+在更新时，会复用之前的 Hook，如果通过了条件或循环语句，增加或者删除 hooks，在复用 hooks 过程中，会产生复用 hooks状态和当前 hooks 不一致的问题。
+
+:::

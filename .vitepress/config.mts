@@ -83,6 +83,7 @@ export default defineConfig({
       {
         text: '一面',
         items: [
+          { text: '计算机基础', link: '/docs/first-exam/ComputerBase.md' },
           { text: 'HTML 和 CSS', link: '/docs/first-exam/HTML-CSS.md' },
           { text: 'JS 基础知识', link: '/docs/first-exam/JS' },
           { text: 'TS 类型', link: '/docs/first-exam/TS' },
