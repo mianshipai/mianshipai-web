@@ -121,7 +121,7 @@ export default defineConfig({
       {
         text: '服务',
         items: [
-          { text: '加群沟通', link: '/docs/services/group.md' },
+          { text: '免费加群', link: '/docs/services/group.md' },
           {
             text: '提交面试真题',
             link: 'https://github.com/mianshipai/mianshipai-web/issues/new/choose',
