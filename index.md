@@ -38,7 +38,7 @@ features:
 - 工作多年只会 Vue ，不懂算法，没有技术广度和深度
 - 刚毕业，没实际项目经验
 
-**面试派** 旨在帮助解决面试过程中的所有问题，不仅是刷题。欢迎 [加群](./docs/services/group.md) 沟通，免费咨询指导建议。
+**面试派** 旨在帮助解决面试过程中的所有问题，不仅是刷题。欢迎 [加群](https://github.com/mianshipai/mianshipai-web/issues/1) 沟通，免费咨询指导建议。
 
 ### 团队成员
 
@@ -98,7 +98,7 @@ features:
 - 前端晋升全栈，晋升大前端
 - 开源，副业，自由职业
 
-关于工作、技术、职业的任何话题，都可以 [加群](./docs/services/group.md) 沟通，免费咨询指导建议。
+关于工作、技术、职业的任何话题，都可以 [加群](https://github.com/mianshipai/mianshipai-web/issues/1) 沟通，免费咨询指导建议。
 
 <div style="display: flex; margin-top: 48px;">
   <div style="flex: 1; text-align: center;">
