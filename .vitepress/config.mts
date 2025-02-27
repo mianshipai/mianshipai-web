@@ -36,7 +36,8 @@ export default defineConfig({
     // https://vitepress.dev/reference/default-theme-config
     nav: [
       { text: '首页', link: '/' },
-      { text: '加群沟通', link: '/docs/services/group.md' },
+      { text: '正确写简历', link: '/docs/before-interview/write-resume.md' },
+      { text: '免费加群', link: 'https://github.com/mianshipai/mianshipai-web/issues/1' },
       {
         text: '提交面试真题',
         link: 'https://github.com/mianshipai/mianshipai-web/issues/new/choose',
@@ -121,7 +122,7 @@ export default defineConfig({
       {
         text: '服务',
         items: [
-          { text: '加群沟通', link: '/docs/services/group.md' },
+          { text: '免费加群', link: 'https://github.com/mianshipai/mianshipai-web/issues/1' },
           {
             text: '提交面试真题',
             link: 'https://github.com/mianshipai/mianshipai-web/issues/new/choose',

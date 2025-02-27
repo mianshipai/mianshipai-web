@@ -350,11 +350,119 @@ export default defineConfig({
 
 ## 简述vite插件开发流程？
 
-@石小石 于2月27日前完成
+::: details 参考答案
+
+Vite 插件开发基于 Rollup 插件系统，因此其生命周期和钩子与 Rollup 插件非常相似。以下是开发流程和关键步骤：
+
+1️⃣ **理解插件生命周期**
+Vite 插件有一系列生命周期钩子，每个钩子对应不同的功能需求，主要钩子包括：
+
+- **config**：用于修改 Vite 配置，通常在构建或开发过程中使用。
+- **configureServer**：用于修改开发服务器的行为，如自定义请求处理。
+- **transform**：对文件内容进行转换，适用于文件类型转换或代码处理。
+- **buildStart** 和 **buildEnd**：在构建过程开始和结束时触发，适用于日志记录或优化操作。
+
+插件开发的核心是根据具体需求，在合适的生命周期钩子中实现业务逻辑。
+
+2️⃣ **插件基本结构**
+
+Vite 插件的基本结构如下：
+
+```javascript
+export default function myVitePlugin() {
+  return {
+    name: 'vite-plugin-example', // 插件名称
+    config(config) {
+      // 修改 Vite 配置
+    },
+    configureServer(server) {
+      // 修改开发服务器行为
+    },
+    transform(src, id) {
+      // 对文件内容进行转换
+    },
+  }
+}
+```
+
+插件对象必须包含一个 `name` 属性，用于标识插件，还可以根据需求实现其他钩子。
+
+3️⃣ **插件开发**
+
+在插件开发过程中，根据需求实现不同的钩子逻辑。例如，假设我们需要创建一个插件来处理自定义文件类型并将其转换为 JavaScript：
+
+```javascript
+const fileRegex = /\.(my-file-ext)$/
+
+export default function transformFilePlugin() {
+  return {
+    name: 'vite-plugin-transform-file',
+    transform(src, id) {
+      if (fileRegex.test(id)) {
+        return {
+          code: compileFileToJS(src), // 将文件内容转换为 JavaScript
+          map: null, // 可以返回 source map
+        }
+      }
+    },
+  }
+}
+```
+
+- **transform**：此钩子对符合 `fileRegex` 正则表达式的文件（`.my-file-ext`）进行转换，并返回转换后的 JavaScript 代码。
+
+4️⃣ **插件使用**
+
+插件开发完成后，可以在 Vite 配置中使用：
+
+```javascript
+import transformFilePlugin from 'vite-plugin-transform-file'
+
+export default {
+  plugins: [transformFilePlugin()],
+}
+```
+
+5️⃣ **发布插件**
+
+开发完成后，插件可以通过 npm 发布，或者将其托管在 GitHub 上，方便团队或社区使用。
+
+> 参考博文：[https://juejin.cn/post/7270528132167417915](https://juejin.cn/post/7270528132167417915)
+
+:::
 
 ## 如何在Vite中配置代理？
 
-@石小石 于2月27日前完成
+::: details 参考答案
+在 Vite 中配置代理可以通过 `server.proxy` 选项来实现。以下是一个示例配置：
+
+```javascript
+// vite.config.js
+import { defineConfig } from 'vite'
+
+export default defineConfig({
+  server: {
+    proxy: {
+      // 代理 /api 请求到目标服务器
+      '/api': {
+        target: 'http://localhost:5000', // 目标服务器地址
+        changeOrigin: true, // 修改请求头中的 Origin 字段为目标服务器的 origin
+        secure: false, // 是否允许 HTTPS 请求
+        rewrite: (path) => path.replace(/^\/api/, ''), // 重写请求路径，将 /api 替换为空
+      },
+
+      // 代理某些静态资源请求
+      '/assets': {
+        target: 'http://cdn-server.com', // 目标是静态资源服务器
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/assets/, '/static'), // 将 /assets 路径重写为 /static
+      },
+    },
+  },
+})
+```
+
+:::
 
 ## Vite如何集成TypeScript？如何配置？
 
@@ -446,6 +554,8 @@ interface ImportMeta {
   readonly env: ImportMetaEnv
 }
 ```
+
+> 参考博文:https://juejin.cn/post/7177210200330829885
 
 :::
 
@@ -1229,7 +1339,12 @@ function App() {
       <Suspense fallback={<div> Loading... </div>}>
         {' '}
         <Switch>
-          <Route exact path="/" component={Home} /> <Route path="/about" component={About} />{' '}
+          <Route exact path="/" component={Home} />{' '}
+          <Route
+            path="/about
+        "
+            component={About}
+          />{' '}
         </Switch>{' '}
       </Suspense>{' '}
     </Router>

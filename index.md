@@ -40,52 +40,52 @@ features:
 
 **面试派** 旨在帮助解决面试过程中的所有问题，不仅是刷题。欢迎 [加群](./docs/services/group.md) 沟通，免费咨询指导建议。
 
-### 我们的团队
+### 团队成员
 
-双越老师带队，联合多名精英博主，参考大厂面试规范，共建优质内容。
+双越老师带队，联合多名精英博主，参考大厂面试规范，共建优质内容。[查看全部贡献者](https://github.com/mianshipai/mianshipai-web/graphs/contributors)。[成为贡献者](https://github.com/mianshipai/mianshipai-web#%E8%B4%A1%E7%8C%AE%E4%BB%A3%E7%A0%81)。
 
 <div style="display: grid; gap: 24px; grid-template-columns: repeat(auto-fit, minmax(224px, 1fr)); margin-top: 24px;">
   <div style="flex: 1; text-align: center;">
-    <div style="background-color: var(--vp-c-bg-soft); padding: 16px 0 8px 0; border-radius: 6px;">
+    <div style="background-color: var(--vp-c-bg-soft); padding: 16px 0 8px 0; border-radius: 6px; cursor: pointer;" onclick="javascript:window.open('https://juejin.cn/user/1714893868765373', '_blank')">
       <figure style="width: 64px; height: 64px; border-radius: 50%; overflow: hidden; margin: 0 auto; box-shadow: var(--vp-shadow-3);">
         <img src="https://github.com/wangfupeng1988.png" loading="lazy"/>
       </figure>
       <div style="text-align: center;">
-        <h4 style="font-size: 16px; line-height: 12px; font-weight: 600;">双越老师</h4>
-        <p style="color: var(--vp-c-text-2); font-size: 14px; line-height: 1;">一句话介绍</p>
+        <h4 style="font-size: 16px; line-height: 12px; font-weight: 600; text-decoration: none;">双越老师</h4>
+        <p style="color: var(--vp-c-text-2); font-size: 14px; line-height: 1.5; padding: 0 16px;">前百度、滴滴 资深工程师，wangEditor 作者，PMP</p>
       </div>
     </div>
   </div>
   <div style="flex: 1; text-align: center;">
-    <div style="background-color: var(--vp-c-bg-soft); padding: 16px 0 8px 0; border-radius: 6px;">
+    <div style="background-color: var(--vp-c-bg-soft); padding: 16px 0 8px 0; border-radius: 6px; cursor: pointer;" onclick="javascript:window.open('https://juejin.cn/user/660148845294712', '_blank')">
       <figure style="width: 64px; height: 64px; border-radius: 50%; overflow: hidden; margin: 0 auto; box-shadow: var(--vp-shadow-3);">
-        <img src="https://github.com/wangeditor.png" loading="lazy"/>
+        <img src="https://github.com/1139874527.png" loading="lazy"/>
       </figure>
       <div style="text-align: center;">
-        <h4 style="font-size: 16px; line-height: 12px; font-weight: 600;">xxx</h4>
-        <p style="color: var(--vp-c-text-2); font-size: 14px; line-height: 1;">xxxxxxx</p>
+        <h4 style="font-size: 16px; line-height: 12px; font-weight: 600;">石小石Orz</h4>
+        <p style="color: var(--vp-c-text-2); font-size: 14px; line-height: 1.5; padding: 0 16px;">掘金优秀创作者，阿里云专家博主&评测专家，文章阅读量超100万</p>
       </div>
     </div>
   </div>
   <div style="flex: 1; text-align: center;">
-    <div style="background-color: var(--vp-c-bg-soft); padding: 16px 0 8px 0; border-radius: 6px;">
+    <div style="background-color: var(--vp-c-bg-soft); padding: 16px 0 8px 0; border-radius: 6px; cursor: pointer;" onclick="javascript:window.open('https://github.com/RainyNight9', '_blank')">
       <figure style="width: 64px; height: 64px; border-radius: 50%; overflow: hidden; margin: 0 auto; box-shadow: var(--vp-shadow-3);">
-        <img src="https://github.com/yyx990803.png" loading="lazy"/>
+        <img src="https://github.com/RainyNight9.png" loading="lazy"/>
       </figure>
       <div style="text-align: center;">
-        <h4 style="font-size: 16px; line-height: 12px; font-weight: 600;">yyy</h4>
-        <p style="color: var(--vp-c-text-2); font-size: 14px; line-height: 1;">yyyyy</p>
+        <h4 style="font-size: 16px; line-height: 12px; font-weight: 600;">雨夜寻晴天</h4>
+        <p style="color: var(--vp-c-text-2); font-size: 14px; line-height: 1.5; padding: 0 16px;">掘金优秀创作者，开源作者，多年大厂经验，擅长Web 小程序和跨端开发</p>
       </div>
     </div>
   </div>
   <div style="flex: 1; text-align: center;">
-    <div style="background-color: var(--vp-c-bg-soft); padding: 16px 0 8px 0; border-radius: 6px;">
+    <div style="background-color: var(--vp-c-bg-soft); padding: 16px 0 8px 0; border-radius: 6px; cursor: pointer;" onclick="javascript:window.open('https://juejin.cn/user/116975171023884', '_blank')">
       <figure style="width: 64px; height: 64px; border-radius: 50%; overflow: hidden; margin: 0 auto; box-shadow: var(--vp-shadow-3);">
-        <img src="https://github.com/kiaking.png" loading="lazy"/>
+        <img src="https://github.com/DolphinFeng.png" loading="lazy"/>
       </figure>
       <div style="text-align: center;">
-        <h4 style="font-size: 16px; line-height: 12px; font-weight: 600;">zzz</h4>
-        <p style="color: var(--vp-c-text-2); font-size: 14px; line-height: 1;">zzzzzz</p>
+        <h4 style="font-size: 16px; line-height: 12px; font-weight: 600;">Dolphin_海豚</h4>
+        <p style="color: var(--vp-c-text-2); font-size: 14px; line-height: 1.5; padding: 0 16px;">掘金优秀作者，2023人气 NO.14 ，博客访问量 30w+，擅长各类面试题</p>
       </div>
     </div>
   </div>
