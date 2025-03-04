@@ -83,6 +83,14 @@
 
 :::
 
+参考资料
+
+::: details
+
+- https://juejin.cn/post/7348651815759282226
+
+:::
+
 ## 如何理解 React Fiber 架构？
 
 参考答案
