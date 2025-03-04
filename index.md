@@ -68,7 +68,7 @@ features:
     </div>
   </div>
   <div style="flex: 1; text-align: center;">
-    <div style="background-color: var(--vp-c-bg-soft); padding: 16px 0 8px 0; border-radius: 6px; cursor: pointer;" onclick="javascript:window.open('https://github.com/RainyNight9', '_blank')">
+    <div style="background-color: var(--vp-c-bg-soft); padding: 16px 0 8px 0; border-radius: 6px; cursor: pointer;" onclick="javascript:window.open('https://juejin.cn/user/1943592288391496/posts', '_blank')">
       <figure style="width: 64px; height: 64px; border-radius: 50%; overflow: hidden; margin: 0 auto; box-shadow: var(--vp-shadow-3);">
         <img src="https://github.com/RainyNight9.png" loading="lazy"/>
       </figure>
