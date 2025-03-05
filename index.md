@@ -57,18 +57,18 @@ features:
     </div>
   </div>
   <div style="flex: 1; text-align: center;">
-    <div style="background-color: var(--vp-c-bg-soft); padding: 16px 0 8px 0; border-radius: 6px; cursor: pointer;" onclick="javascript:window.open('https://juejin.cn/user/660148845294712', '_blank')">
-      <figure style="width: 64px; height: 64px; border-radius: 50%; overflow: hidden; margin: 0 auto; box-shadow: var(--vp-shadow-3);">
-        <img src="https://github.com/1139874527.png" loading="lazy"/>
+    <div style="background-color: var(--vp-c-bg-soft); padding: 16px 0 8px 0; border-radius: 6px; cursor: pointer;">
+      <figure style="width: 64px; height: 64px; border-radius: 50%; overflow: hidden; margin: 0 auto; box-shadow: var(--vp-shadow-3);" onclick="javascript:window.open('https://github.com/shixiaoshiOrz', '_blank')">
+        <img src="https://github.com/shixiaoshiOrz.png" loading="lazy"/>
       </figure>
-      <div style="text-align: center;">
+      <div style="text-align: center;" onclick="javascript:window.open('https://juejin.cn/user/660148845294712', '_blank')">
         <h4 style="font-size: 16px; line-height: 12px; font-weight: 600;">石小石Orz</h4>
         <p style="color: var(--vp-c-text-2); font-size: 14px; line-height: 1.5; padding: 0 16px;">掘金优秀创作者，阿里云专家博主&评测专家，文章阅读量超100万</p>
       </div>
     </div>
   </div>
   <div style="flex: 1; text-align: center;">
-    <div style="background-color: var(--vp-c-bg-soft); padding: 16px 0 8px 0; border-radius: 6px; cursor: pointer;" onclick="javascript:window.open('https://github.com/RainyNight9', '_blank')">
+    <div style="background-color: var(--vp-c-bg-soft); padding: 16px 0 8px 0; border-radius: 6px; cursor: pointer;" onclick="javascript:window.open('https://juejin.cn/user/1943592288391496/posts', '_blank')">
       <figure style="width: 64px; height: 64px; border-radius: 50%; overflow: hidden; margin: 0 auto; box-shadow: var(--vp-shadow-3);">
         <img src="https://github.com/RainyNight9.png" loading="lazy"/>
       </figure>

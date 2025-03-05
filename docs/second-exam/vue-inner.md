@@ -108,7 +108,26 @@ export default {
 
 ## Vue 组件初始化的各个阶段都做了什么？
 
-## Vue 如何实现双向数据绑定？
+::: details 参考答案
+从组件的创建到挂载到页面，再到组件的更新和销毁，每个阶段都有特定的任务和职责。
+
+🎯 组件实例创建：当我们第一次访问页面时，Vue创建组件实例，解析`props`、`data`、`methods`等属性方法，在组合式API中，执行 `setup()`。
+
+🎯 响应式系统建立：基于 `Proxy` 实现 `reactive`、`ref`，建立依赖收集和触发更新机制，`props` 传递时自动响应式处理。
+
+🎯 模板编译与渲染：将 template 编译为渲染函数，Vue 3 通过 静态提升等方式优化性能，Vite 预编译 `SFC（单文件组件）`。
+
+🎯 DOM 挂载：执行渲染函数生成 VNode，通过 `Patch 算法` 转换为真实 DOM 并插入页面，同时初始化子组件。`mounted（Options API`）或 `onMounted（Composition API）`触发，可进行 DOM 操作。
+
+🎯 响应式更新：状态变更触发 `Diff` 算法 计算最小 DOM 更新，`beforeUpdate`、`updated（Options API）`或 `onBeforeUpdate`、`onUpdated（Composition API）`执行相应逻辑。
+
+🎯 组件销毁：移除 DOM，清理副作用（解绑事件、销毁 `watcher`、清理 `effect`），递归卸载子组件，触发 `beforeUnmount`、`unmounted（Options API）`或 `onBeforeUnmount`、`onUnmounted（Composition API）`。
+
+> Vue 3 通过 `Proxy` 响应式、编译优化、生命周期调整提升性能，使组件更高效。
+
+:::
+
+## Vue 如何实现双向数据绑定
 
 ::: details 参考答案
 
@@ -434,7 +453,89 @@ const [value, setValue] = useState(1)
 
 ## 简述 Vue 组件异步更新的过程
 
-队列
+参考答案
+
+::: details
+
+Vue 组件的异步更新过程是其响应式系统的核心机制，主要通过 **批量更新** 和 **事件循环** 实现高效渲染，具体流程如下：
+
+**一、触发阶段：依赖收集与变更通知**
+
+1. **数据变更**  
+   当组件内响应式数据（如 `data` 、 `props` ）被修改时，触发 `setter` 通知依赖（Watcher）。
+
+2. **Watcher 入队**  
+   所有关联的 Watcher 会被推入 **异步更新队列**（ `queueWatcher` ），Vue 通过 `id` 去重，确保每个 Watcher 仅入队一次，避免重复更新。
+
+**二、调度阶段：异步队列处理** 3. **异步执行**  
+ Vue 将队列刷新任务放入微任务队列（优先 `Promise.then` ，降级 `setImmediate` 或 `setTimeout` ），等待当前同步代码执行完毕后处理。
+
+```javascript
+// 伪代码：nextTick 实现
+const timerFunc = () => {
+  if (Promise) {
+    Promise.resolve().then(flushQueue)
+  } else if (MutationObserver) {
+    /* 使用 MO */
+  } else {
+    setTimeout(flushQueue, 0)
+  }
+}
+```
+
+4. **合并更新**  
+   同一事件循环中的多次数据变更会被合并为一次组件更新（如循环中修改数据 100 次，仅触发 1 次渲染）。
+
+**三、执行阶段：虚拟 DOM 与 DOM 更新** 5. **组件重新渲染**  
+ 执行队列中的 Watcher 更新函数，触发组件的 `render` 生成新虚拟 DOM（VNode）。
+
+6. **Diff 与 Patch**  
+   通过 **Diff 算法** 对比新旧 VNode，计算出最小化 DOM 操作，批量更新真实 DOM。
+
+**四、核心优势**
+
+- **性能优化**：避免频繁 DOM 操作，减少重排/重绘。
+- **数据一致性**：确保在同一事件循环中的所有数据变更后，视图一次性更新到最终状态。
+- **开发者友好**：通过 `Vue.nextTick(callback)` 在 DOM 更新后执行逻辑。
+
+```javascript
+export default {
+  data() {
+    return {
+      count: 0,
+    }
+  },
+  methods: {
+    handleClick() {
+      this.count++ // Watcher 入队
+      this.count++ // 去重，仍只一个 Watcher
+      this.$nextTick(() => {
+        console.log('DOM已更新:', this.$el.textContent)
+      })
+    },
+  },
+}
+```
+
+点击事件中两次修改 `count` ，但 DOM 仅更新一次， `nextTick` 回调能获取最新 DOM 状态。
+
+**总结流程图**
+
+```
+数据变更 → Watcher 入队 → 微任务队列 → 批量执行 Watcher → 生成 VNode → Diff/Patch → DOM 更新
+```
+
+通过异步更新机制，Vue 在保证性能的同时，实现了数据驱动视图的高效响应。
+
+:::
+
+参考资料
+
+::: details
+
+- https://juejin.cn/post/7054488305659805727
+
+:::
 
 ## Vue 组件是如何渲染和更新的
 
