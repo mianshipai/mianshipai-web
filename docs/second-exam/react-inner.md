@@ -19,7 +19,7 @@
 
 **核心原理**
 
-1. **JSX 编译为 React 元素**  
+1. **JSX 编译为 React 元素**
    JSX 会被转换为 `React.createElement()` 调用（或 React 17+ 的 `_jsx` 函数），生成描述 UI 结构的对象（React 元素），而非直接操作真实 DOM。
 
    ```jsx
@@ -67,7 +67,7 @@
 
 **编译与工具链**
 
-1. **编译流程**  
+1. **编译流程**
    JSX 需通过 **Babel** 编译为浏览器可执行的 JavaScript。典型配置如下：
 
    ```json
@@ -136,16 +136,16 @@ const fiberNode = {
 
 **阶段 1：Reconciliation（协调/渲染阶段）**
 
-- **可中断的增量计算**：  
+- **可中断的增量计算**：
   React 将组件树遍历拆解为多个 **Fiber 工作单元**，通过循环（而非递归）逐个处理。
   - 每次循环执行一个 Fiber 节点，生成子 Fiber 并连接成树。
   - 通过 `requestIdleCallback`（或 Scheduler 包）在浏览器空闲时段执行，避免阻塞主线程。
-- **对比策略**：  
+- **对比策略**：
   根据 `key` 和 `type` 复用节点，标记 `Placement`（新增）、`Update`（更新）、`Deletion`（删除）等副作用。
 
 **阶段 2：Commit（提交阶段）**
 
-- **不可中断的 DOM 更新**：  
+- **不可中断的 DOM 更新**：
   同步执行所有标记的副作用（如 DOM 操作、生命周期调用），确保 UI 一致性。
 - **副作用分类**：
   - **BeforeMutation**：`getSnapshotBeforeUpdate`。
@@ -336,7 +336,7 @@ React Diff 算法通过 **分层对比策略** 和 **启发式规则** 减少树
 
 **1. 分层对比策略**
 
-React 仅对 **同一层级的兄弟节点** 进行对比，若节点跨层级移动（如从父节点 A 移动到父节点 B），则直接 **销毁并重建**，而非移动。  
+React 仅对 **同一层级的兄弟节点** 进行对比，若节点跨层级移动（如从父节点 A 移动到父节点 B），则直接 **销毁并重建**，而非移动。
 **原因**：跨层操作在真实 DOM 中成本极高（需递归遍历子树），而实际开发中跨层移动场景极少，此策略以概率换性能。
 
 **2. 节点类型比对规则**
@@ -485,7 +485,7 @@ React 和 Vue 的 Diff 算法均基于虚拟 DOM，但在实现策略、优化�
 
 **a. Vue 的编译时优化**
 
-- **静态节点标记**：  
+- **静态节点标记**：
   模板中的静态节点（无响应式绑定）会被编译为常量，跳过 Diff
 
   ```html
@@ -496,12 +496,12 @@ React 和 Vue 的 Diff 算法均基于虚拟 DOM，但在实现策略、优化�
   _hoisted_1 = createVNode("div", null, "Hello Vue")
   ```
 
-- **Block Tree（Vue3）**：  
+- **Block Tree（Vue3）**：
   动态节点按区块（Block）组织，Diff 时仅对比动态部分
 
 **b. React 的运行时优化**
 
-- **手动控制更新**：  
+- **手动控制更新**：
   需通过 `React.memo`、`shouldComponentUpdate` 或 `useMemo` 避免无效渲染
   ```jsx
   const MemoComp = React.memo(() => <div>Static Content</div>)
@@ -580,14 +580,14 @@ React 通过 `key` 唯一标识列表中的每个元素。当列表发生变化�
 
 1. **事件绑定方式**
 
-- **React 事件**  
+- **React 事件**
   使用**驼峰命名法**（如 `onClick`、`onChange`），通过 JSX 属性直接绑定函数：
 
   ```jsx
   <button onClick={handleClick}>点击</button>
   ```
 
-- **DOM 事件**  
+- **DOM 事件**
   使用**全小写命名**（如 `onclick`、`onchange`），通过字符串或 `addEventListener` 绑定：
   ```html
   <button onclick="handleClick()">点击</button>
@@ -598,7 +598,7 @@ React 通过 `key` 唯一标识列表中的每个元素。当列表发生变化�
 
 2. **事件对象（Event Object）**
 
-- **React 事件**  
+- **React 事件**
   使用**合成事件（SyntheticEvent）**，是原生事件对象的跨浏览器包装。
 
   - 通过 `e.nativeEvent` 访问原生事件。
@@ -611,7 +611,7 @@ React 通过 `key` 唯一标识列表中的每个元素。当列表发生变化�
   }
   ```
 
-- **DOM 事件**  
+- **DOM 事件**
   直接使用浏览器原生事件对象，无复用机制。
   ```javascript
   button.addEventListener('click', (e) => {
@@ -645,27 +645,27 @@ React 通过 `key` 唯一标识列表中的每个元素。当列表发生变化�
 
 4. **性能优化**
 
-- **React 事件**  
+- **React 事件**
   采用**事件委托**机制：
 
   - React 17 之前将事件委托到 `document` 层级。
   - React 17+ 改为委托到渲染的根容器（如 `ReactDOM.render` 挂载的节点）。
   - 减少内存占用，动态添加元素无需重新绑定事件。
 
-- **DOM 事件**  
+- **DOM 事件**
   直接绑定到元素，大量事件监听时可能导致性能问题。
 
 5. **跨浏览器兼容性**
 
-- **React 事件**  
+- **React 事件**
   合成事件抹平了浏览器差异（如 `event.target` 的一致性），无需处理兼容性问题。
 
-- **DOM 事件**  
+- **DOM 事件**
   需手动处理浏览器兼容性（如 IE 的 `attachEvent` vs 标准 `addEventListener`）。
 
 6. **`this` 绑定**
 
-- **React 事件**  
+- **React 事件**
   类组件中需手动绑定 `this` 或使用箭头函数：
 
   ```jsx
@@ -680,7 +680,7 @@ React 通过 `key` 唯一标识列表中的每个元素。当列表发生变化�
   }
   ```
 
-- **DOM 事件**  
+- **DOM 事件**
   事件处理函数中的 `this` 默认指向触发事件的元素：
   ```javascript
   button.addEventListener('click', function () {
@@ -711,15 +711,15 @@ React 的 **batchUpdate（批处理更新）机制** 是一种优化策略，旨
 
 **核心机制**
 
-1. **异步合并更新**  
+1. **异步合并更新**
    当在 **同一执行上下文**（如同一个事件处理函数、生命周期方法或 React 合成事件）中多次调用状态更新（如 `setState`、`useState` 的 `setter` 函数），React 不会立即触发渲染，而是将多个更新收集到一个队列中，最终合并为一次更新，统一计算新状态并渲染。
 
-2. **更新队列**  
+2. **更新队列**
    React 内部维护一个更新队列。在触发更新的代码块中，所有状态变更会被暂存到队列，直到代码执行完毕，React 才会一次性处理队列中的所有更新，生成新的虚拟 DOM，并通过 Diff 算法高效更新真实 DOM。
 
 **触发批处理的场景**
 
-1. **React 合成事件**  
+1. **React 合成事件**
    如 `onClick`、`onChange` 等事件处理函数中的多次状态更新会自动批处理。
 
    ```jsx
@@ -730,10 +730,10 @@ React 的 **batchUpdate（批处理更新）机制** 是一种优化策略，旨
    }
    ```
 
-2. **React 生命周期函数**  
+2. **React 生命周期函数**
    在 `componentDidMount`、`componentDidUpdate` 等生命周期方法中的更新会被批处理。
 
-3. **React 18+ 的自动批处理增强**  
+3. **React 18+ 的自动批处理增强**
    React 18 引入 `createRoot` 后，即使在异步操作（如 `setTimeout`、`Promise`、原生事件回调）中的更新也会自动批处理：
    ```jsx
    setTimeout(() => {
@@ -744,7 +744,7 @@ React 的 **batchUpdate（批处理更新）机制** 是一种优化策略，旨
 
 **绕过批处理的场景**
 
-1. **React 17 及之前的异步代码**  
+1. **React 17 及之前的异步代码**
    在 `setTimeout`、`Promise` 或原生事件回调中的更新默认**不会**批处理，每次 `setState` 触发一次渲染：
 
    ```jsx
@@ -755,7 +755,7 @@ React 的 **batchUpdate（批处理更新）机制** 是一种优化策略，旨
    }, 1000)
    ```
 
-2. **手动强制同步更新**  
+2. **手动强制同步更新**
    使用 `flushSync`（React 18+）可强制立即更新，绕过批处理：
 
    ```jsx
@@ -769,10 +769,10 @@ React 的 **batchUpdate（批处理更新）机制** 是一种优化策略，旨
 
 **设计目的**
 
-1. **性能优化**  
+1. **性能优化**
    避免频繁的 DOM 操作，减少浏览器重绘和回流，提升应用性能。
 
-2. **状态一致性**  
+2. **状态一致性**
    确保在同一个上下文中多次状态变更后，组件最终基于最新的状态值渲染，避免中间状态导致的 UI 不一致。
 
 **示例对比**
@@ -816,7 +816,7 @@ React 的 **事务机制（Transaction）** 是早期版本（React 16 之前）
 
 **核心概念**
 
-1. **事务的定义**  
+1. **事务的定义**
    事务是一个包含 **初始化阶段**、**执行阶段** 和 **收尾阶段** 的流程控制单元。每个事务通过 `Transaction` 类实现，提供 `initialize` 和 `close` 方法，用于在操作前后插入逻辑。例如：
 
    ```javascript
@@ -830,7 +830,7 @@ React 的 **事务机制（Transaction）** 是早期版本（React 16 之前）
    }
    ```
 
-2. **包装函数**  
+2. **包装函数**
    事务通过 `perform` 方法执行目标函数，将其包裹在事务的生命周期中：
    ```javascript
    function myAction() {
@@ -841,7 +841,7 @@ React 的 **事务机制（Transaction）** 是早期版本（React 16 之前）
 
 **在 React 中的应用场景**
 
-1. **批量更新（Batching Updates）**  
+1. **批量更新（Batching Updates）**
    在事件处理或生命周期方法中，多次调用 `setState` 会被事务合并为一次更新。例如：
 
    ```javascript
@@ -854,36 +854,36 @@ React 的 **事务机制（Transaction）** 是早期版本（React 16 之前）
    }
    ```
 
-2. **生命周期钩子的触发**  
+2. **生命周期钩子的触发**
    在组件挂载或更新时，事务确保 `componentWillMount`、`componentDidMount` 等钩子在正确时机执行。
 
-3. **事件系统的委托**  
+3. **事件系统的委托**
    合成事件（如 `onClick`）的处理逻辑通过事务绑定和解绑，确保事件监听的一致性和性能优化。
 
 **事务的工作流程**
 
-1. **初始化阶段**  
+1. **初始化阶段**
    执行所有事务的 `initialize` 方法（如记录当前 DOM 状态、锁定事件监听）。
-2. **执行目标函数**  
+2. **执行目标函数**
    运行核心逻辑（如用户定义的 `setState` 或事件处理函数）。
-3. **收尾阶段**  
+3. **收尾阶段**
    执行所有事务的 `close` 方法（如对比 DOM 变化、触发更新、解锁事件）。
 
 **事务机制的局限性**
 
-1. **同步阻塞**  
+1. **同步阻塞**
    事务的执行是同步且不可中断的，无法支持异步优先级调度（如 Concurrent Mode 的时间切片）。
-2. **复杂性高**  
+2. **复杂性高**
    事务的嵌套和组合逻辑复杂，难以维护和扩展。
 
 **Fiber 架构的演进**
 React 16 引入的 **Fiber 架构** 替代了事务机制，核心改进包括：
 
-1. **异步可中断更新**  
+1. **异步可中断更新**
    通过 Fiber 节点的链表结构，支持暂停、恢复和优先级调度。
-2. **更细粒度的控制**  
+2. **更细粒度的控制**
    将渲染拆分为多个阶段（如 `render` 和 `commit`），副作用管理更灵活。
-3. **替代批量更新策略**  
+3. **替代批量更新策略**
    使用调度器（Scheduler）和优先级队列实现更高效的批处理（如 React 18 的自动批处理）。
 
 | 特性           | 事务机制（React <16）  | Fiber 架构（React 16+）        |
@@ -1076,4 +1076,45 @@ React 的渲染和更新过程可以分为以下几个阶段：
 
 ## useEffect 的底层是如何实现的（美团）
 
-todo...
+参考答案
+
+::: details
+
+useEffect 是 React 用于管理副作用的 Hook，它在 commit 阶段 统一执行，确保副作用不会影响渲染。
+
+在 React 源码中，useEffect 通过 Fiber 机制 在 commit 阶段 进行处理：
+
+**(1) useEffect 存储在 Fiber 节点上**
+
+React 组件是通过 Fiber 数据结构 组织的，每个 useEffect 都会存储在 fiber.updateQueue 中。
+
+**(2) useEffect 何时执行**
+
+React 组件更新后，React 在 commit 阶段 统一遍历 effect 队列，并执行 useEffect 副作用。
+
+React 使用 `useEffectEvent()` 注册 effect，在 commitLayoutEffect 之后，异步执行 useEffect，避免阻塞 UI 渲染。
+
+**(3) useEffect 依赖变化的处理**
+
+依赖数组的比较使用 `Object.is()`，只有依赖变化时才重新执行 useEffect。
+
+在更新阶段，React 遍历旧 effect，并先执行清理函数，然后再执行新的 effect。
+
+**简化的 useEffect 实现如下：**
+
+```js
+function useEffect(callback, dependencies) {
+  const currentEffect = getCurrentEffect() // 获取当前 Fiber 节点的 Effect
+
+  if (dependenciesChanged(currentEffect.dependencies, dependencies)) {
+    cleanupPreviousEffect(currentEffect) // 先执行上次 effect 的清理函数
+    const cleanup = callback() // 执行 useEffect 传入的回调
+    currentEffect.dependencies = dependencies
+    currentEffect.cleanup = cleanup // 存储清理函数
+  }
+}
+```
+
+相比 useLayoutEffect，useEffect 是 异步执行，不会阻塞 UI 渲染。
+
+:::
