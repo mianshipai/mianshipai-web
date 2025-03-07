@@ -1,8 +1,8 @@
 # 面试派
 
-https://www.mianshipai.com/
+网址 https://www.mianshipai.com/
 
-[双越老师](https://juejin.cn/user/1714893868765373)联合多位精英博主，整理的前端面试流程和刷题技巧，开源免费，持续维护。
+[双越老师](https://juejin.cn/user/1714893868765373)联合多位精英博主制作，系统专业的前端面试导航，大厂面试规范，开源免费。
 
 ## 本地运行
 
