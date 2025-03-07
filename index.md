@@ -4,25 +4,25 @@ layout: home
 
 hero:
   name: '前端面试派'
-  text: '模拟大厂真实面试流程'
-  tagline: 双越老师 联合精英博主，收集 500+ 真题，开源免费
+  text: '系统 专业的 面试导航'
+  tagline: 双越老师 联合精英博主，大厂面试流程，开源免费
   actions:
     - theme: brand
-      text: 开始面试
+      text: 刷题 📄
       link: /docs/written-exam/algorithm.html
     - theme: alt
-      text: 正确写简历
+      text: 正确写简历 ✏️
       link: /docs/before-interview/write-resume.html
-    # - theme: alt
-    #   text: 双越老师 1v1 面试咨询服务 🔥
-    #   link: /docs/services/1v1.html
+    - theme: alt
+      text: 面试技巧 💡
+      link: /docs/hr-exam/behavioural-test.html
 
 features:
   - title: 双越老师 带队
     details: 前百度、滴滴 资深工程师，wangEditor 作者，PMP，慕课网金牌讲师，国内最早讲解前端面试题的大厂讲师，学员累计 10w 人。
   - title: 大厂面试流程
     details: 依据大厂真实规范的面试流程，分为笔试、一面、二面、三面、HR 面试，全面覆盖每个面试环节，直接开始刷题，无需再自己查找。
-  - title: 开源免费
+  - title: 多人共建 开源免费
     details: 本网站源码全部开源到 Github，网站内容免费阅读，还可免费加入双越老师学员群，一起交流面试问题和技巧。
   - title: 2025 持续更新
     details: 前端技术变化快，每年都会有新的技术、框架和版本，也会有新的面试题，我们会根据技术变化持续维护，及时更新。
@@ -38,7 +38,7 @@ features:
 - 工作多年只会 Vue ，不懂算法，没有技术广度和深度
 - 刚毕业，没实际项目经验
 
-**面试派** 旨在帮助解决面试过程中的所有问题，不仅是刷题。欢迎 [加群](https://github.com/mianshipai/mianshipai-web/issues/1) 沟通，免费咨询指导建议。
+**面试派** 旨在帮助解决面试遇到的所有问题，不仅是刷题。欢迎 [加群讨论答疑](https://github.com/mianshipai/mianshipai-web/issues/1) 沟通，免费咨询指导建议。
 
 ### 团队成员
 
@@ -98,7 +98,7 @@ features:
 - 前端晋升全栈，晋升大前端
 - 开源，副业，自由职业
 
-关于工作、技术、职业的任何话题，都可以 [加群](https://github.com/mianshipai/mianshipai-web/issues/1) 沟通，免费咨询指导建议。
+关于工作、技术、职业的任何话题，都可以 [加群讨论答疑](https://github.com/mianshipai/mianshipai-web/issues/1) 沟通，免费咨询指导建议。
 
 <div style="display: flex; margin-top: 48px;">
   <div style="flex: 1; text-align: center;">
