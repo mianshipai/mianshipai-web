@@ -4,7 +4,7 @@ import { defineConfig } from 'vitepress'
 export default defineConfig({
   lang: 'zh-CN',
   title: '前端面试派',
-  description: '双越老师整理的前端面试真实流程，大厂面试规范，开源免费',
+  description: '系统专业的前端面试导航，大厂面试规范，开源免费',
   head: [
     ['link', { rel: 'icon', href: '/favicon.ico' }],
     ['meta', { name: 'author', content: '双越老师' }],
@@ -13,7 +13,7 @@ export default defineConfig({
       {
         name: 'keywords',
         content:
-          '前端, 面试, 前端面试, 面试题, 刷题, 面试流程, 前端面试流程, 面试准备, 简历, 前端简历, Javascript, Typescript, React, Vue, webpack, vite, HTTP, 算法',
+          '前端, 面试, 前端面试, 面试题, 刷题, 面试流程, 前端面试流程, 面试准备, 简历, 前端简历, 开源, 免费, Javascript, Typescript, React, Vue, webpack, vite, HTTP, 算法',
       },
     ],
     // baidu 统计
@@ -37,7 +37,7 @@ export default defineConfig({
     nav: [
       { text: '首页', link: '/' },
       { text: '正确写简历', link: '/docs/before-interview/write-resume.md' },
-      { text: '免费加群', link: 'https://github.com/mianshipai/mianshipai-web/issues/1' },
+      { text: '加群讨论答疑', link: 'https://github.com/mianshipai/mianshipai-web/issues/1' },
       {
         text: '提交面试真题',
         link: 'https://github.com/mianshipai/mianshipai-web/issues/new/choose',
