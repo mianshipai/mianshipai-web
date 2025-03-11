@@ -18,7 +18,7 @@ Typescript 已经全面普及，尤其大厂大型项目，前端熟悉 Typescri
 
 - 学习成本高
 - 某些场景下，类型定义会过于混乱，可读性不好，如下代码
-- 使用不但会变成 anyscript
+- 使用不当会变成 anyscript
 
 ```ts
 type ModelFieldResolver<T, TKey extends keyof T = any> = (
