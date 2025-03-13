@@ -42,7 +42,7 @@ features:
 
 ### 团队成员
 
-双越老师带队，联合多名精英博主，参考大厂面试规范，共建优质内容。[查看全部贡献者](https://github.com/mianshipai/mianshipai-web/graphs/contributors)。[成为贡献者](https://github.com/mianshipai/mianshipai-web#%E8%B4%A1%E7%8C%AE%E4%BB%A3%E7%A0%81)。
+双越老师带队，联合多名精英博主，参考大厂面试规范，共建优质内容。[查看全部贡献者](https://github.com/mianshipai/mianshipai-web/graphs/contributors)
 
 <div style="display: grid; gap: 24px; grid-template-columns: repeat(auto-fit, minmax(224px, 1fr)); margin-top: 24px;">
   <div style="flex: 1; text-align: center;">
@@ -91,14 +91,13 @@ features:
   </div>
 </div>
 
-### 不限于面试
+### 成为贡献者
 
-- 前端 0 基础入门
-- 职业规划，晋升指导
-- 前端晋升全栈，晋升大前端
-- 开源，副业，自由职业
+- 参与优秀开源项目，积累社区知名度，突出简历亮点
+- 和优秀博主、开源作者沟通，锻炼自己的总结和表达能力
+- 贡献内容是，可以插入自己的博客链接，给自己的博客引流
 
-关于工作、技术、职业的任何话题，都可以 [加群讨论答疑](https://github.com/mianshipai/mianshipai-web/issues/1) 沟通，免费咨询指导建议。
+[贡献题目和答案](https://github.com/mianshipai/mianshipai-web#%E8%B4%A1%E7%8C%AE%E9%A2%98%E7%9B%AE%E5%92%8C%E7%AD%94%E6%A1%88)
 
 <div style="display: flex; margin-top: 48px;">
   <div style="flex: 1; text-align: center;">

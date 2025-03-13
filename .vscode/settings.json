@@ -13,6 +13,8 @@
     "Valgrind",
     "VDOM",
     "vitepress",
-    "wangfupeng"
+    "wangfupeng",
+    "WXML",
+    "WXSS"
   ]
 }
