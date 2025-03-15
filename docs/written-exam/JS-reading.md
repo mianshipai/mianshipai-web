@@ -6,6 +6,36 @@
 读代码不要只用眼睛看，拿纸笔写写画画，更容易读懂。
 :::
 
+## JS 编译
+
+以下代码，执行结果是什么？
+
+```js
+var func = 1
+function func() {}
+console.log(func + func)
+```
+
+答案
+
+::: details
+
+```
+2
+```
+
+这题考察的 GO，也就是全局的预编译：
+
+1. 创建 GO 对象
+2. 找变量声明，将变量声明作为 key，值赋为 undefined
+3. 找函数声明，将函数名作为 GO 对象的key，值赋为函数体
+
+编译阶段：创建 GO 对象后，func 作为 key，值为 undefined，然后 func 变成了 函数体，所以在编译结束时，func 还是一个 function
+
+运行阶段：func 被赋值为 1，所以 func + func 就是 2
+
+:::
+
 ## JS 引用类型
 
 以下代码，执行结果是什么？
