@@ -160,6 +160,18 @@ URL (Uniform Resource Locator) 包含以下部分：
 
 :::
 
+## GET 和 POST 请求的区别
+
+参考答案
+
+::: details
+
+- 协议层面：请求行里一定要有请求方法，官方为了统一语义，定义了 GET 表示拿数据，POST 表示上传数据，PUT 表示修改数据，所以 GET，POST 请求这里仅仅是语义上的差别，没有说哪个请求必须做啥
+- 应用层面：开发者约定俗成的规范，GET 请求的请求体会设空，不是没有请求体
+- 浏览器层面：GET 请求会缓存，有历史记录
+
+:::
+
 ## Ajax Fetch Axios 三者有什么区别？
 
 参考答案
@@ -776,6 +788,18 @@ OPTIONS 请求是 CORS 预检请求(Preflight Request)，用于检查实际请�
 ::: details
 
 - https://juejin.cn/post/7403185402347159588
+
+:::
+
+## options 请求会携带 cookie 吗
+
+参考答案
+
+::: details
+
+OPTIONS 请求通常不会携带 Cookie。它是一个预检请求，用于检查实际请求是否可以安全地发送。浏览器在发送 OPTIONS 请求时，不会自动附带 Cookie 和 Authorization 等认证信息，除非明确设置了 `credentials` 选项。
+
+如果需要在 OPTIONS 请求中携带 Cookie，可以在请求中设置 `credentials: 'include'`，但通常不推荐这样做，因为 OPTIONS 请求的目的就是检查跨域请求的安全性，而不是进行身份验证。
 
 :::
 
