@@ -479,6 +479,55 @@ var unique = (a) => [...new Set(a)]
 - [JavaScript 专题之数组去重](https://github.com/mqyqingfeng/Blog/issues/27)
   :::
 
+## 手写红绿灯
+
+模拟一个红绿灯变化，红灯 1 秒，绿灯 1 秒，黄灯 1 秒，然后循环
+
+::: details 参考答案
+
+```js
+function red() {
+  console.log('red')
+}
+
+function green() {
+  console.log('green')
+}
+
+function yellow() {
+  console.log('yellow')
+}
+
+function light(cb, wait) {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      cb()
+      resolve()
+    }, wait)
+  })
+}
+
+function start() {
+  return Promise.resolve()
+    .then(() => {
+      return light(red, 1000)
+    })
+    .then(() => {
+      return light(green, 1000)
+    })
+    .then(() => {
+      return light(yellow, 1000)
+    })
+    .finally(() => {
+      return start()
+    })
+}
+
+start()
+```
+
+:::
+
 ## 手写 Promise
 
 ::: details 参考答案
