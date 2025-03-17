@@ -466,6 +466,36 @@ rollout:
 
 :::
 
+## 小程序 WXSS 与 CSS 的区别？
+
+参考答案
+
+::: details
+
+- wxss 背景图片只能引入外链，不能使用本地图片
+- 小程序样式使用 @import 引入 外联样式文件，地址为相对路径。
+- 尺寸单位为 rpx , rpx 是响应式像素,可以根据屏幕宽度进行自适应。
+
+:::
+
+## 小程序里拿不到 dom 相关的 api ？
+
+参考答案
+
+::: details
+
+微信小程序使用类似 Web 的 WXML 和 WXSS 语言来描述页面结构和样式，但并不提供直接操作 DOM 的 API。这主要有两个原因：
+
+- 首先，小程序运行在 JavaScriptCore 引擎中，而非浏览器中常见的 V8 引擎。
+
+  - 由于两者在实现方式上存在较大差异，JavaScriptCore 的执行速度相对较慢。
+  - 直接操作 DOM 会增加耗时，从而降低性能和用户体验。
+
+- 其次，小程序的设计初衷是提供一种轻量、快速启动的应用模式，其定位强调“去中心化、低门槛、高灵活性”。
+  - 如果允许开发者直接操作 DOM，可能会破坏这一设计理念，增加系统复杂度和开发难度。
+
+:::
+
 ## 分包加载
 
 参考答案
@@ -579,17 +609,363 @@ onTapShop() {
 
 :::
 
-## 列举几种异常监控指标
-
-答案整理中...
-
 ## 冷启动与热启动的区别
 
-答案整理中...
+参考答案
+
+::: details
+
+**核心区别对比**
+
+| **对比维度**     | **冷启动**                          | **热启动**                           |
+| ---------------- | ----------------------------------- | ------------------------------------ |
+| **触发条件**     | 首次打开或销毁后重新打开            | 后台存活状态下重新唤醒               |
+| **资源加载**     | 重新下载代码包、初始化页面          | 直接从内存恢复页面                   |
+| **启动速度**     | 较慢（需完整加载）                  | 较快（无需重新初始化）               |
+| **生命周期流程** | 执行 `App.onLaunch` → `Page.onLoad` | 仅触发 `App.onShow` 和 `Page.onShow` |
+| **内存占用**     | 重新分配内存                        | 复用原有内存                         |
+| **数据状态**     | 全局数据需重新初始化                | 保留之前的运行状态                   |
+| **存活时间**     | 无限制                              | 默认后台存活 **5分钟**               |
+| **典型场景**     | 用户首次打开或主动杀死进程后重启    | 切换回微信聊天后重新进入             |
+
+**冷启动优化方案**
+
+1. **代码包瘦身**：
+
+   - 主包控制在 **2MB** 以内
+   - 使用分包加载（单个分包 ≤2MB）
+
+   ```javascript
+   // app.json 分包配置
+   {
+     "subpackages": [{
+       "root": "subpackage",
+       "pages": ["pageA", "pageB"]
+     }]
+   }
+   ```
+
+2. **预加载策略**：
+
+   ```javascript
+   // 提前加载非首屏必要资源
+   wx.loadSubpackage({
+     name: 'subpackage',
+     success: () => console.log('分包预加载完成'),
+   })
+   ```
+
+3. **缓存关键数据**：
+   ```javascript
+   // 冷启动时读取缓存
+   App({
+     onLaunch() {
+       const cache = wx.getStorageSync('userInfo')
+       if (cache) this.globalData.userInfo = cache
+     },
+   })
+   ```
+
+**热启动优化方案**
+
+1. **状态保持**：
+
+   ```javascript
+   // 页面隐藏时保存状态
+   Page({
+     onHide() {
+       wx.setStorageSync('pageState', this.data)
+     },
+   })
+   ```
+
+2. **内存管理**：
+
+   - 避免在全局对象中存储过大数据
+   - 及时清理无用定时器/事件监听
+
+   ```javascript
+   // 页面卸载时清理资源
+   Page({
+     onUnload() {
+       clearInterval(this.timer)
+       this.eventListener.close()
+     },
+   })
+   ```
+
+3. **后台保活策略**：
+   ```javascript
+   // 播放背景音频延长存活时间
+   wx.playBackgroundAudio({
+     dataUrl: 'silent.mp3', // 无声音频
+   })
+   ```
+
+**异常场景处理**
+
+| **场景**         | **冷启动表现** | **热启动表现**           |
+| ---------------- | -------------- | ------------------------ |
+| **代码更新**     | 强制下载新包   | 下次冷启动生效           |
+| **网络中断**     | 可能导致白屏   | 已加载内容仍可操作       |
+| **内存不足**     | 正常启动       | 可能被系统回收转为冷启动 |
+| **全局数据变更** | 重新初始化     | 保持最后一次修改值       |
+
+**调试技巧**
+
+1. **强制冷启动**：
+
+   ```javascript
+   // 开发阶段模拟冷启动
+   wx.reLaunch({ url: '/pages/index' })
+   ```
+
+2. **内存状态检查**：
+
+   ```javascript
+   // 查看当前内存占用
+   console.log(wx.getPerformance())
+   // 输出: { memory: 1024, ... }
+   ```
+
+3. **生命周期追踪**：
+   ```javascript
+   // 监听所有生命周期事件
+   const originalOnShow = Page.prototype.onShow
+   Page.prototype.onShow = function () {
+     console.log('Page.onShow triggered')
+     originalOnShow.call(this)
+   }
+   ```
+
+通过理解冷/热启动的差异，开发者可针对性优化小程序性能，建议将 **冷启动耗时控制在 1.5 秒内**，**热启动耗时控制在 300 毫秒内**，以达到最佳用户体验。
+
+:::
 
 ## 组件通信方案
 
-答案整理中...
+参考答案
+
+::: details
+
+一、**父子组件通信**
+
+1. 父 → 子：Properties 传递
+
+```javascript
+// 父组件
+;<child-comp prop-data="{{parentData}}" />
+
+// 子组件 properties 定义
+Component({
+  properties: {
+    propData: { type: Object, value: {} },
+  },
+})
+```
+
+2. 子 → 父：自定义事件
+
+```javascript
+// 子组件触发事件
+this.triggerEvent('customEvent', { value: data })
+
+// 父组件监听
+<child-comp bind:customEvent="handleEvent" />
+Page({
+  handleEvent(e) {
+    console.log(e.detail.value)
+  }
+})
+```
+
+二、**逆向父组件访问**
+
+3. 获取父组件实例
+
+```javascript
+// 父组件设置 id
+;<child-comp id="childRef" />
+
+// 父组件通过 selectComponent 获取
+Page({
+  getChild() {
+    const child = this.selectComponent('#childRef')
+    child.childMethod() // 调用子组件方法
+  },
+})
+```
+
+三、**兄弟组件通信**
+
+4. 共同父组件中转
+
+```mermaid
+graph LR
+A[父组件] --> B[子组件A]
+A --> C[子组件B]
+B -- 事件 --> A
+A -- 更新数据 --> C
+```
+
+5. 全局事件总线
+
+```javascript
+// app.js 中创建事件中心
+App({
+  eventBus: {
+    listeners: {},
+    on(event, fn) {
+      /* 监听 */
+    },
+    emit(event, data) {
+      /* 触发 */
+    },
+  },
+})
+
+// 组件 A 发送
+const app = getApp()
+app.eventBus.emit('update', data)
+
+// 组件 B 接收
+Component({
+  attached() {
+    app.eventBus.on('update', this.handleUpdate)
+  },
+})
+```
+
+四、**跨层级通信**
+
+6. 全局状态管理
+
+```javascript
+// app.js 定义共享数据
+App({
+  globalData: {
+    userInfo: null,
+  },
+})
+
+// 任意组件读取/写入
+const app = getApp()
+app.globalData.userInfo = { name: 'John' }
+
+// 监听变化（需手动实现）
+let observer = null
+Component({
+  attached() {
+    observer = setInterval(() => {
+      console.log(app.globalData.userInfo)
+    }, 500)
+  },
+  detached() {
+    clearInterval(observer)
+  },
+})
+```
+
+7. 页面间通信
+
+```javascript
+// PageA 跳转传参
+wx.navigateTo({
+  url: '/pages/pageB?id=123',
+})
+
+// PageB 获取参数
+Page({
+  onLoad(options) {
+    console.log(options.id) // 123
+  },
+})
+
+// 返回传参（需配合 getCurrentPages）
+const pages = getCurrentPages()
+const prevPage = pages[pages.length - 2]
+prevPage.setData({ feedback: 'success' })
+```
+
+五、**高级通信模式**
+
+8. 组件关系 (relations)
+
+```javascript
+// parent.json
+{
+  "component": true,
+  "usingComponents": {
+    "child-comp": "../child/child"
+  },
+  "relations": {
+    "../child/child": {
+      "type": "child",
+      "linked(target) { /* 子组件插入时 */ }"
+    }
+  }
+}
+
+// parent.js
+methods: {
+  broadcastToChildren(data) {
+    this.children.forEach(child => {
+      child.receiveData(data)
+    })
+  }
+}
+
+// child.js
+methods: {
+  receiveData(data) {
+    this.setData({ received: data })
+  }
+}
+```
+
+**六、其它第三方库**
+
+9. 对于超大型项目，建议结合 `Vuex` 或 `MobX` 等状态管理库（需使用 `uni-app`/`Taro` 等框架）。
+
+**方案对比**
+
+| 方案            | 适用场景           | 优点               | 缺点                 |
+| --------------- | ------------------ | ------------------ | -------------------- |
+| Properties      | 父子简单数据传递   | 官方推荐，类型校验 | 单向数据流           |
+| 自定义事件      | 子向父传递操作     | 解耦合             | 多层传递较复杂       |
+| selectComponent | 父直接调用子方法   | 快速直接           | 破坏封装性           |
+| 全局事件总线    | 任意组件间通信     | 灵活度高           | 需手动管理监听/卸载  |
+| 全局状态        | 跨页面共享数据     | 集中管理           | 非响应式，需手动监听 |
+| 页面路由传参    | 页面间简单数据传递 | 官方支持           | 数据类型受限         |
+| relations       | 存在逻辑关联的组件 | 官方关系管理       | 配置较复杂           |
+
+**最佳实践建议**
+
+1. **优先选择官方方案**：对于父子通信，务必使用 `properties` + `triggerEvent`
+2. **复杂场景组合使用**：全局状态管理 + 事件总线应对跨层级通信
+3. **性能优化关键点**：
+   - 避免在 `globalData` 中存储过大数据
+   - 使用 `debounce` 控制高频事件触发
+   ```javascript
+   // 防抖处理示例
+   let timer
+   function emitDebounced(event, data) {
+     clearTimeout(timer)
+     timer = setTimeout(() => {
+       app.eventBus.emit(event, data)
+     }, 300)
+   }
+   ```
+4. **内存泄漏防范**：
+   ```javascript
+   Component({
+     detached() {
+       // 必须移除全局监听
+       app.eventBus.off('update', this.handleUpdate)
+     },
+   })
+   ```
+   :::
 
 ## wx:if 与 hidden 的区别
 
@@ -691,6 +1067,76 @@ DCloud
 
 :::
 
-## 微信公众号 H5 ，微信 JSSDK
+## Taro 的实现原理
 
-答案整理中...
+参考答案
+
+::: details
+
+一、JSX 转换：Taro 通过 自定义 Babel/TypeScript 编译器 将 JSX 转换为通用虚拟 DOM。针对不同前端框架（React/Vue），在编译时生成对应框架的运行时代码，例如：
+
+```jsx
+// 输入
+;<View>Hello</View>
+
+// React 输出
+import { createElement } from 'react'
+createElement('view', {}, 'Hello')
+
+// Vue 输出
+import { h } from 'vue'
+h('view', {}, 'Hello')
+```
+
+二、多端适配：Taro 的核心架构分为 `编译时 和 运行时`：
+
+1. 编译时：通过 AST 解析将代码按目标平台转换，生成平台专属模板（如 .wxml / .swan）
+2. 运行时：
+
+- 实现 统一 API 层（如 Taro.request 映射到 wx.request / my.request）
+- 提供 虚拟 DOM 渲染器，通过 React Reconciler 对接不同平台渲染引擎
+- 实现 事件系统桥接，统一各端事件差异
+
+三、跨端样式处理：Taro 样式处理包含以下关键机制：
+
+1. 条件编译：通过 CSS 注释实现多平台样式隔离
+
+```css
+/* #ifdef weapp */
+.title {
+  color: red;
+}
+/* #endif */
+```
+
+2. 单位转换：将 px 按比例转为目标平台单位（如小程序 rpx）
+3. 作用域隔离：通过 CSS Modules 自动生成唯一类名
+4. JavaScript 样式：支持 styled-components 等 CSS-in-JS 方案
+
+四、构建系统：Taro 的构建系统特点：
+
+1. 插件化架构：通过 @tarojs/plugin- 前缀插件扩展功能
+2. 多编译引擎：
+
+- Web 端：仍使用 Webpack/Vite
+- 小程序：自研模板生成器
+- 按需编译：通过 Tree-shaking 仅打包使用到的组件
+
+五、运行时性能优化：
+
+1. 数据通信优化：
+
+- 自动合并 setData 调用
+- 使用 差异更新算法 减少数据传输量
+
+2. 渲染优化：
+
+- 虚拟 DOM 比对后批量更新
+- 组件按平台实现懒加载
+
+3. 包体积优化：
+
+- 按目标平台裁剪无用代码
+- 使用 分包加载 控制主包大小
+
+:::
