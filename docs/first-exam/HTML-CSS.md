@@ -545,7 +545,7 @@ Element 常见属性和方法如 `innerHTML` `getAttribute` `setAttribute`
 ::: details
 
 - `margin-left` 负值，元素左移
-- `margin-top` 复制，元素上移
+- `margin-top` 负值，元素上移
 - `margin-right` 负值，自身宽度缩小，右侧元素会跟进，但内容不受影响
 - `margin-bottom` 负值，自身高度缩小，下方元素会跟进，但内容不受影响
 
