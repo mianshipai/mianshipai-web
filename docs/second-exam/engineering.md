@@ -1,6 +1,12 @@
 # 前端工程化
 
-前端工程化通过自动化工具和标准化流程，提升开发效率、代码质量和可维护性。其核心目标是优化开发、构建、测试和部署流程，减少人工干预和重复劳动，便于项目扩展和团队协作。常见的工具，如Vite和Webpack，提供高效的构建和打包能力，显著提升开发效率并丰富前端生态。这些工具的广泛应用使前端开发更加高效，且成为近年来面试中的热门话题。
+前端工程化通过自动化工具和标准化流程，提升开发效率、代码质量和可维护性。其核心目标是优化开发、构建、测试和部署流程，减少人工干预和重复劳动，便于项目扩展和团队协作。
+
+常见的工具，如Vite和Webpack，提供高效的构建和打包能力，显著提升开发效率并丰富前端生态。这些工具的广泛应用使前端开发更加高效，且成为近年来面试中的热门话题。
+
+::: tip
+如有疑问，可免费 [加群](https://github.com/mianshipai/mianshipai-web/issues/1) 讨论咨询，也可参与 [金牌简历计划 🔥](/docs/services/1v1.md) 专业、系统、高效、全流程 准备前端面试
+:::
 
 ## Vite为什么更快？
 
@@ -1238,8 +1244,8 @@ module.exports = {
 文件资源 (如 .scss) → 匹配 Loader 规则 → 按顺序应用 Loaders → 转换为 JS 模块
 ```
 
-- **顺序关键**：Loaders 从右到左（或从下到上）执行。  
-   例如： `use: ['style-loader', 'css-loader', 'sass-loader']` 的执行顺序为：  
+- **顺序关键**：Loaders 从右到左（或从下到上）执行。
+  例如： `use: ['style-loader', 'css-loader', 'sass-loader']` 的执行顺序为：
   `sass-loader` → `css-loader` → `style-loader` 。
 
 **Plugins 的执行流程**
@@ -1449,11 +1455,11 @@ const About = lazy(
 
 **Tree Shaking 的工作原理**
 
-1. **基于 ES Module（ESM）的静态结构**  
+1. **基于 ES Module（ESM）的静态结构**
    ESM 的 `import/export` 是静态声明（代码执行前可确定依赖关系），而 CommonJS 的 `require` 是动态的。只有 ESM 能被 Tree Shaking 分析。
-2. **标记未使用的导出**  
+2. **标记未使用的导出**
    打包工具（如 Webpack）通过分析代码，标记未被任何模块导入的导出。
-3. **压缩阶段删除**  
+3. **压缩阶段删除**
    结合代码压缩工具（如 Terser）删除这些标记的未使用代码。
 
 **在 Webpack 中启用 Tree Shaking 的步骤**

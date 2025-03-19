@@ -2,8 +2,10 @@
 
 二面结束以后，有可能会再找隔壁部门的高级/资深工程师交叉面试。交叉面试会综合考察候选人的技术能力。
 
+注意，不一定所有面试都会有交叉面试，但这些面试题还是要刷一遍的，都是常考题。
+
 ::: tip
-不一定所有面试都会有交叉面试，但这些面试题要刷一遍。
+如有疑问，可免费 [加群](https://github.com/mianshipai/mianshipai-web/issues/1) 讨论咨询，也可参与 [金牌简历计划 🔥](/docs/services/1v1.md) 专业、系统、高效、全流程 准备前端面试
 :::
 
 ## 求两个数组的交集和并集
@@ -648,8 +650,8 @@ console.log(JSON.stringify(treeToArray(tree), null, 2))
 
 **1. 定义与触发条件**
 
-- **重绘（Repaint）**  
-  重绘是指当元素的样式发生改变，但不影响布局时触发的渲染过程。  
+- **重绘（Repaint）**
+  重绘是指当元素的样式发生改变，但不影响布局时触发的渲染过程。
   **触发条件** ：颜色、背景、边框等视觉样式的变化。
 
   **示例** ：
@@ -658,8 +660,8 @@ console.log(JSON.stringify(treeToArray(tree), null, 2))
   element.style.backgroundColor = "red";
   ```
 
-- **重排（Reflow）**  
-  重排（又称回流）是指当页面布局或结构发生变化时，浏览器重新计算元素的位置和几何尺寸的过程。  
+- **重排（Reflow）**
+  重排（又称回流）是指当页面布局或结构发生变化时，浏览器重新计算元素的位置和几何尺寸的过程。
   **触发条件** ：DOM 节点的增删、元素位置的变化、盒模型属性（如 `width`, `height`, `padding` 等）的修改。
 
   **示例** ：
@@ -670,10 +672,10 @@ console.log(JSON.stringify(treeToArray(tree), null, 2))
 
 **2. 性能开销**
 
-- **重绘（Repaint）** ：  
+- **重绘（Repaint）** ：
   相对较轻，只需要更新像素信息，不需要重新计算布局。
 
-- **重排（Reflow）** ：  
+- **重排（Reflow）** ：
   开销较大，可能会影响整个页面的渲染，尤其是当涉及到根节点或复杂嵌套布局时。
 
 **3. 如何优化**
@@ -695,8 +697,8 @@ console.log(JSON.stringify(treeToArray(tree), null, 2))
 
 **1. 多标签页之间的通讯方法**
 
-- **BroadcastChannel API**  
-  同源的多个标签页可以使用 `BroadcastChannel` 进行消息广播，简单方便。  
+- **BroadcastChannel API**
+  同源的多个标签页可以使用 `BroadcastChannel` 进行消息广播，简单方便。
   **示例** ：
 
   ```javascript
@@ -707,8 +709,8 @@ console.log(JSON.stringify(treeToArray(tree), null, 2))
   }
   ```
 
-- **LocalStorage + Storage 事件监听**  
-  不同标签页可以共享 `localStorage`，通过监听 `storage` 事件实现通讯。  
+- **LocalStorage + Storage 事件监听**
+  不同标签页可以共享 `localStorage`，通过监听 `storage` 事件实现通讯。
   **示例** ：
 
   ```javascript
@@ -720,18 +722,18 @@ console.log(JSON.stringify(treeToArray(tree), null, 2))
   localStorage.setItem('my_key', 'Hello from another tab!')
   ```
 
-- **Service Worker**  
+- **Service Worker**
   通过 `Service Worker` 作为中介，实现跨标签页通讯。适合 PWA 场景。
 
-- **WebSocket**  
+- **WebSocket**
   通过服务器中转实现实时通讯，适合跨域或需要长连接的场景。
 
 ---
 
 **2. iframe 通讯方法**
 
-- **postMessage API**  
-  最常用的方式，可以跨域发送消息。父页面和 iframe 双向通信都支持。  
+- **postMessage API**
+  最常用的方式，可以跨域发送消息。父页面和 iframe 双向通信都支持。
   **示例（父页面向 iframe 发送消息）** ：
 
   ```javascript
@@ -742,15 +744,15 @@ console.log(JSON.stringify(treeToArray(tree), null, 2))
   })
   ```
 
-- **URL Hash 传参**  
-  通过修改 iframe 的 URL 哈希来传递参数。适用于简单场景。  
+- **URL Hash 传参**
+  通过修改 iframe 的 URL 哈希来传递参数。适用于简单场景。
   **示例** ：
 
   ```javascript
   iframe.src = 'https://example.com#message=Hello'
   ```
 
-- **共享 Cookie 或 LocalStorage**  
+- **共享 Cookie 或 LocalStorage**
   在同源环境下可以通过共享存储机制间接通讯。
 
 ---
@@ -779,7 +781,7 @@ Axios 拦截器的关键是提供了网络请求生命周期的可控节点，�
 
 **1. 什么是 Axios 拦截器？**
 
-Axios 拦截器是 Axios 库提供的功能，可以在请求发出之前和响应数据返回之后进行拦截和处理。  
+Axios 拦截器是 Axios 库提供的功能，可以在请求发出之前和响应数据返回之后进行拦截和处理。
 拦截器主要分为两类：
 
 - **请求拦截器（Request Interceptors）**
@@ -789,7 +791,7 @@ Axios 拦截器是 Axios 库提供的功能，可以在请求发出之前和响�
 
 **2. Axios 拦截器的应用场景**
 
-- **添加通用请求头**  
+- **添加通用请求头**
   可以统一为所有请求添加认证 Token、语言信息等。
 
   ```javascript
@@ -799,7 +801,7 @@ Axios 拦截器是 Axios 库提供的功能，可以在请求发出之前和响�
   })
   ```
 
-- **全局错误处理**  
+- **全局错误处理**
   统一处理服务器返回的错误，如用户未登录、网络错误等。
 
   ```javascript
@@ -814,7 +816,7 @@ Axios 拦截器是 Axios 库提供的功能，可以在请求发出之前和响�
   )
   ```
 
-- **数据格式预处理**  
+- **数据格式预处理**
   对服务器返回的数据进行格式化，比如从 API 响应中提取有效数据部分。
 
   ```javascript
@@ -823,7 +825,7 @@ Axios 拦截器是 Axios 库提供的功能，可以在请求发出之前和响�
   })
   ```
 
-- **请求节流与取消**  
+- **请求节流与取消**
   防止短时间内重复请求。
 
   ```javascript
@@ -841,9 +843,9 @@ Axios 拦截器是 Axios 库提供的功能，可以在请求发出之前和响�
 
 **3. 注意事项**
 
-- **拦截器顺序** ：  
+- **拦截器顺序** ：
   请求拦截器会按添加顺序执行，而响应拦截器按相反顺序执行。
-- **错误处理机制** ：  
+- **错误处理机制** ：
   错误处理函数需要显式调用 `Promise.reject(error)`，否则错误可能被吞掉。
 
 :::
@@ -870,25 +872,25 @@ Performance API 是浏览器提供的内置接口，用于测量网页的加载�
 
 **2. 常见性能指标**
 
-- **FP (First Paint)**  
+- **FP (First Paint)**
   **首次绘制** ，指用户第一次看到页面内容时的时间点（通常是背景颜色）。
-- **FCP (First Contentful Paint)**  
-  **首次内容绘制** ，页面中首个内容（如文字、图片）被绘制的时间点。  
+- **FCP (First Contentful Paint)**
+  **首次内容绘制** ，页面中首个内容（如文字、图片）被绘制的时间点。
   **优化思路** ：减少 CSS 阻塞、优化首屏加载内容。
 
-- **LCP (Largest Contentful Paint)**  
-  **最大内容绘制** ，页面中最大内容元素（如主标题、图片）绘制完成的时间点。  
+- **LCP (Largest Contentful Paint)**
+  **最大内容绘制** ，页面中最大内容元素（如主标题、图片）绘制完成的时间点。
   **优化思路** ：使用延迟加载策略、优化图像加载。
 
-- **CLS (Cumulative Layout Shift)**  
-  **累积布局偏移** ，页面加载过程中视觉内容意外变化的总量。  
+- **CLS (Cumulative Layout Shift)**
+  **累积布局偏移** ，页面加载过程中视觉内容意外变化的总量。
   **优化思路** ：设置明确的宽高，避免懒加载导致布局移动。
 
-- **FID (First Input Delay)**  
-  **首次输入延迟** ，用户第一次交互（如点击按钮）与浏览器响应之间的时间间隔。  
+- **FID (First Input Delay)**
+  **首次输入延迟** ，用户第一次交互（如点击按钮）与浏览器响应之间的时间间隔。
   **优化思路** ：减少主线程阻塞。
 
-- **TTI (Time to Interactive)**  
+- **TTI (Time to Interactive)**
   **可交互时间** ，页面完成加载并能够快速响应用户交互的时间。
 
 ---
@@ -976,7 +978,7 @@ Source Map 是一种将压缩、混淆后的代码映射回源代码的文件，
 
 2. **证书固定（Certificate Pinning）**
    确保客户端只接受特定 CA 签发的证书。
-3. **开启 CORS 配置**  
+3. **开启 CORS 配置**
    配置严格的跨域策略，减少不必要的网络暴露。
 
 4. **安全头部配置**
@@ -1671,10 +1673,10 @@ eventBus.publish('greet', 'Hello Subscribers!')
 
 **3. 静态资源缓存**
 
-- **启用浏览器缓存：**  
+- **启用浏览器缓存：**
   设置 `Cache-Control`、`ETag` 等响应头，缓存静态资源。
 
-- **使用 CDN：**  
+- **使用 CDN：**
   静态资源分发到 CDN 节点，减少服务器负载。
 
 ---
@@ -1689,7 +1691,7 @@ eventBus.publish('greet', 'Hello Subscribers!')
 
 **5. 渲染与框架性能优化**
 
-- **服务端渲染（SSR）/静态生成（SSG）：**  
+- **服务端渲染（SSR）/静态生成（SSG）：**
   减少客户端渲染时间，提升首屏性能。
 - **组件懒加载:** 分离路由和组件，按需加载代码。
 - **虚拟化列表:** 渲染大量数据时使用 `react-window` 或类似方案。
@@ -1703,10 +1705,10 @@ eventBus.publish('greet', 'Hello Subscribers!')
   - 建立索引，优化查询。
   - 数据库结果分页返回。
 
-- **接口合并与优化：**  
+- **接口合并与优化：**
   减少多次 API 调用，使用 GraphQL 或批量 API。
 
-- **缓存策略：**  
+- **缓存策略：**
   使用 Redis 等缓存热点数据，减轻数据库查询压力。
 
 ---

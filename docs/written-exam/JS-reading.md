@@ -3,7 +3,7 @@
 读懂面试的代码，才能读懂工作中的代码。
 
 ::: tip
-读代码不要只用眼睛看，拿纸笔写写画画，更容易读懂。
+如有疑问，可免费 [加群](https://github.com/mianshipai/mianshipai-web/issues/1) 讨论咨询，也可参与 [金牌简历计划 🔥](/docs/services/1v1.md) 专业、系统、高效、全流程 准备前端面试
 :::
 
 ## JS 编译
