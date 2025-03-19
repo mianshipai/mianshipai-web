@@ -1,5 +1,9 @@
 # 投递简历
 
+::: tip
+如有疑问，可免费 [加群](https://github.com/mianshipai/mianshipai-web/issues/1) 讨论咨询，也可参与 [金牌简历计划 🔥](/docs/services/1v1.md) 专业、系统、高效、全流程 准备前端面试
+:::
+
 ## 投递方式
 
 - 各大招聘网站或 App ，如拉勾、BOSS 直聘、脉脉等

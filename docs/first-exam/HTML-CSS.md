@@ -4,6 +4,10 @@
 
 如果你是实习生、应届生或刚毕业不久，HTML 和 CSS 知识一定要认真准备，大厂必考。
 
+::: tip
+如有疑问，可免费 [加群](https://github.com/mianshipai/mianshipai-web/issues/1) 讨论咨询，也可参与 [金牌简历计划 🔥](/docs/services/1v1.md) 专业、系统、高效、全流程 准备前端面试
+:::
+
 ## DOCTYPE 是什么，都有哪些属性？
 
 参考答案

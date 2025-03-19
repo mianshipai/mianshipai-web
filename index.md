@@ -38,7 +38,7 @@ features:
 - 工作多年只会 Vue ，不懂算法，没有技术广度和深度
 - 刚毕业，没实际项目经验
 
-**面试派** 旨在帮助解决面试遇到的所有问题，不仅是刷题。欢迎 [加群讨论答疑](https://github.com/mianshipai/mianshipai-web/issues/1) 沟通，免费咨询指导建议。
+如有上述问题，可免费 [加群](https://github.com/mianshipai/mianshipai-web/issues/1) 讨论咨询，或参与 [金牌简历计划 🔥](/docs/services/1v1.md) 系统、高效、全流程 准备前端面试～
 
 ### 团队成员
 
@@ -93,9 +93,9 @@ features:
 
 ### 成为贡献者
 
-- 参与优秀开源项目，积累社区知名度，突出简历亮点
-- 和优秀博主、开源作者沟通，锻炼自己的总结和表达能力
-- 贡献内容是，可以插入自己的博客链接，给自己的博客引流
+- 参与优秀开源项目，结识优秀博主和作者，积累社区知名度
+- 贡献内容时，可以插入自己的博客链接，给自己的博客引流
+- 有机会加入 [金牌简历计划](/docs/services/1v1.md) 提供付费服务 挣取外块 💰
 
 [贡献题目和答案](https://github.com/mianshipai/mianshipai-web#%E8%B4%A1%E7%8C%AE%E9%A2%98%E7%9B%AE%E5%92%8C%E7%AD%94%E6%A1%88)
 

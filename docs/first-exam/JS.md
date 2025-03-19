@@ -2,6 +2,10 @@
 
 JS 是前端开发的核心能力，面试重点考察，无论工作经验长短。
 
+::: tip
+如有疑问，可免费 [加群](https://github.com/mianshipai/mianshipai-web/issues/1) 讨论咨询，也可参与 [金牌简历计划 🔥](/docs/services/1v1.md) 专业、系统、高效、全流程 准备前端面试
+:::
+
 ## 了解哪些最新的 ES 新特性？
 
 参考答案
@@ -128,10 +132,10 @@ console.log(strings.flatMap((str) => str.split('')))
 
 **注意：**
 
-1. **`typeof null === "object"`**  
+1. **`typeof null === "object"`**
    在 JavaScript 最初的实现中，JavaScript 中的值是由一个表示类型的标签和实际数据值表示的。对象的类型标签是 0。由于 null 代表的是空指针（大多数平台下值为 0x00），因此，null 的类型标签是 0，typeof null 也因此返回 "object"
 
-2. **实际使用**  
+2. **实际使用**
    对于更复杂的类型检测，可以使用工具函数，如 `Object.prototype.toString.call()` 或第三方库（如 `lodash`）。
 
 ```js
@@ -654,7 +658,7 @@ console.log(child.name) // "Parent"
 child.sayHello() // "Hello from Parent"
 ```
 
-✅ **优点：** 父类方法可复用  
+✅ **优点：** 父类方法可复用
 ❌ **缺点：** 1. 共享引用类型属性（如 `arr = []` 会被多个实例共享），2. 无法向父类构造函数传参
 
 **2. 借用构造函数继承**
@@ -673,7 +677,7 @@ const child = new Child('Rain', 18)
 console.log(child.name, child.age) // "Rain", 18
 ```
 
-✅ **优点：** 1. 解决原型链继承共享问题，2. 可传参  
+✅ **优点：** 1. 解决原型链继承共享问题，2. 可传参
 ❌ **缺点：** 无法继承父类原型上的方法
 
 **3. 组合继承（原型链 + 构造函数继承，最常用）**
@@ -701,7 +705,7 @@ console.log(child.name, child.age) // "Rain", 18
 child.sayHello() // "Hello from Parent"
 ```
 
-✅ **优点：** 解决了前两种方法的缺陷  
+✅ **优点：** 解决了前两种方法的缺陷
 ❌ **缺点：** 调用两次 `Parent` 构造函数（一次 `call`，一次 `Object.create()`）
 
 **4. Object.create() 继承（原型式继承）**
@@ -721,7 +725,7 @@ console.log(child.name, child.age) // "Parent", 18
 child.sayHello() // "Hello!"
 ```
 
-✅ **优点：** 适合创建对象而非类的继承  
+✅ **优点：** 适合创建对象而非类的继承
 ❌ **缺点：** 不能传参，只适用于简单继承
 
 **5. 寄生组合继承（优化版，推荐）**
@@ -748,7 +752,7 @@ console.log(child.name, child.age) // "Rain", 18
 child.sayHello() // "Hello from Parent"
 ```
 
-✅ **优点：** 1. 继承属性和方法，2. 只调用一次 `Parent`  
+✅ **优点：** 1. 继承属性和方法，2. 只调用一次 `Parent`
 ❌ **缺点：** 代码略微复杂
 
 **6. ES6 class 继承（最现代化的方式）**
@@ -777,7 +781,7 @@ console.log(child.name, child.age) // "Rain", 18
 child.sayHello() // "Hello from Parent"
 ```
 
-✅ **优点：** 语法更清晰，易读易用  
+✅ **优点：** 语法更清晰，易读易用
 ❌ **缺点：** 本质仍是 `prototype` 继承
 
 :::
@@ -913,7 +917,7 @@ delayedGreeting('Rain') // 2 秒后打印 "Hello, Rain!"
 参考答案
 
 ::: details
-**同步**：任务按顺序执行，当前任务未完成时，后续代码必须等待，代码是**阻塞**的。  
+**同步**：任务按顺序执行，当前任务未完成时，后续代码必须等待，代码是**阻塞**的。
 **异步**：任务可以**不按顺序执行**，不会阻塞代码，后续代码可以继续执行，代码是**非阻塞**的。
 
 | 特性         | **同步**                         | **异步**                     |
@@ -998,7 +1002,7 @@ promise.then((result) => console.log('Fulfilled:', result)).catch((error) => con
 ::: details
 **1. 什么是 Promise？**
 
-> **Promise 是 JavaScript 处理异步操作的一种方式**，用于解决回调地狱（Callback Hell）问题。  
+> **Promise 是 JavaScript 处理异步操作的一种方式**，用于解决回调地狱（Callback Hell）问题。
 > 它表示一个未来才会完成（或失败）的异步操作，并提供 `.then()`、`.catch()`、`.finally()` 方法进行处理。
 
 **2. Promise 的基本用法**

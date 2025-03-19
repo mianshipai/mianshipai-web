@@ -2,6 +2,10 @@
 
 JD, Job Description 职位描述，分析 JD 可以看到公司对候选人的要求和期望。
 
+::: tip
+如有疑问，可免费 [加群](https://github.com/mianshipai/mianshipai-web/issues/1) 讨论咨询，也可参与 [金牌简历计划 🔥](/docs/services/1v1.md) 专业、系统、高效、全流程 准备前端面试
+:::
+
 ## 通过 JD 能看到什么
 
 - 工作内容，负责什么产品和业务

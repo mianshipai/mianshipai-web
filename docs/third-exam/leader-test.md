@@ -2,6 +2,10 @@
 
 二面结束以后，前端团队 Leader 面试，不再关注技术细节，更关注项目组织和设计能力。
 
+::: tip
+如有疑问，可免费 [加群](https://github.com/mianshipai/mianshipai-web/issues/1) 讨论咨询，也可参与 [金牌简历计划 🔥](/docs/services/1v1.md) 专业、系统、高效、全流程 准备前端面试
+:::
+
 ## 浏览器从输入 url 到显示网页的全过程
 
 ::: tip
