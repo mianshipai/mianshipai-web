@@ -8,14 +8,14 @@ hero:
   tagline: 双越老师 联合精英博主，大厂面试流程，开源免费
   actions:
     - theme: brand
-      text: 刷题 📄
+      text: 刷题
       link: /docs/written-exam/algorithm.html
     - theme: alt
-      text: 正确写简历 ✏️
-      link: /docs/before-interview/write-resume.html
-    - theme: alt
-      text: 面试技巧 💡
+      text: 面试技巧
       link: /docs/hr-exam/behavioural-test.html
+    - theme: alt
+      text: 金牌简历计划 🔥
+      link: /docs/services/1v1.md
 
 features:
   - title: 双越老师 带队
