@@ -315,3 +315,19 @@
 
 - 题目 https://leetcode.cn/problems/trapping-rain-water/description/
 - 解答 https://leetcode.cn/problems/trapping-rain-water/solutions/
+
+<div id="home-qr-img-container" style="position: fixed; bottom: 8px; right:8px; background: #ccc; width: 190px;">
+  <img id="home-qr-img" />
+</div>
+
+<script>
+  function getHourStamp() {
+    const now = Date.now()
+    const hourStamp = now / (60 * 60 * 1000)
+    return Math.floor(hourStamp)
+  }
+  setTimeout(() => {
+    const qrImg = document.getElementById('home-qr-img')
+    qrImg.setAttribute('src', `https://file-dev.huashuiai.com/static-home/m-qr.JPG?r=${getHourStamp()}`)
+  }, 1000)
+</script>

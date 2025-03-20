@@ -256,3 +256,19 @@ HR 天天听这些 `积极` `热情` `热爱` 这些词，耳朵早就听出茧�
 - 会议结束，整体会议记录和决议，发送邮件
 
 PS. 最关键的是：又开始有结束，知道开会干啥，知道开完会有了什么结论。
+
+<div id="home-qr-img-container" style="position: fixed; bottom: 8px; right:8px; background: #ccc; width: 190px;">
+  <img id="home-qr-img" />
+</div>
+
+<script>
+  function getHourStamp() {
+    const now = Date.now()
+    const hourStamp = now / (60 * 60 * 1000)
+    return Math.floor(hourStamp)
+  }
+  setTimeout(() => {
+    const qrImg = document.getElementById('home-qr-img')
+    qrImg.setAttribute('src', `https://file-dev.huashuiai.com/static-home/m-qr.JPG?r=${getHourStamp()}`)
+  }, 1000)
+</script>
