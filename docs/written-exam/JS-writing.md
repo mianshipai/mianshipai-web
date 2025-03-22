@@ -92,10 +92,9 @@ function cloneDeep(x) {
 
 ```js
 function getType(data) {
-  let originType = Object.prototype.toString.call(data) // 获取内部属性值
-  let index = originType.indexOf(' ') // 以空格分割
-  let type = originType.slice(index + 1, -1) // 截取
-  return type.toLowerCase()
+  // Object.prototype.toString.call(data)
+  // 获取到的都是类似 '[object String]' 内部属性值，再截取即可
+  return Object.prototype.toString.call(data).slice(8, -1).toLowerCase()
 }
 ```
 
