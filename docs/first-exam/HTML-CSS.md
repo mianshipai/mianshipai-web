@@ -444,7 +444,7 @@ Element 常见属性和方法如 `innerHTML` `getAttribute` `setAttribute`
 | **`::after`**       | `p::after { content: "."; }`       | 在每个 `<p>` 元素的后面插入一个句点        |
 | **`:not()`**        | `p:not(.highlight)`                | 选择所有不具有 `highlight` 类的 `<p>` 元素 |
 
-注意，这里的内容比较全，面试时你也许记不住所有，但只要要能说上一半儿。
+注意，这里的内容比较全，面试时你也许记不住所有，但只要能说上一半儿。
 
 :::
 
