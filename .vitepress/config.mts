@@ -100,6 +100,7 @@ export default defineConfig({
           { text: 'React 原理', link: '/docs/second-exam/react-inner.md' },
           { text: '小程序', link: '/docs/second-exam/mini-program.md' },
           { text: '前端工程化', link: '/docs/second-exam/engineering.md' },
+          { text: '鸿蒙应用开发', link: '/docs/second-exam/HarmonyOS-application-development.md' },
         ],
       },
       {
