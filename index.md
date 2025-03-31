@@ -40,7 +40,7 @@ features:
 
 如有上述问题，可加群讨论咨询，或参与 [金牌简历计划 🔥](/docs/services/1v1.md) 系统、高效、全流程 准备前端面试～
 
-![](./docs/imgs/qr-code.JPG)
+![](./docs/imgs/qr-code.jpg)
 
 ### 成为贡献者
 
