@@ -3,7 +3,7 @@
 [Vue](https://cn.vuejs.org/) 是国内最普及的前端框架，面试考察概率最高。
 
 ::: tip
-如有疑问，可免费 [加群](https://github.com/mianshipai/mianshipai-web/issues/1) 讨论咨询，也可参与 [金牌简历计划 🔥](/docs/services/1v1.md) 专业、系统、高效、全流程 准备前端面试
+如有疑问，可免费 [加群](/docs/services/group.md) 讨论咨询，也可参与 [金牌简历计划 🔥](/docs/services/1v1.md) 专业、系统、高效、全流程 准备前端面试
 :::
 
 ## 🔥Vue3 和 Vue2 的区别有哪些？说几个主要的
