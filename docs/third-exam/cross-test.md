@@ -5,7 +5,7 @@
 注意，不一定所有面试都会有交叉面试，但这些面试题还是要刷一遍的，都是常考题。
 
 ::: tip
-如有疑问，可免费 [加群](https://github.com/mianshipai/mianshipai-web/issues/1) 讨论咨询，也可参与 [金牌简历计划 🔥](/docs/services/1v1.md) 专业、系统、高效、全流程 准备前端面试
+如有疑问，可免费 [加群](/docs/services/group.md) 讨论咨询，也可参与 [金牌简历计划 🔥](/docs/services/1v1.md) 专业、系统、高效、全流程 准备前端面试
 :::
 
 ## 求两个数组的交集和并集

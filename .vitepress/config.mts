@@ -38,7 +38,7 @@ export default defineConfig({
       // { text: '首页', link: '/' },
       // { text: '正确写简历', link: '/docs/before-interview/write-resume.md' },
       { text: '金牌简历计划 🔥', link: '/docs/services/1v1.md' },
-      { text: '加群讨论答疑', link: 'https://github.com/mianshipai/mianshipai-web/issues/1' },
+      { text: '加群讨论答疑', link: '/docs/services/group.md' },
       {
         text: '成为贡献者',
         link: 'https://github.com/mianshipai/mianshipai-web#%E8%B4%A1%E7%8C%AE%E9%A2%98%E7%9B%AE%E5%92%8C%E7%AD%94%E6%A1%88',
@@ -123,7 +123,7 @@ export default defineConfig({
       {
         text: '服务',
         items: [
-          { text: '加群讨论答疑', link: 'https://github.com/mianshipai/mianshipai-web/issues/1' },
+          { text: '加群讨论答疑', link: '/docs/services/group.md' },
           {
             text: '成为贡献者',
             link: 'https://github.com/mianshipai/mianshipai-web#%E8%B4%A1%E7%8C%AE%E9%A2%98%E7%9B%AE%E5%92%8C%E7%AD%94%E6%A1%88',

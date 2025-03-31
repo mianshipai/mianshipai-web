@@ -3,7 +3,7 @@
 没有工作经验、面试经验的同学，需要先整体了解一下程序员面试的常规流程。
 
 ::: tip
-实际面试时，流程可能会有变动，灵活处理，可免费 [加群](https://github.com/mianshipai/mianshipai-web/issues/1) 讨论咨询。
+实际面试时，流程可能会有变动，灵活处理，可免费 [加群](/docs/services/group.md) 讨论咨询。
 
 也可参与 [金牌简历计划 🔥](/docs/services/1v1.md) 专业、系统、高效、全流程 准备前端面试
 :::

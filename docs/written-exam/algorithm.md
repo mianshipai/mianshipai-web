@@ -10,14 +10,14 @@
    :::
 
 ::: tip
-如有疑问，可免费 [加群](https://github.com/mianshipai/mianshipai-web/issues/1) 讨论咨询，也可参与 [金牌简历计划 🔥](/docs/services/1v1.md) 专业、系统、高效、全流程 准备前端面试
+如有疑问，可免费 [加群](/docs/services/group.md) 讨论咨询，也可参与 [金牌简历计划 🔥](/docs/services/1v1.md) 专业、系统、高效、全流程 准备前端面试
 :::
 
 ## 算法基础 Basic
 
 磨刀不误砍柴工，别着急刷 LeetCode 等算法题，先把基础巩固好，会事半功倍。
 
-如果这些基础知识都无法自学搞懂，请[加群](https://github.com/mianshipai/mianshipai-web/issues/1)寻求帮助，不要自己独立钻研，要掌握学习方法。
+如果这些基础知识都无法自学搞懂，请[加群](/docs/services/group.md)寻求帮助，不要自己独立钻研，要掌握学习方法。
 
 ### 前端常见的数据结构有哪些？有什么基础算法？有什么应用场景？
 

@@ -3,7 +3,7 @@
 HTTP 和 Ajax 是前后端沟通的桥梁，面试重点考察，无论工作经验长短。
 
 ::: tip
-如有疑问，可免费 [加群](https://github.com/mianshipai/mianshipai-web/issues/1) 讨论咨询，也可参与 [金牌简历计划 🔥](/docs/services/1v1.md) 专业、系统、高效、全流程 准备前端面试
+如有疑问，可免费 [加群](/docs/services/group.md) 讨论咨询，也可参与 [金牌简历计划 🔥](/docs/services/1v1.md) 专业、系统、高效、全流程 准备前端面试
 :::
 
 ## TCP 是如何建立连接的，三次握手，四次挥手

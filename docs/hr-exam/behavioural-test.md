@@ -11,7 +11,7 @@ HR 行为面试，考察工作态度和价值观。
 :::
 
 ::: tip
-如有疑问，可免费 [加群](https://github.com/mianshipai/mianshipai-web/issues/1) 讨论咨询，也可参与 [金牌简历计划 🔥](/docs/services/1v1.md) 专业、系统、高效、全流程 准备前端面试
+如有疑问，可免费 [加群](/docs/services/group.md) 讨论咨询，也可参与 [金牌简历计划 🔥](/docs/services/1v1.md) 专业、系统、高效、全流程 准备前端面试
 :::
 
 ## 个人介绍
