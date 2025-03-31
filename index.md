@@ -38,13 +38,60 @@ features:
 - 工作多年只会 Vue ，不懂算法，没有技术广度和深度
 - 刚毕业，没实际项目经验
 
-如有上述问题，可加群讨论咨询，或参与 [金牌简历计划 🔥](/docs/services/1v1.md) 系统、高效、全流程 准备前端面试～
+如有上述问题，可 [加群](/docs/services/group.md) 讨论咨询，或参与 [金牌简历计划 🔥](/docs/services/1v1.md) 系统、高效、全流程 准备前端面试～
 
-![](./docs/imgs/qr-code.jpg)
+### 团队成员
+
+双越老师带队，联合多名精英博主，参考大厂面试规范，共建优质内容。[查看全部贡献者](https://github.com/mianshipai/mianshipai-web/graphs/contributors)
+
+<div style="display: grid; gap: 24px; grid-template-columns: repeat(auto-fit, minmax(224px, 1fr)); margin-top: 24px;">
+  <div style="flex: 1; text-align: center;">
+    <div style="background-color: var(--vp-c-bg-soft); padding: 16px 0 8px 0; border-radius: 6px; cursor: pointer;" onclick="javascript:window.open('https://juejin.cn/user/1714893868765373', '_blank')">
+      <figure style="width: 64px; height: 64px; border-radius: 50%; overflow: hidden; margin: 0 auto; box-shadow: var(--vp-shadow-3);">
+        <img src="https://github.com/wangfupeng1988.png" loading="lazy"/>
+      </figure>
+      <div style="text-align: center;">
+        <h4 style="font-size: 16px; line-height: 12px; font-weight: 600; text-decoration: none;">双越老师</h4>
+        <p style="color: var(--vp-c-text-2); font-size: 14px; line-height: 1.5; padding: 0 16px;">前百度、滴滴 资深工程师，wangEditor 作者，PMP</p>
+      </div>
+    </div>
+  </div>
+  <div style="flex: 1; text-align: center;">
+    <div style="background-color: var(--vp-c-bg-soft); padding: 16px 0 8px 0; border-radius: 6px; cursor: pointer;">
+      <figure style="width: 64px; height: 64px; border-radius: 50%; overflow: hidden; margin: 0 auto; box-shadow: var(--vp-shadow-3);" onclick="javascript:window.open('https://github.com/shixiaoshiOrz', '_blank')">
+        <img src="https://github.com/shixiaoshiOrz.png" loading="lazy"/>
+      </figure>
+      <div style="text-align: center;" onclick="javascript:window.open('https://juejin.cn/user/660148845294712', '_blank')">
+        <h4 style="font-size: 16px; line-height: 12px; font-weight: 600;">石小石Orz</h4>
+        <p style="color: var(--vp-c-text-2); font-size: 14px; line-height: 1.5; padding: 0 16px;">掘金优秀创作者，阿里云专家博主&评测专家，文章阅读量超100万</p>
+      </div>
+    </div>
+  </div>
+  <div style="flex: 1; text-align: center;">
+    <div style="background-color: var(--vp-c-bg-soft); padding: 16px 0 8px 0; border-radius: 6px; cursor: pointer;" onclick="javascript:window.open('https://juejin.cn/user/1943592288391496/posts', '_blank')">
+      <figure style="width: 64px; height: 64px; border-radius: 50%; overflow: hidden; margin: 0 auto; box-shadow: var(--vp-shadow-3);">
+        <img src="https://github.com/RainyNight9.png" loading="lazy"/>
+      </figure>
+      <div style="text-align: center;">
+        <h4 style="font-size: 16px; line-height: 12px; font-weight: 600;">雨夜寻晴天</h4>
+        <p style="color: var(--vp-c-text-2); font-size: 14px; line-height: 1.5; padding: 0 16px;">掘金优秀创作者，开源作者，多年大厂经验，擅长Web 小程序和跨端开发</p>
+      </div>
+    </div>
+  </div>
+  <div style="flex: 1; text-align: center;">
+    <div style="background-color: var(--vp-c-bg-soft); padding: 16px 0 8px 0; border-radius: 6px; cursor: pointer;" onclick="javascript:window.open('https://juejin.cn/user/116975171023884', '_blank')">
+      <figure style="width: 64px; height: 64px; border-radius: 50%; overflow: hidden; margin: 0 auto; box-shadow: var(--vp-shadow-3);">
+        <img src="https://github.com/DolphinFeng.png" loading="lazy"/>
+      </figure>
+      <div style="text-align: center;">
+        <h4 style="font-size: 16px; line-height: 12px; font-weight: 600;">Dolphin_海豚</h4>
+        <p style="color: var(--vp-c-text-2); font-size: 14px; line-height: 1.5; padding: 0 16px;">掘金优秀作者，2023人气 NO.14 ，博客访问量 30w+，擅长各类面试题</p>
+      </div>
+    </div>
+  </div>
+</div>
 
 ### 成为贡献者
-
-面试派由多名博主贡献 [查看全部贡献者](https://github.com/mianshipai/mianshipai-web/graphs/contributors) ，成为贡献者你可以：
 
 - 参与优秀开源项目，结识优秀博主和作者，积累社区知名度
 - 贡献内容时，可以插入自己的博客链接，给自己的博客引流
@@ -96,4 +143,9 @@ features:
       <img loading="lazy" src="./docs/imgs/logos/ali.png"  style="width: 80%"/>
     </a>
   </div>
+</div>
+
+<div style="position:fixed; bottom:16px; right:0px; width:260px;">
+  <img src="/docs/imgs/qr-code-img.jpg" style="width: 200px; margin: 0 auto;"/>
+  <span style="font-size:12px;">如加群失败，加作者vx <code>fe-wfp</code>，备注 <code>面试派</code></span>
 </div>
