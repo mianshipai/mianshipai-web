@@ -101,6 +101,7 @@ export default defineConfig({
           { text: '小程序', link: '/docs/second-exam/mini-program.md' },
           { text: '前端工程化', link: '/docs/second-exam/engineering.md' },
           { text: '鸿蒙应用开发', link: '/docs/second-exam/HarmonyOS-application-development.md' },
+          { text: 'Node 相关', link: '/docs/second-exam/node-related.md' },
         ],
       },
       {
