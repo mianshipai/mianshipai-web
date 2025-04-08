@@ -74,6 +74,27 @@ HTML 中的 `<meta>` 标签用于提供页面的**元信息**，这些信息不�
 
 :::
 
+## link 标签是干什么的，都有什么属性和作用
+
+参考答案
+
+::: details
+
+HTML 中的 `<link>` 标签用于加载页面需要的资源，比如css、图标文件等
+
+常用的属性有rel、href、type
+
+- rel: 链接的资源与当前文档的关系（什么类型的连接），常见的比如
+  - prefetch ：提前加载后续导航可能需要的资源（闲时）
+  - preload ：预先获取和缓存目标资源
+  - dns-prefetch ：预先执行 DNS 解析
+  - icon ：当前文档的图标
+  - stylesheet ：样式表
+- href ：资源链接
+- type ：资源的MIME类型，常用于确保浏览器支持该类型
+
+:::
+
 ## 什么是 DOM ，它和 HTML 有什么区别？
 
 参考答案
@@ -392,7 +413,7 @@ Element 常见属性和方法如 `innerHTML` `getAttribute` `setAttribute`
 </head>
 ```
 
-2. 使用 `defer` 属性。`defer` 属性使得脚本延迟执行，直到 HTML 文档解析完毕。这意味着脚本不会阻塞 HTML 渲染，且会按照文档中 `<script>` 标签的顺序执行。适用于依赖 DOM 元素的脚本（如操作页面内容）。
+2. 使用 `defer` 属性。`defer` 属性使得脚本延迟执行，直到 HTML 文档解析完毕(DomContentLoaded之后)。这意味着脚本不会阻塞 HTML 渲染，且会按照文档中 `<script>` 标签的顺序执行。适用于依赖 DOM 元素的脚本（如操作页面内容）。
 
 ```html
 <head>
@@ -403,6 +424,150 @@ Element 常见属性和方法如 `innerHTML` `getAttribute` `setAttribute`
 3. 将 `<script>` 放在 `<body>` 最后。
 
 :::
+
+## HTMl 中常用哪些存储，都有什么区别
+
+参考答案
+
+::: details
+
+|                     | cookie                                          | localStorage | sessionStorage |
+| ------------------- | ----------------------------------------------- | ------------ | -------------- |
+| 由谁初始化          | 客户端或服务器，服务器可以使用 `Set-Cookie` 请求头。 | 客户端       | 客户端         |
+| 过期时间            | 手动设置                                        | 永不过期     | 当前页面关闭时 |
+| 在当前浏览器会话（browser sessions）中是否保持不变 | 取决于是否设置了过期时间                        | 是           | 否             |
+| 是否随着每个 HTTP 请求发送给服务器 | 是，Cookies 会通过 `Cookie` 请求头，自动发送给服务器 | 否           | 否             |
+| 容量（每个域名）    | 4kb                                             | 5MB          | 5MB            |
+| 访问权限            | 任意窗口                                        | 任意窗口     | 当前页面窗口   | 
+| 使用场景            | 存储用户登录凭证（如 JWT、session ID ）     | 离线数据缓存     | 临时表单数据存储   | 
+
+:::
+
+## 一个常见的移动端HTML模板
+
+参考答案
+
+::: details
+
+```html
+<!DOCTYPE html>
+<!-- 声明文档类型为HTML5 -->
+<html lang="zh-CN">
+<!-- 设置语言为中文，有助于搜索引擎优化和屏幕阅读器 -->
+
+<head>
+    <!-- 必须的元标签 -->
+    <meta charset="UTF-8">
+    <!-- 字符编码设置为UTF-8 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <!--
+        移动端视口设置：
+        width=device-width - 宽度等于设备宽度
+        initial-scale=1.0 - 初始缩放比例
+        maximum-scale=1.0 - 最大缩放比例
+        user-scalable=no - 禁止用户缩放
+    -->
+
+    <!-- 浏览器兼容性设置 -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- 强制使用最新渲染模式 -->
+
+    <!-- 移动端优化 -->
+    <meta name="format-detection" content="telephone=no">
+    <!-- 禁止自动识别电话号码 -->
+    <meta name="theme-color" content="#ffffff">
+    <!-- 浏览器主题颜色 -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <!-- 启用iOS全屏模式 -->
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <!-- iOS状态栏样式 -->
+
+    <!-- SEO优化 -->
+    <title>移动端页面模板</title>
+    <!-- 页面标题 -->
+    <meta name="description" content="移动端HTML模板">
+    <!-- 页面描述 -->
+
+    <!-- 图标设置 -->
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
+    <!-- iOS主屏幕图标 -->
+
+    <!-- 样式表 -->
+    <link rel="stylesheet" href="css/normalize.css">
+    <!-- 标准化样式 -->
+    <style>
+        /* 移动端基础样式 */
+        * {
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+            /* 禁用点击高亮效果 */
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, 
+                       "Segoe UI", Roboto, "Helvetica Neue", 
+                       Arial, sans-serif;
+            /* 使用系统字体 */
+            line-height: 1.5;
+            -webkit-text-size-adjust: 100%;
+            /* 禁止文字大小自动调整 */
+            -webkit-font-smoothing: antialiased;
+            /* 字体抗锯齿 */
+        }
+
+        /* 响应式媒体查询 */
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 15px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 页面主体内容 -->
+    <div class="container">
+        <header role="banner">
+            <!-- 页眉区域 -->
+            <nav role="navigation">
+                <!-- 导航区域 -->
+                <ul>
+                    <li><a href="#">首页</a></li>
+                    <li><a href="#">关于</a></li>
+                </ul>
+            </nav>
+        </header>
+
+        <main role="main">
+            <!-- 页面主要内容 -->
+            <article>
+                <h1>移动端页面标题</h1>
+                <section>
+                    <h2>内容区块</h2>
+                    <p>移动端优化内容...</p>
+                </section>
+            </article>
+        </main>
+
+        <footer role="contentinfo">
+            <!-- 页脚区域 -->
+            <p>&copy; 2023 版权所有</p>
+        </footer>
+    </div>
+
+    <!-- 脚本加载 -->
+    <script src="js/main.js" defer></script>
+    <!-- defer属性确保DOM加载完成后执行 -->
+    
+    <!-- DNS预解析 -->
+    <link rel="dns-prefetch" href="//cdn.example.com">
+</body>
+
+</html>
+```
 
 ## 常见的 HTML 标签哪些是 inline 元素，哪些是 block 元素，哪些是 inline-block 元素
 
