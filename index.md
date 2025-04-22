@@ -14,7 +14,7 @@ hero:
       text: 面试技巧
       link: /docs/hr-exam/behavioural-test.html
     - theme: alt
-      text: 金牌简历计划 🔥
+      text: 1v1 面试咨询 🔥
       link: /docs/services/1v1.md
 
 features:
@@ -38,13 +38,9 @@ features:
 - 工作多年只会 Vue ，不懂算法，没有技术广度和深度
 - 刚毕业，没实际项目经验
 
-如有上述问题，可 [加群](/docs/services/group.md) 讨论咨询，或参与 [金牌简历计划 🔥](/docs/services/1v1.md) 系统、高效、全流程 准备前端面试～
+如有上述问题，可 [加群](/docs/services/group.md) 讨论咨询，或参与 [1v1 面试咨询服务](/docs/services/1v1.md)， 系统、高效、全流程 准备前端面试～
 
-### 团队成员
-
-双越老师带队，联合多名精英博主，参考大厂面试规范，共建优质内容。[查看全部贡献者](https://github.com/mianshipai/mianshipai-web/graphs/contributors)
-
-<div style="display: grid; gap: 24px; grid-template-columns: repeat(auto-fit, minmax(224px, 1fr)); margin-top: 24px;">
+<!-- <div style="display: grid; gap: 24px; grid-template-columns: repeat(auto-fit, minmax(224px, 1fr)); margin-top: 24px;">
   <div style="flex: 1; text-align: center;">
     <div style="background-color: var(--vp-c-bg-soft); padding: 16px 0 8px 0; border-radius: 6px; cursor: pointer;" onclick="javascript:window.open('https://juejin.cn/user/1714893868765373', '_blank')">
       <figure style="width: 64px; height: 64px; border-radius: 50%; overflow: hidden; margin: 0 auto; box-shadow: var(--vp-shadow-3);">
@@ -89,15 +85,14 @@ features:
       </div>
     </div>
   </div>
-</div>
+</div> -->
 
 ### 成为贡献者
 
 - 参与优秀开源项目，结识优秀博主和作者，积累社区知名度
 - 贡献内容时，可以插入自己的博客链接，给自己的博客引流
-- 有机会加入 [金牌简历计划](/docs/services/1v1.md) 提供付费服务 挣取外块 💰
 
-[开始贡献题目和答案](https://github.com/mianshipai/mianshipai-web#%E8%B4%A1%E7%8C%AE%E9%A2%98%E7%9B%AE%E5%92%8C%E7%AD%94%E6%A1%88)
+[开始贡献题目和答案](https://github.com/mianshipai/mianshipai-web#%E8%B4%A1%E7%8C%AE%E9%A2%98%E7%9B%AE%E5%92%8C%E7%AD%94%E6%A1%88) ，[查看全部贡献者](https://github.com/mianshipai/mianshipai-web/graphs/contributors)
 
 <div style="display: flex; margin-top: 48px;">
   <div style="flex: 1; text-align: center;">
