@@ -14,7 +14,7 @@ hero:
       text: 面试技巧
       link: /docs/hr-exam/behavioural-test.html
     - theme: alt
-      text: 金牌简历计划 🔥
+      text: 1v1 面试咨询 🔥
       link: /docs/services/1v1.md
 
 features:
@@ -38,7 +38,7 @@ features:
 - 工作多年只会 Vue ，不懂算法，没有技术广度和深度
 - 刚毕业，没实际项目经验
 
-如有上述问题，可 [加群](/docs/services/group.md) 讨论咨询，或参与 [金牌简历计划 🔥](/docs/services/1v1.md) 系统、高效、全流程 准备前端面试～
+如有上述问题，可 [加群](/docs/services/group.md) 讨论咨询，或参与 [1v1 面试咨询服务](/docs/services/1v1.md)， 系统、高效、全流程 准备前端面试～
 
 <!-- <div style="display: grid; gap: 24px; grid-template-columns: repeat(auto-fit, minmax(224px, 1fr)); margin-top: 24px;">
   <div style="flex: 1; text-align: center;">
