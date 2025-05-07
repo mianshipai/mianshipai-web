@@ -31,6 +31,17 @@ export default defineConfig({
       })();
       `,
     ],
+    // 二维码
+    [
+      'script',
+      {},
+      `
+      setTimeout(function() {
+        const container = document.getElementById('qrcode-container');
+        container.innerHTML = '<img src="/docs/imgs/qr-code-img.jpg" style="width: 200px; margin: 0 auto;"/><span style="font-size:12px;">如加群失败，加作者vx <code>fe-wfp</code>，备注 <code>面试派</code></span>';
+      }, 2000);
+      `,
+    ],
   ],
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
