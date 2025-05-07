@@ -140,7 +140,6 @@ features:
   </div>
 </div>
 
-<div style="position:fixed; bottom:16px; right:0px; width:260px;">
-  <img src="/docs/imgs/qr-code-img.jpg" style="width: 200px; margin: 0 auto;"/>
-  <span style="font-size:12px;">如加群失败，加作者vx <code>fe-wfp</code>，备注 <code>面试派</code></span>
+<div id="qrcode-container" style="position:fixed; bottom:16px; right:0px; width:260px;">
+  <!--config.mts 动态插入内容-->
 </div>

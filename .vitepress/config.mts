@@ -31,6 +31,67 @@ export default defineConfig({
       })();
       `,
     ],
+    // 二维码
+    [
+      'script',
+      {},
+      `
+      setTimeout(function() {
+        const container = document.getElementById('qrcode-container');
+        container.innerHTML = '<img src="/docs/imgs/qr-code-img.jpg" style="width: 200px; margin: 0 auto;"/><span style="font-size:12px;">如加群失败，加作者vx <code>fe-wfp</code>，备注 <code>面试派</code></span>';
+      }, 2000);
+      `,
+    ],
+    // top banner ad
+    [
+      'script',
+      {},
+      `
+      setTimeout(function() {
+        const header = document.querySelector('header');
+        if (header == null) return;
+        header.style.top = '25px';
+        const ad = document.createElement('div');
+        ad.style.backgroundColor = 'oklch(97.3% .071 103.193)';
+        ad.style.height = '25px';
+        ad.style.position = 'fixed';
+        ad.style.top = '0';
+        ad.style.left = '0';
+        ad.style.width = '100%';
+        ad.style.zIndex = '9999';
+        ad.style.lineHeight = '25px';
+        ad.style.fontSize = '13px';
+
+        const adContent = document.createElement('div');
+        adContent.innerHTML = '前端学 Node 全栈和 AI 开发，可加入【划水AI】项目研发小组。双越老师开发，复杂项目，真实上线，持续维护升级。在此进入有优惠 &gt;&gt;';
+        adContent.style.width = '80%';
+        adContent.style.textAlign = 'center';
+        adContent.style.margin = '0 auto';
+        adContent.style.cursor = 'pointer';
+        adContent.addEventListener('click', function() {
+          window.open('https://www.huashuiai.com/join?from=前端面试派', '_blank');
+        });
+
+        const adClose = document.createElement('div');
+        adClose.innerHTML = 'x';
+        adClose.style.width = '16px';
+        adClose.style.textAlign = 'center';
+        adClose.style.position = 'absolute';
+        adClose.style.right = '8px';
+        adClose.style.top = '0';
+        adClose.style.cursor = 'pointer';
+        adClose.addEventListener('click', function(event) {
+          event.stopPropagation();
+          ad.parentNode.removeChild(ad);
+          header.style.top = '0';
+        });
+
+        ad.appendChild(adContent);
+        ad.appendChild(adClose);
+        header.parentNode.insertBefore(ad, header);
+      }, 1000);
+      `,
+    ],
   ],
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
