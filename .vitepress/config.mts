@@ -53,6 +53,7 @@ export default defineConfig({
         header.style.top = '25px';
         const ad = document.createElement('div');
         ad.style.backgroundColor = 'oklch(97.3% .071 103.193)';
+        ad.style.color = '#333';
         ad.style.height = '25px';
         ad.style.position = 'fixed';
         ad.style.top = '0';
