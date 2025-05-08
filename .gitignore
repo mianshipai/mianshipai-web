@@ -31,3 +31,5 @@ yarn-error.log*
 ISSUE.md
 
 .npmrc
+
+.cursor
