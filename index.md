@@ -16,6 +16,9 @@ hero:
     - theme: alt
       text: 1v1 面试咨询 🔥
       link: /docs/services/1v1.md
+    - theme: alt
+      text: 内推岗位
+      link: /docs/services/job.md
 
 features:
   - title: 双越老师
