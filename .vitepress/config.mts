@@ -191,6 +191,7 @@ export default defineConfig({
             text: '成为贡献者',
             link: 'https://github.com/mianshipai/mianshipai-web#%E8%B4%A1%E7%8C%AE%E9%A2%98%E7%9B%AE%E5%92%8C%E7%AD%94%E6%A1%88',
           },
+          { text: '内推工作', link: '/docs/services/job.md' },
           { text: '1v1 面试咨询 🔥', link: '/docs/services/1v1.md' },
         ],
       },
