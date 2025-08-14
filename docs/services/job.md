@@ -42,6 +42,19 @@ JD 岗位描述：（500字以内文字，或招聘网站的链接）
 
 （在此提交新的内推机会）
 
+### 杭州 IOS
+
+- base 杭州
+- 公司：杭州铭师堂
+- 职位名称：iOS开发工程师
+- 核心技术栈：Objective-C 、Swift 、Flutter
+- 邮箱：tangbei@mistong.com
+- **是否急聘**：是
+
+JD 岗位描述：https://app.mokahr.com/su/ux33E
+
+还有几个其他技术类的岗位招聘：https://app.mokahr.com/su/6lO2o
+
 ### 上海 科大讯飞 前端 Vue React
 
 - base 上海
