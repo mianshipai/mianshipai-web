@@ -42,6 +42,40 @@ JD 岗位描述：（500字以内文字，或招聘网站的链接）
 
 （在此提交新的内推机会）
 
+### 南京 京东五星电器 后端 Java
+
+- base 南京
+- 公司：京东五星电器
+- 职位名称：后端开发工程师
+- 薪资范围：18-23K * 15
+- 核心技术栈：Spring、Spring MVC、Spring Data JPA、Spring Boot、Spring Cloud
+- 邮箱：chenxin559@jd.com
+- 发布时间：2025-08-15 有效期：2025-09-30
+
+JD 岗位描述：
+
+岗位职责
+
+1.参与项目的需求分析、概要设计、详细设计，技术文档的编写；
+
+2.按照公司开发规范，负责相应软件系统的功能开发及测试；
+
+3.负责软件系统的部署、线上运维，服务器监控，管理，调优等；
+
+4.负责技术架构的持续完善和改进。
+
+任职资格
+
+1.本科以上学历，计算机相关专业；
+
+2.三年以上Java开发经历；
+
+3.精通Java及Spring，对Spring MVC、Spring Data JPA了解其原理和机制，熟悉Spring Boot、Spring Cloud框架；
+
+4.精通SQL，熟练使用MySQL、Oracle等数据库，并有一定的SQL优化能力，熟悉Redis等常用NoSQL解决方案，了解各自的优缺点以及使用场景；
+
+5.熟悉Linux操作系统，熟悉Tomcat等应用服务器的部署和配置；
+
 ### 杭州 IOS
 
 - base 杭州
@@ -297,38 +331,3 @@ JD 岗位描述：https://poizon.jobs.feishu.cn/s/NjtITcaAHFs
 - 发布时间：2025.08.07
 
 JD 岗位描述：https://poizon.jobs.feishu.cn/s/hUgkDsw1ZSI
-
-
-### 南京 京东五星电器 后端 Java
-
-- base 南京
-- 公司：京东五星电器
-- 职位名称：后端开发工程师
-- 薪资范围：18-23K * 15
-- 核心技术栈：Spring、Spring MVC、Spring Data JPA、Spring Boot、Spring Cloud
-- 邮箱：chenxin559@jd.com
-- 发布时间：2025-08-15 有效期：2025-09-30
-
-JD 岗位描述：
-
-岗位职责
-
-1.参与项目的需求分析、概要设计、详细设计，技术文档的编写；
-
-2.按照公司开发规范，负责相应软件系统的功能开发及测试；
-
-3.负责软件系统的部署、线上运维，服务器监控，管理，调优等；
-
-4.负责技术架构的持续完善和改进。
-
-任职资格
-
-1.本科以上学历，计算机相关专业；
-
-2.三年以上Java开发经历；
-
-3.精通Java及Spring，对Spring MVC、Spring Data JPA了解其原理和机制，熟悉Spring Boot、Spring Cloud框架；
-
-4.精通SQL，熟练使用MySQL、Oracle等数据库，并有一定的SQL优化能力，熟悉Redis等常用NoSQL解决方案，了解各自的优缺点以及使用场景；
-
-5.熟悉Linux操作系统，熟悉Tomcat等应用服务器的部署和配置；
