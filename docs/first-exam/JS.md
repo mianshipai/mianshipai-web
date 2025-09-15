@@ -108,7 +108,7 @@ console.log(strings.flatMap((str) => str.split('')))
 
 ::: details
 
-- https://juejin.cn/post/7459351912133132351
+- <https://juejin.cn/post/7459351912133132351>
 
 :::
 
@@ -972,8 +972,8 @@ console.log('任务 3') // 任务 3 不会等待 任务 2
 
 **1. Promise 有几种状态？**
 
-| 状态                    | 说明                          | 是否可变更 |
-| ----------------------- | ----------------------------- | ---------- |
+| 状态                    | 说明                          | 是否可变更  |
+| ----------------------- | ----------------------------- | ----------- |
 | **Pending（进行中）**   | 初始状态，异步操作未完成      | ✅ 可以变更 |
 | **Fulfilled（已完成）** | 操作成功，返回 `resolve` 结果 | ❌ 变更结束 |
 | **Rejected（已拒绝）**  | 操作失败，返回 `reject` 错误  | ❌ 变更结束 |
@@ -1226,11 +1226,11 @@ Event Loop（事件循环）是 JavaScript 处理 **异步操作** 的核心机�
 
 | 特性               | **Array**                       | **Set**                        |
 | ------------------ | ------------------------------- | ------------------------------ |
-| **是否允许重复值** | ✅ 允许重复元素                  | ❌ 只能存储唯一值，自动去重     |
-| **索引访问**       | ✅ 可通过索引 (`arr[0]`) 访问    | ❌ 不支持索引访问               |
-| **查找性能**       | 🔴 `O(n)`，需要遍历整个数组      | 🟢 `O(1)`，基于哈希表查找更快   |
-| **删除性能**       | 🔴 `O(n)`，需要遍历查找删除      | 🟢 `O(1)`，删除性能更优         |
-| **遍历方式**       | ✅ `forEach` / `map` / `filter`  | ✅ `forEach` / `for...of`       |
+| **是否允许重复值** | ✅ 允许重复元素                 | ❌ 只能存储唯一值，自动去重    |
+| **索引访问**       | ✅ 可通过索引 (`arr[0]`) 访问   | ❌ 不支持索引访问              |
+| **查找性能**       | 🔴 `O(n)`，需要遍历整个数组     | 🟢 `O(1)`，基于哈希表查找更快  |
+| **删除性能**       | 🔴 `O(n)`，需要遍历查找删除     | 🟢 `O(1)`，删除性能更优        |
+| **遍历方式**       | ✅ `forEach` / `map` / `filter` | ✅ `forEach` / `for...of`      |
 | **适合的场景**     | 存储有序数据，支持索引访问      | 需要唯一值集合，去重、快速查找 |
 | **转换方式**       | `Array.from(set)` (Set → Array) | `new Set(array)` (Array → Set) |
 
@@ -1267,7 +1267,7 @@ console.log(arrFromSet) // [1, 2, 3, 4]
 | **迭代方式**              | `for...in`，`Object.keys()` 等          | `forEach()`，`for...of`（支持迭代器） |
 | **获取键的方式**          | `Object.keys(obj)` 只能获取 `string` 键 | `map.keys()` 可获取所有类型的键       |
 | **获取大小**              | 需手动计算 `Object.keys(obj).length`    | `map.size` 直接获取大小               |
-| **是否能轻松转换为 JSON** | ✅ 可以 `JSON.stringify()`               | ❌ 不能直接 `JSON.stringify()`         |
+| **是否能轻松转换为 JSON** | ✅ 可以 `JSON.stringify()`              | ❌ 不能直接 `JSON.stringify()`        |
 | **适用场景**              | 适用于存储结构化数据，如对象属性        | 适用于 **高效键值存储和查找**         |
 
 ```js
@@ -1310,8 +1310,8 @@ console.log(Object.keys(obj).length) // 2
 | **主要用途**        | 延迟执行代码                 | **动画和流畅渲染**               | **低优先级任务**（如日志、分析）                   |
 | **帧率控制**        | **无**，可能丢帧             | **跟随屏幕刷新率**（一般 60FPS） | **不受限制**，完全取决于浏览器                     |
 | **影响页面性能**    | **可能影响页面流畅度**       | **保证流畅动画**                 | **不会阻塞主线程**                                 |
-| **是否适用于动画**  | ❌ 可能卡顿                   | ✅ 适合                           | ❌ 不适合                                           |
-| **是否受 CPU 影响** | ✅ 受影响                     | ✅ 受影响                         | ✅ 受影响                                           |
+| **是否适用于动画**  | ❌ 可能卡顿                  | ✅ 适合                          | ❌ 不适合                                          |
+| **是否受 CPU 影响** | ✅ 受影响                    | ✅ 受影响                        | ✅ 受影响                                          |
 | **适用场景**        | **定时任务、轮询**           | **动画、过渡、流畅 UI 渲染**     | **后台任务、低优先级执行（如数据同步、日志收集）** |
 
 **`setTimeout` - 定时执行**
@@ -1515,6 +1515,7 @@ JavaScript 中的浮点数运算存在精度问题。由于计算机在内部表
 
 2. **自定义精度比较**：
    将浮动值限制到一定的小数位，进行比较：
+
    ```javascript
    console.log(Math.round((0.1 + 0.2) * 100) / 100 === 0.3) // true
    ```
@@ -1596,6 +1597,7 @@ JavaScript 的设计目的是为了简化开发，尤其是在浏览器环境中
    ```
 
 2. **Worker 文件（worker.js）：**
+
    ```javascript
    // worker.js (Worker 线程)
    onmessage = function (event) {
@@ -1660,6 +1662,7 @@ JavaScript 的内存管理是自动的，主要通过 **垃圾回收（GC）** �
 1. **全局变量**：
 
    - 意外的全局变量会导致对象无法被回收。
+
      ```javascript
      function test() {
        leakedVar = 'This is a global variable' // 未声明的变量成为全局变量
@@ -1669,6 +1672,7 @@ JavaScript 的内存管理是自动的，主要通过 **垃圾回收（GC）** �
 2. **未移除的事件监听器**：
 
    - 如果事件监听器被绑定在 DOM 元素上，但没有在元素移除后正确移除，可能导致内存泄漏。
+
      ```javascript
      const button = document.getElementById('myButton')
      button.addEventListener('click', function () {
@@ -1680,6 +1684,7 @@ JavaScript 的内存管理是自动的，主要通过 **垃圾回收（GC）** �
 3. **闭包（Closures）**：
 
    - 闭包会保持对外部函数变量的引用，如果闭包生命周期过长，会导致外部函数的变量无法释放。
+
      ```javascript
      function createClosure() {
        let largeObject = new Array(1000).fill('Some data')
@@ -1693,6 +1698,7 @@ JavaScript 的内存管理是自动的，主要通过 **垃圾回收（GC）** �
 4. **DOM 引用**：
 
    - 保留对已删除 DOM 元素的引用，导致内存泄漏。
+
      ```javascript
      let div = document.createElement('div')
      document.body.appendChild(div)
@@ -1703,6 +1709,7 @@ JavaScript 的内存管理是自动的，主要通过 **垃圾回收（GC）** �
 5. **定时器（setInterval/setTimeout）未清除**：
 
    - 如果定时器没有清除，仍然会占用内存。
+
      ```javascript
      let interval = setInterval(function () {
        console.log('Running')
@@ -1712,6 +1719,7 @@ JavaScript 的内存管理是自动的，主要通过 **垃圾回收（GC）** �
 
 6. **Web Workers 和后台线程**：
    - 如果 Web Worker 或后台线程没有正确终止，可能会导致内存泄漏。
+
      ```javascript
      const worker = new Worker('worker.js')
      // 如果没有 worker.terminate()，worker 可能导致内存泄漏
@@ -1842,7 +1850,7 @@ const [a,b] = obj​
 ​
 可迭代协议的概念（ MDN ）​
 `
-  可迭代协议允许 `JavaScript` 对象定义或定制它们的迭代行为，例如，在一个 for..of 结构中，哪些值可以被遍历到。一些内置类型同时是内置的可迭代对象，并且有默认的迭代行为，比如 Array 或者 Map，而其他内置类型则不是（比如 Object）。​
+可迭代协议允许 `JavaScript` 对象定义或定制它们的迭代行为，例如，在一个 for..of 结构中，哪些值可以被遍历到。一些内置类型同时是内置的可迭代对象，并且有默认的迭代行为，比如 Array 或者 Map，而其他内置类型则不是（比如 Object）。​
   要成为可迭代对象，该对象必须实现 @@iterator 方法，这意味着对象（或者它原型链上的某个对象）必须有一个键为 @@iterator 的属性，可通过常量 Symbol.iterator 访问该属性：​
   [Symbol.iterator]​
   一个无参数的函数，其返回值为一个符合迭代器协议的对象。​
@@ -1921,6 +1929,7 @@ for(let i of obj){​
 // 2
 
 ```
+
 :::
 
 ## postMessage 有哪些使用场景？
@@ -1931,7 +1940,7 @@ for(let i of obj){​
 
 **window.postMessage 定义**
 
-`window.postMessage() `方法可以安全地实现跨源通信。`window.postMessage()` 方法提供了一种受控机制来规避此限制，只要正确的使用，这种方法就很安全
+`window.postMessage()`方法可以安全地实现跨源通信。`window.postMessage()` 方法提供了一种受控机制来规避此限制，只要正确的使用，这种方法就很安全
 
 **用途**
 
@@ -1943,13 +1952,12 @@ for(let i of obj){​
 otherWindow.postMessage(message, targetOrigin, [transfer]);
 ```
 
-
 **参数说明**
 
 - data​
 - 从其他 window 中传递过来的对象。​
 - origin​
-- 调用 `postMessage` 时消息发送方窗口的 **origin** . 这个字符串由 协议、“://“、域名、“ : 端口号”拼接而成。例如 “**https://example.org** (隐含端口 443)”、“**http://example.net** (隐含端口 80)”、“**http://example.com:8080**”。请注意，这个origin不能保证是该窗口的当前或未来origin，因为postMessage被调用后可能被导航到不同的位置。​
+- 调用 `postMessage` 时消息发送方窗口的 **origin** . 这个字符串由 协议、“://“、域名、“ : 端口号”拼接而成。例如 “**<https://example.org>** (隐含端口 443)”、“**<http://example.net>** (隐含端口 80)”、“**<http://example.com:8080**”。请注意，这个origin不能保证是该窗口的当前或未来origin，因为postMessage被调用后可能被导航到不同的位置。​>
 - source​
 - 对发送消息的**窗口**对象的引用; 您可以使用此来在具有不同origin的两个窗口之间建立双向通信。
 
@@ -1994,13 +2002,15 @@ function goParentIfromPostMessage(msg,parentUrl){​
 ​
 </script>
 ```
+
 这样即可以实现简单的框架跨域通信，但是会有一些安全问题​
 
 **安全问题**
 
 如果您不希望从其他网站接收message，请不要为message事件添加任何事件侦听器。 这是一个完全万无一失的方式来避免安全问题。​
-如果您确实希望从其他网站接收message，请始终使用origin和source属性验证发件人的身份。 任何窗口（包括例如 **http://evil.example.com）都可以向任何其他窗口发送消息，并且您不能保证未知发件人不会发送恶意消息。** 但是，验证身份后，您仍然应该始终验证接收到的消息的语法。 否则，您信任只发送受信任邮件的网站中的安全漏洞可能会在您的网站中打开跨网站脚本漏洞。​
-  - 当您使用postMessage将数据发送到其他窗口时，始终指定精确的目标origin，而不是。恶意网站可以在您不知情的情况下更改窗口的位置，因此它可以拦截使用postMessage发送的数据。
+如果您确实希望从其他网站接收message，请始终使用origin和source属性验证发件人的身份。 任何窗口（包括例如 **<http://evil.example.com）都可以向任何其他窗口发送消息，并且您不能保证未知发件人不会发送恶意消息。>** 但是，验证身份后，您仍然应该始终验证接收到的消息的语法。 否则，您信任只发送受信任邮件的网站中的安全漏洞可能会在您的网站中打开跨网站脚本漏洞。​
+
+- 当您使用postMessage将数据发送到其他窗口时，始终指定精确的目标origin，而不是。恶意网站可以在您不知情的情况下更改窗口的位置，因此它可以拦截使用postMessage发送的数据。
 
 示例
 
