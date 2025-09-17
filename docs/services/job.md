@@ -45,6 +45,19 @@
 
 （在此提交新的内推机会）
 
+### 深圳 店小秘 前端 Vue
+
+- base 深圳
+- 公司：店小秘 https://www.dianxiaomi.com/
+- 职位名称：高级前端工程师
+- 薪资范围：18-30K \* 13
+- 核心技术栈：Vue, ElementPlus
+- 学历要求：专科及以上学历
+- 工作经验要求：3年以上工作经验
+- 邮箱：zhangteng@dianxiaomi.com
+- 发布时间: 2025-08-19
+- 备注：跨境Saas独角兽，HC多，面试流程快
+
 ### 南京 京东五星电器 前端 React / 后端 Java
 
 - base 南京
