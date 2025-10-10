@@ -1819,3 +1819,242 @@ WeakMap 是 JavaScript 中的一种集合类型，它存储键值对，且键必
 - **`WeakMap`**：常用于避免内存泄漏的场景，例如给对象添加私有数据，当对象被销毁时，`WeakMap` 里相关数据也会被清理。
 
 :::
+
+## 如何让 var [a, b] = {a: 1, b: 2} 解构赋值成功？
+
+参考答案
+
+::: details
+
+迭代协议​
+题目问怎么能让var [a,b] = {a:1,b:2} 成立，那么我们首先要运行一下，看看它是怎么个不成立法。​
+
+```JavaScript
+const obj = {​
+    a:'1',​
+    b:'2',​
+}​
+​
+const [a,b] = obj​
+```
+
+运行之后打开控制台可以发现报错信息，它告诉我们obj这个对象是不可迭代的，那么我们想办法把obj变成可迭代的是不是就能解决这个问题，这要怎么做呢？想要搞明白这点我们需要先了解一下可迭代协议。​
+​
+可迭代协议的概念（ MDN ）​
+`可迭代协议允许`JavaScript`对象定义或定制它们的迭代行为，例如，在一个 for..of 结构中，哪些值可以被遍历到。一些内置类型同时是内置的可迭代对象，并且有默认的迭代行为，比如 Array 或者 Map，而其他内置类型则不是（比如 Object）。​
+  要成为可迭代对象，该对象必须实现 @@iterator 方法，这意味着对象（或者它原型链上的某个对象）必须有一个键为 @@iterator 的属性，可通过常量 Symbol.iterator 访问该属性：​
+  [Symbol.iterator]​
+  一个无参数的函数，其返回值为一个符合迭代器协议的对象。​
+  当一个对象需要被迭代的时候（比如被置入一个 for...of 循环时），首先，会不带参数调用它的 @@iterator 方法，然后使用此方法返回的迭代器获得要迭代的值。​`
+说人话就是，要想让obj成为一个可迭代的对象，就需要它实现 @@iterator 方法，具体表现为对象身上要有一个名为[Symbol.iterator] 的方法。而数组和Map则是一开始就有这个方法，所以它们是可迭代的。而对象身上则没有这个默认行为，所以不可迭代。真的是这样吗？我们创建一个数组，看看数组身上到底有没有[Symbol.iterator] 方法。​
+
+```JavaScript
+const array = [1,2,3]​
+console.log(array)​
+```
+
+点开原型查看
+
+![proto](../imgs/image-iterator.png)
+​发现真的有一个Symbol.iterator()方法，该方法会返回一个迭代器对象。我们来调用一下
+
+```JavaScript
+const array = [1,2,3]​
+const iterator = array[Symbol.iterator]()​
+console.log(iterator)​
+console.log(iterator.next())​
+console.log(iterator.next())​
+console.log(iterator.next())​
+console.log(iterator.next())
+```
+
+打印iterator对象后发现在它的原型上有一个next()方法，调用next()方法，会得到一个对象value就是当前迭代的值，done则代表当前迭代器是否已经迭代完成。
+
+数组 解构 的本质
+
+```JavaScript
+const array = [1,2,3]​
+var [a,b,c] = array​
+// 本质上是​
+const iterator = array[Symbol.iterator]()​
+var a = iterator.next().value​
+var b = iterator.next().value​
+var c = iterator.next().value
+```
+
+解决方法​
+到此为止我们可知，要想满足迭代协议需要对象身上有一个名为[Symbol.iterator]的方法。再使用for..of或者解构赋值的时候会隐式的调用这个方法，得到一个迭代对象，通过迭代对象的next方法判断当前是否完成迭代和具体迭代的值。​
+也就是说我们要在obj上添加[Symbol.iterator]方法并且完成next方法的逻辑​
+
+最终代码如下：
+
+```javascript
+const obj = {​
+    a: '1',​
+    b: '2',​
+    [Symbol.iterator]() {
+      let index = 0
+      const keys = Object.keys(this)
+      return {
+        next() {
+          return {
+            value: obj[keys[index]],
+            done: index++ >= keys.length
+          }
+        }
+      }
+    }
+}​
+​
+const [a, b] = obj
+```
+
+当然，我们也可以用for...of去循环遍历这个对象，我看谁再说for...of不能遍历对象(doge)
+
+```Javascript
+for(let i of obj){​
+    console.log(i)​
+}​
+// 1​
+// 2
+
+```
+
+:::
+
+## postMessage 有哪些使用场景？
+
+参考答案
+
+::: details
+
+**window.postMessage 定义**
+
+`window.postMessage()`方法可以安全地实现跨源通信。`window.postMessage()` 方法提供了一种受控机制来规避此限制，只要正确的使用，这种方法就很安全
+
+**用途**
+
+可用于两个不同的Ifrom（不同源） 之间的通讯​
+
+语法
+
+```JavaScript
+otherWindow.postMessage(message, targetOrigin, [transfer]);
+```
+
+**参数说明**
+
+- data​
+- 从其他 window 中传递过来的对象。​
+- origin​
+- 调用 `postMessage` 时消息发送方窗口的 **origin** . 这个字符串由 协议、“://“、域名、“ : 端口号”拼接而成。例如 “**<https://example.org>** (隐含端口 443)”、“**<http://example.net>** (隐含端口 80)”、“**<http://example.com:8080**”。请注意，这个origin不能保证是该窗口的当前或未来origin，因为postMessage被调用后可能被导航到不同的位置。​>
+- source​
+- 对发送消息的**窗口**对象的引用; 您可以使用此来在具有不同origin的两个窗口之间建立双向通信。
+
+**例子**
+
+子框架传递信息
+
+```JavaScript
+<script>​
+​
+// 子框架向父框架发送信息​
+​
+function goParentIfromPostMessage(msg,parentUrl){​
+​
+    var parentUrl = window.parent.location.origin;​
+​
+        window.onload=function(){​
+​
+        window.parent.postMessage(msg,parentUrl);​
+​
+        }​
+    }​
+ }​
+ ​
+    goParentIfromPostMessage('msgStr',parentIfromUrl)​
+​
+</script>
+```
+
+父框架接收端
+
+```JavaScript
+<script>​
+​
+        window.addEventListener('message',function(e){​
+​
+            console.log(e.origin,e.data);​
+​
+            console.log(e.data);​
+​
+        })​
+​
+</script>
+```
+
+这样即可以实现简单的框架跨域通信，但是会有一些安全问题​
+
+**安全问题**
+
+如果您不希望从其他网站接收message，请不要为message事件添加任何事件侦听器。 这是一个完全万无一失的方式来避免安全问题。​
+如果您确实希望从其他网站接收message，请始终使用origin和source属性验证发件人的身份。 任何窗口（包括例如 **<http://evil.example.com）都可以向任何其他窗口发送消息，并且您不能保证未知发件人不会发送恶意消息。>** 但是，验证身份后，您仍然应该始终验证接收到的消息的语法。 否则，您信任只发送受信任邮件的网站中的安全漏洞可能会在您的网站中打开跨网站脚本漏洞。​
+
+- 当您使用postMessage将数据发送到其他窗口时，始终指定精确的目标origin，而不是。恶意网站可以在您不知情的情况下更改窗口的位置，因此它可以拦截使用postMessage发送的数据。
+
+示例
+
+```JavaScript
+/*​
+ * A窗口的域名是<http://example.com:8080>，以下是A窗口的script标签下的代码：​
+ */​
+​
+var popup = window.open(...popup details...);​
+​
+// 如果弹出框没有被阻止且加载完成​
+​
+// 这行语句没有发送信息出去，即使假设当前页面没有改变location（因为targetOrigin设置不对）​
+popup.postMessage("The user is 'bob' and the password is 'secret'",​
+                  "https://secure.example.net");​
+​
+// 假设当前页面没有改变location，这条语句会成功添加message到发送队列中去（targetOrigin设置对了）​
+popup.postMessage("hello there!", "http://example.org");​
+​
+function receiveMessage(event)​
+{​
+  // 我们能相信信息的发送者吗?  (也许这个发送者和我们最初打开的不是同一个页面).​
+  if (event.origin !== "http://example.org")​
+    return;​
+​
+  // event.source 是我们通过window.open打开的弹出页面 popup​
+  // event.data 是 popup发送给当前页面的消息 "hi there yourself!  the secret response is: rheeeeet!"​
+}​
+window.addEventListener("message", receiveMessage, false);
+```
+
+```JavaScript
+/*​
+ * 弹出页 popup 域名是<http://example.org>，以下是script标签中的代码:​
+ */​
+​
+//当A页面postMessage被调用后，这个function被addEventListener调用​
+function receiveMessage(event)​
+{​
+  // 我们能信任信息来源吗？​
+  if (event.origin !== "http://example.com:8080")​
+    return;​
+​
+  // event.source 就当前弹出页的来源页面​
+  // event.data 是 "hello there!"​
+​
+  // 假设你已经验证了所受到信息的origin (任何时候你都应该这样做), 一个很方便的方式就是把event.source​
+  // 作为回信的对象，并且把event.origin作为targetOrigin​
+  event.source.postMessage("hi there yourself!  the secret response " +​
+                           "is: rheeeeet!",​
+                           event.origin);​
+}​
+​
+window.addEventListener("message", receiveMessage, false)
+```
+
+:::
