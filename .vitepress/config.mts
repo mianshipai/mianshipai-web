@@ -65,7 +65,7 @@ export default defineConfig({
 
         const adContent = document.createElement('div');
         // adContent.innerHTML = '前端学 Node 全栈和 AI 开发，可加入【划水AI】项目研发小组。双越老师开发，复杂项目，真实上线，持续维护升级。在此进入有优惠 &gt;&gt;';
-        adContent.innerHTML = '跟着 双越老师 开发一个 AI Agent 智能体项目，复杂业务 真实上线，专为前端人员设计，9月预报名早鸟价最大优惠 &gt;&gt;';
+        adContent.innerHTML = '跟着 双越老师 开发一个 AI Agent 智能体项目，复杂业务 真实上线，适合前端人员学习和开发。点击查看优惠价格 &gt;&gt;';
         adContent.style.width = '80%';
         adContent.style.textAlign = 'center';
         adContent.style.margin = '0 auto';
