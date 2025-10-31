@@ -45,6 +45,19 @@
 
 （在此提交新的内推机会）
 
+### 杭州，饿了么&淘宝闪购，前端开发专家，React\React Native
+
+- base 杭州
+- 公司：饿了么&淘宝闪购
+- 职位名称：前端开发专家
+- 核心技术栈：React\React Native
+- 学历要求：本科及以上
+- 工作经验要求：2年以上工作经验
+- 邮箱：liaowenrun.lwr@alibaba-inc.com
+- 2025年10月30日
+
+内推链接：https://talent.ele.me/off-campus/position-detail?lang=zh&positionId=5000038124&shareCode=C5x5PU4moQdLChJ%2F97eIRA%3D%3D
+
 ### 上海/杭州/成都 蚂蚁集团 前端
 
 - base 上海、杭州、成都
