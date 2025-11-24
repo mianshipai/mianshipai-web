@@ -1693,11 +1693,20 @@ JavaScript 的内存管理是自动的，主要通过 **垃圾回收（GC）** �
 4. **DOM 引用**：
 
    - 保留对已删除 DOM 元素的引用，导致内存泄漏。
+
      ```javascript
      let div = document.createElement('div')
      document.body.appendChild(div)
-     // 如果没有将 div 设置为 null，垃圾回收器可能无法回收它
+
+     // 删除 DOM
+     document.body.removeChild(div)
+
+     // ❌ 如果还保留引用，GC 无法回收
+     let cache = div
+
+     // ✔️ 手动断开引用，GC 才能回收
      div = null
+     cache = null
      ```
 
 5. **定时器（setInterval/setTimeout）未清除**：
