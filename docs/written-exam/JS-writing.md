@@ -343,15 +343,15 @@ Function.prototype.apply = function (context, arr) {
 class EventBus {
   constructor() {
     this.eventObj = {}
-    this.callbcakId = 0
+    this.callbackId = 0
   }
 
-  $on(name, callbcak) {
+  $on(name, callback) {
     if (!this.eventObj[name]) {
       this.eventObj[name] = {}
     }
-    const id = this.callbcakId++
-    this.eventObj[name][id] = callbcak
+    const id = this.callbackId++
+    this.eventObj[name][id] = callback
     return id
   }
   $emit(name, ...args) {
@@ -369,12 +369,12 @@ class EventBus {
       delete this.eventObj[name]
     }
   }
-  $once(name, callbcak) {
+  $once(name, callback) {
     if (!this.eventObj[name]) {
       this.eventObj[name] = {}
     }
-    const id = 'D' + this.callbcakId++
-    this.eventObj[name][id] = callbcak
+    const id = 'D' + this.callbackId++
+    this.eventObj[name][id] = callback
     return id
   }
 }
