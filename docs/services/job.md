@@ -45,6 +45,21 @@
 
 （在此提交新的内推机会）
 
+### 上海/深圳 外企 高级前端工程师 React
+
+- base 上海/深圳
+- 公司：Traveloka 外企 OTA独角兽 https://careers.traveloka.com/jobs/cab40adb-3727-439f-b0d1-32bbe19c23b5
+- 职位名称：高级前端工程师
+- 薪资范围：对标大厂
+- 核心技术栈：React nextjs nodejs
+- 学历要求：本科及以上 知名高校加分
+- 工作经验要求：3-5年
+- 微信号：`luoqian48933`
+- 邮箱：`qian.luo@traveloka.com`
+- 发布时间: 2026-03-02
+- 语言要求：英语可作为工作语言， 能基础的口语表达
+- 备注：15天起超长年假，WLB 朝九晚六
+
 ### 背景 前端 AI Leader
 
 - base 北京
