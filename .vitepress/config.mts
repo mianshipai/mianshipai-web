@@ -171,6 +171,7 @@ export default defineConfig({
       {
         text: '三面',
         items: [
+          { text: '场景题', link: '/docs/third-exam/scene.md' },
           { text: '交叉面试', link: '/docs/third-exam/cross-test.md' },
           { text: '项目难点/成绩', link: '/docs/third-exam/project.md' },
           // { text: '系统设计', link: '/docs/third-exam/system-design.md' },
