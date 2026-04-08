@@ -45,6 +45,19 @@
 
 （在此提交新的内推机会）
 
+### 北京/深圳，极致上下文，AI/Agent 工程师，LLM·Agent·Python/Go
+
+- base 北京/深圳
+- 公司：极致上下文
+- 职位名称：AI/Agent 工程师
+- 薪资范围：25-50K·15薪
+- 核心技术栈：LLM 应用与 Agent 架构；RAG、Function Calling；LangChain / AutoGen / Dify；Python 或 Go
+- 学历要求：本科及以上
+- 工作经验要求：2 年以上
+- 微信号：`zkkysqs`
+- 邮箱：`jeek.zhou@apexcontext.com`
+- 发布时间：2026-04-08
+
 ### 杭州 全栈 英语
 
 - base 杭州
