@@ -45,6 +45,20 @@
 
 （在此提交新的内推机会）
 
+### 武汉 AI 全栈开发 TypeScript
+
+- base 城市：武汉
+- 公司：[Popi.ar](https://popi.yuanzoo.cn/workstation/imag)
+- 职位名称：全栈工程师（AI 方向）/TypeScript工程师 （AI 应用与图像处理)
+- 薪资范围：20-40k
+- 核心技术栈： Electron 、TypeScript、 LangChain、Rag
+- 学历要求：本科及以上
+- 工作经验要求：不限
+- 微信号：`BigFFFFF`
+- 邮箱：`f@popi.art`
+- 发布时间2026.4.13—2026.6.31
+- **是否急聘** 是
+
 ### 北京/深圳，极致上下文，AI/Agent 工程师，LLM·Agent·Python/Go
 
 - base 北京/深圳
