@@ -200,6 +200,25 @@ typeof class C {} === 'function'
 typeof Math.sin === 'function'
 ```
 
+**万能类型判断函数**
+
+使用 `Object.prototype.toString.call()` 可以实现更精确的类型判断，能够区分 `null`、数组、日期、正则等各种类型：
+
+```js
+function getType(value) {
+  return Object.prototype.toString.call(value).slice(8, -1)
+}
+
+// 使用
+getType([]) // "Array"
+getType({}) // "Object"
+getType(null) // "Null"  ← 不会误判为 object
+getType(new Date()) // "Date"
+getType(/abc/) // "RegExp"
+getType(new Map()) // "Map"
+getType(Promise.resolve()) // "Promise"
+```
+
 :::
 
 ## `==` 和 `===` 有什么区别？
