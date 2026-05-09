@@ -45,6 +45,19 @@
 
 （在此提交新的内推机会）
 
+### 北京 AI 工程师
+
+- base 北京
+- 公司：北京圜晖科技有限公司 [官网](https://www.featuremaker.com/)
+- 职位名称：AI 知识架构师 / GraphRAG 工程师
+- 薪资范围：20k-30k
+- 核心技术栈：Python/NebulaGraph
+- 学历要求：本科及以上
+- 工作经验要求：3年以上
+- 微信号：`hafanyao_`
+- 邮箱：`hafanyao@126.com`
+- 发布时间：2026-05-09
+
 ### 武汉 AI 全栈开发 TypeScript
 
 - base 城市：武汉
