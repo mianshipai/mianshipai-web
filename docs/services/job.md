@@ -45,6 +45,54 @@
 
 （在此提交新的内推机会）
 
+### 上海，米哈游，前端开发，TypeScript / Vue / React / Vite / 数据可视化
+
+- base 城市：上海
+- 公司：米哈游｜官网：https://www.mihoyo.com
+- 职位名称：前端开发工程师（AI / ML Platform 方向）
+- 薪资范围：面聊
+- 核心技术栈：TypeScript、Vue / React、Vite / Webpack、ECharts / D3
+- 学历要求：本科及以上
+- 工作经验要求：3年以上前端开发经验
+- 微信号：17512018620
+- 邮箱：juntao.mei@mihoyo.com
+- 发布时间：2026-07-15
+- 有效期：招满即止
+
+备注：需要具备平台型产品经验，熟悉前端工程化、性能优化、监控体系和复杂后台系统交互。具备 AI / ML 平台、数据可视化、云原生或 Kubernetes 平台经验者优先。
+
+### 上海，米哈游，Agent开发，Python / LLM / RAG / MCP / 数据平台
+
+- base 城市：上海
+- 公司：米哈游｜官网：https://www.mihoyo.com
+- 职位名称：Agent开发工程师（数据方向）
+- 薪资范围：面聊
+- 核心技术栈：Python、LLM、RAG、MCP、Data Agent、数据平台
+- 学历要求：本科及以上
+- 工作经验要求：3年以上后端开发经验
+- 微信号：17512018620
+- 邮箱：juntao.mei@mihoyo.com
+- 发布时间：2026-07-15
+- 有效期：招满即止
+
+备注：有 Agent 平台、工具生态、大数据组件、数据平台、数仓开发或全栈开发经验者优先。
+
+### 上海，米哈游，数据系统研发，Java /go/python/ Flink / Kafka / ClickHouse / NLP
+
+- base 城市：上海
+- 公司：米哈游｜官网：https://www.mihoyo.com
+- 职位名称：资深数据系统研发工程师（舆情平台方向）
+- 薪资范围：面聊
+- 核心技术栈：Java、Flink / Spark Streaming、Kafka、ClickHouse / Doris、NLP / LLM
+- 学历要求：本科及以上
+- 工作经验要求：5年以上后端或数据平台研发经验
+- 微信号：17512018620
+- 邮箱：juntao.mei@mihoyo.com
+- 发布时间：2026-07-15
+- 有效期：招满即止
+
+备注：有大型舆情监控、媒体大数据、社交内容分析、LLM 应用、多模态分析、Elasticsearch / OpenSearch 优化或游戏社区内容分析经验者优先。
+
 ### 深圳 前端 React /vue
 
 - base 深圳
