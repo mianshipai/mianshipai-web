@@ -301,7 +301,8 @@ console.log('result2: ', num)
 ::: details
 
 ```
-10 20
+result1: 10
+result2: 20
 ```
 
 由于 JavaScript 的闭包特性，函数内部的变量可以持续存在。
