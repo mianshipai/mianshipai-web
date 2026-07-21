@@ -176,15 +176,10 @@ Vue 使用其解析器将 HTML 模板转换为 **抽象语法树（AST）**。�
 如：
 
 ```javascript
-< div >
-    <
-    p > {
-        {
-            message
-        }
-    } < /p> <
-button v - on: click = "handleClick" > 点击 < /button> < /
-div >
+<div>
+  <p>{{ message }}</p>
+  <button v-on:click="handleClick">点击</button>
+</div>
 ```
 
 被解析成的 AST 类似于下面的结构：
