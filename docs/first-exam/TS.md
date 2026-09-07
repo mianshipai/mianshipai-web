@@ -339,7 +339,7 @@ class UserClass implements UserType {
 ::: details
 
 - type 可以声明基础类型
-- type 有联合类型和交差类型
+- type 有联合类型和交叉类型
 - type 可以被 `typeof` 赋值
 
 ```ts
