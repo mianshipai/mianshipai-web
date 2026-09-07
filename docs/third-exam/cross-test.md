@@ -31,8 +31,9 @@ function getUnion(arr1, arr2) {
 
 要点
 
-- 交集，转换为 Set ，因为 Set has 比数组 includes 快很多（前者 O(1) 后者 O(n)）
-- 并集，直接 add 即可，利用 Set 去重特性
+Set 在 2024 年初原生实现了并交集方法，可以直接使用（实际项目可能需要 polyfill），所以可以和面试官确认此题想要单纯考察算法还是实际使用
+- 如果单纯考察算法，那么我们应该直接基于数组实现
+- 如果考察实际使用，直接使用 Set 原生方法
 
 代码
 
@@ -40,26 +41,40 @@ function getUnion(arr1, arr2) {
 const arr1 = [1, 3, 4, 6, 7]
 const arr2 = [2, 5, 3, 6, 1]
 
-// 交集
+// 交集，数组实现
 function getIntersection(arr1, arr2) {
-  const res = new Set()
-  const set2 = new Set(arr2)
+  const res = []
   for (let item of arr1) {
-    if (set2.has(item)) {
-      // 注意，这里要用 Set has 方法，比数组的 includes 快很多
-      res.add(item)
+    if (arr2.includes(item)) {
+      res.push(item)
     }
   }
-  return Array.from(res)
+  return res
 }
 
-// 并集
+// 交集，Set 实现
+function getIntersection(arr1, arr2) {
+  const set1 = new Set(arr1)
+  const set2 = new Set(arr2)
+  return Array.from(set1.intersection(set2))
+}
+
+// 并集，数组实现
 function getUnion(arr1, arr2) {
-  const res = new Set(arr1)
+  const res = arr1
   for (let item of arr2) {
-    res.add(item) // 利用 Set 自动去重的特性
+    if (!res.includes(item)) {
+      res.push(item)
+    }
   }
-  return Array.from(res)
+  return res
+}
+
+// 并集，Set 实现
+function getUnion(arr1, arr2) {
+  const set1 = new Set(arr1)
+  const set2 = new Set(arr2)
+  return Array.from(set1.union(set2))
 }
 
 // 测试
